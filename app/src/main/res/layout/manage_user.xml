@@ -101,7 +101,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/etPhone"
         android:layout_toEndOf="@+id/etPhone"
-        android:layout_toRightOf="@+id/etPhone"
         android:visibility="invisible" />
 
     <ImageView

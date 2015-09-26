@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Barter_0927.iml" filepath="$PROJECT_DIR$/Barter_0927.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BarterApp.iml" filepath="$PROJECT_DIR$/BarterApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

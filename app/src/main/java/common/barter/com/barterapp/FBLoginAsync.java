@@ -41,7 +41,7 @@ public class FBLoginAsync extends AsyncTask<String, String, String> {
 protected void onPreExecute() {
         super.onPreExecute();
         pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Creating Product..");
+        pDialog.setMessage("Connecting to Facebook ..");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();

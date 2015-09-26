@@ -478,7 +478,14 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
                 fragment = new ChooseOptionsOffersFragment();
                 break;
             case 4:
-                fragment = new LoginFragment();
+                if (isLoggedInFromClass())
+                {
+                    fragment = new ManageUser();
+                }
+                else
+                {
+                    fragment = new LoginFragment();
+                }
                 break;
             default:
                 break;
@@ -535,8 +542,27 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    public Boolean isLoggedInFromClass(){
 
+// COMMENTED FOR TESTING
 
+//        if(LoginDetails.getInstance().getUserid() == null){
+//            //logic for reading current location should go here
+//            return false;
+//        }else{
+//            return true;
+//        }
+        return false;
+    }
+    public Boolean isLoggedInFromPrefs(){
+        Object LoggedInFromPrefs = loadFromSharedPrefs("uniqueid");
+        if(LoggedInFromPrefs == null){
+            //logic for reading current location should go here
+            return false;
+        }else{
+            return true;
+        }
+    }
 
 
     Object obj;

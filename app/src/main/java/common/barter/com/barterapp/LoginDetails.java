@@ -23,8 +23,13 @@ public class LoginDetails {
     private String homeTown; // FB
     private String gps_location; // Location read from device
     private String password;
-    private String mob_verified;
+    private String mob_verified; // 0: false; 1: true
     private String mobilenum;
+
+    // internal processes
+    private Boolean isverifying;
+    private String otp_received_from_web;
+    private String otp_received_from_device;
 
     private LoginDetails ()
     {
@@ -187,6 +192,29 @@ public class LoginDetails {
     }
 
 
+    public Boolean getIsverifying() {
+        return isverifying;
+    }
+
+    public void setIsverifying(Boolean isverifying) {
+        this.isverifying = isverifying;
+    }
+
+    public String getOtp_received_from_web() {
+        return otp_received_from_web;
+    }
+
+    public void setOtp_received_from_web(String otp_received_from_web) {
+        this.otp_received_from_web = otp_received_from_web;
+    }
+    public String getOtp_received_from_device() {
+        return otp_received_from_device;
+    }
+
+    public void setOtp_received_from_device(String otp_received_from_device) {
+        this.otp_received_from_device = otp_received_from_device;
+    }
+
 
 
     public void resetDetails()
@@ -203,8 +231,30 @@ public class LoginDetails {
         loginLocation = null;
         homeTown = null;
         mobilenum=null;
+        isverifying = false;
+        otp_received_from_device = null;
+        otp_received_from_web = null;
         //gps_location = null;
 
     }
+    public void testData()
+    {
+        // To reset values
+        userid="1";
+        personName = "Vikram Singh Bhati";
+        personPhoto = null;
+        email = "bhativ1303";
+        birthday = "25/05/89";
+        id = null;
+        gender = "M";
+        placesLived = null;
+        loginLocation = null;
+        homeTown = null;
+        mobilenum="7032910032";
+        isverifying = false;
+        otp_received_from_device = null;
+        otp_received_from_web = null;
+        //gps_location = null;
 
+    }
 }

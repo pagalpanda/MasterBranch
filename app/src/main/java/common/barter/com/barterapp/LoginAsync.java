@@ -55,13 +55,10 @@ protected String doInBackground(String... args) {
         params.put("username", LoginDetails.getInstance().getEmail());
         params.put("password", LoginDetails.getInstance().getPassword());
         params.put("loginmode", String.valueOf(login_mode));
-        //params.put("personname", LoginDetails.getInstance().getPersonName());
-        if (LoginDetails.getInstance().getMobilenum()!=null)
-            params.put("mobilenum", LoginDetails.getInstance().getMobilenum());
         if (LoginDetails.getInstance().getPersonName()!=null)
             params.put("personname", LoginDetails.getInstance().getPersonName());
-        else
-            params.put("personname", "");
+        if (LoginDetails.getInstance().getMobilenum()!=null)
+            params.put("mobilenum", LoginDetails.getInstance().getMobilenum());
         if (LoginDetails.getInstance().getGender()!=null)
             params.put("gender", LoginDetails.getInstance().getGender());
         if (LoginDetails.getInstance().getBirthday()!=null)
@@ -142,7 +139,7 @@ protected void onPostExecute(String file_url) {
             LoginDetails.getInstance().setGender(json.getString("gender"));
             LoginDetails.getInstance().setEmail(json.getString("userid"));
             LoginDetails.getInstance().setBirthday(json.getString("birthdate"));
-            LoginDetails.getInstance().setMobilenum(json.getString("moblilenum"));
+            LoginDetails.getInstance().setMobilenum(json.getString("mobilenum"));
             LoginDetails.getInstance().setMob_verified(json.getString("mob_verified"));
 
         } catch (JSONException e) {

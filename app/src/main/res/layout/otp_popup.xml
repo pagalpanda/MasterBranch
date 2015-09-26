@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VERIFY"
+        android:id="@+id/btverify"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textStyle="bold" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:ems="10"
+        android:id="@+id/etotp"
+        android:layout_above="@+id/btverify"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="177dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:ems="10"
+        android:id="@+id/etmobilenum"
+        android:layout_above="@+id/etotp"
+        android:layout_alignLeft="@+id/etotp"
+        android:layout_alignStart="@+id/etotp"
+        android:layout_marginBottom="46dp"
+        android:enabled="false"
+        android:editable="false" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pbstatus"
+        android:layout_above="@+id/btverify"
+        android:layout_alignRight="@+id/etotp"
+        android:layout_alignEnd="@+id/etotp"
+        android:layout_alignLeft="@+id/etotp"
+        android:layout_alignStart="@+id/etotp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etstatus"
+        android:layout_above="@+id/pbstatus"
+        android:layout_alignLeft="@+id/pbstatus"
+        android:layout_alignStart="@+id/pbstatus"
+        android:layout_alignRight="@+id/pbstatus"
+        android:layout_alignEnd="@+id/pbstatus"
+        android:textStyle="italic" />
+
+</RelativeLayout>
