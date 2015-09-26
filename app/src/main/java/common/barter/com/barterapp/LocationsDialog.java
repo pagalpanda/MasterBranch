@@ -5,9 +5,12 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +40,9 @@ class LocationsDialog extends Dialog{
     private EditText text;
     private LocationsDialog thisDialog;
     private ArrayAdapter<String> adapter;
-    ArrayList list_of_Cities;
+    ArrayList list_of_items;
     RecyclerView mRecyclerView;
-    AutoCompleteTextView autoCompleteTextView;
+    CustomAutoCompleteTextView autoCompleteTextView;
 
     public TextView getTvLocationDialogText() {
         return tvLocationDialogText;
@@ -62,21 +65,26 @@ class LocationsDialog extends Dialog{
         this.context = context;
         this.thisDialog = this;
         this.mRecyclerView = mRecyclerView;
-        this.list_of_Cities = list_of_Cities;
+        this.list_of_items = list_of_Cities;
         this.isClickedFromLocality = isClickedFromLocality;
         this.activity = activity;
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);// This brings the list to appear on top of the keyboard
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.dialog_locations);
         prefs  = PreferenceManager.getDefaultSharedPreferences(context);
 
         getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
+
+
+
         initalize();
     }
 
@@ -85,11 +93,11 @@ class LocationsDialog extends Dialog{
 
 
         //setListOfCities();
-        autoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.actvLocatioNames);
+        autoCompleteTextView = (CustomAutoCompleteTextView)findViewById(R.id.actvLocatioNames);
         tvLocationDialogText = (TextView)findViewById(R.id.tvTitleOfLocationsDialog);
         btnSetCurrentLocation = (Button)findViewById(R.id.btn_set_current_location);
-        if(list_of_Cities != null) {
-            adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, list_of_Cities);
+        if(list_of_items != null) {
+            adapter = new ArrayAdapter<String>(getContext(), R.layout.item_list_locations, list_of_items);
 //            adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, list_of_Cities) {
 //                @Override
 //                public View getView(int position, View convertView, ViewGroup parent) {
@@ -128,8 +136,13 @@ class LocationsDialog extends Dialog{
                 if (hasFocus)
                     autoCompleteTextView.showDropDown();
 
+
             }
+
+
         });
+
+
 
 
 
@@ -146,20 +159,20 @@ class LocationsDialog extends Dialog{
 
 
 
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (!isClickedFromLocality) {
-                    String cityName = (String) list_of_Cities.get(position);
-                    saveToSharedPrefs("location", cityName);
-                    GlobalHome.location = cityName;
-                    if (mRecyclerView != null)
-                        mRecyclerView.getAdapter().notifyDataSetChanged();
-
-                }
-                thisDialog.cancel();
-            }
-        });
+//        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                if (!isClickedFromLocality) {
+//                    String cityName = (String) list_of_items.get(position);
+//                    saveToSharedPrefs("location", cityName);
+//                    GlobalHome.location = cityName;
+//                    if (mRecyclerView != null)
+//                        mRecyclerView.getAdapter().notifyDataSetChanged();
+//
+//                }
+//                thisDialog.cancel();
+//            }
+//        });
 
 
     }
@@ -167,6 +180,7 @@ class LocationsDialog extends Dialog{
     public AutoCompleteTextView getAutoCompleteTextView(){
         //autoCompleteTextView.setDropDownHeight(LinearLayout.LayoutParams.MATCH_PARENT);
         //autoCompleteTextView.setPivotY(0);
+
         autoCompleteTextView.setMinLines(1);
         return autoCompleteTextView;
     }
@@ -214,4 +228,7 @@ class LocationsDialog extends Dialog{
     public void setLocalityName(String localityName) {
         this.localityName = localityName;
     }
+
+
+
 }
