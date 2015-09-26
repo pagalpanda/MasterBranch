@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="fill_parent" android:layout_height="fill_parent"  android:orientation="vertical" android:clickable="true" android:background="@android:color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<ScrollView
+        android:layout_height="fill_parent" android:layout_width="fill_parent" android:background="@android:color/white"
+        xmlns:android="http://schemas.android.com/apk/res/android" >-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="1" android:clickable="true"
+    android:id="@+id/fragmentPostAd">
+
+    <ImageButton android:id="@+id/buttonClickImage" android:layout_width="wrap_content" android:scaleType="fitCenter" android:background="@drawable/camera" android:layout_height="wrap_content"></ImageButton>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tap on the photo to remove"
+        android:id="@+id/tvRemovePhoto"
+        android:layout_below="@+id/buttonClickImage"/>
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gvPhotos"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:numColumns="3"
+        android:layout_below="@+id/tvRemovePhoto"
+        android:layout_marginRight="3pt"
+        android:layout_marginLeft="3pt"
+        android:verticalSpacing="1pt"
+        android:horizontalSpacing="1pt"
+
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:ems="10"
+        android:hint="Enter Title Here(Minimum 10 characters)"
+        android:id="@+id/etItemNamePost"
+        android:maxLength="50"
+        android:layout_below="@+id/gvPhotos"
+        />
+
+
+
+    <EditText
+        android:layout_width="fill_parent"
+
+
+        android:inputType="textMultiLine"
+
+        android:id="@+id/etItemDescriptionPost"
+        android:hint= "Enter Description Here"
+
+        android:maxLength="200"
+
+        android:scrollbars="vertical"
+        android:layout_below="@id/etItemNamePost"
+
+        android:layout_height="wrap_content"
+
+
+        android:lines="4"
+        android:gravity="top"/>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Location"
+    android:layout_below="@id/etItemDescriptionPost"
+    android:id="@+id/tvLocation"/>
+
+    <RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLocation"
+        android:id="@+id/layout_location_button">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City"
+        android:id="@+id/btnCityDropDown"
+        android:layout_alignParentLeft="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Locality"
+        android:id="@+id/btnlocalityDropDown"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>
+    <ProgressBar
+        android:id="@+id/progressBarPostAd"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/layout_location_button"
+        android:layout_above="@+id/layout_category_buttons"/>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/layout_category_buttons"
+        android:layout_below="@+id/layout_location_button">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:id="@+id/btnCategotyDropDown"
+            android:layout_alignParentLeft="true"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Subcategory"
+            android:id="@+id/btnSubCategoryDropDown"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout><Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Post Ad"
+    android:layout_gravity="center_horizontal"
+    android:textSize="40px"
+    android:id="@+id/btnPostAd"
+    android:layout_alignParentBottom="true"
+
+
+    /></RelativeLayout>

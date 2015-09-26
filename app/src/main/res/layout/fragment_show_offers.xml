@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="common.barter.com.barterapp.ShowOffersFragment"
+    android:clickable="true" android:background="@android:color/white">
+
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/hello_blank_fragment"
+            android:id="@+id/tvNoOffersError"
+            android:layout_alignParentTop="true"
+            android:visibility="invisible"
+
+            />
+
+        <ListView
+            android:id="@+id/listViewShowOffers"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+
+            android:layout_marginBottom="2px">
+            <!--android:layout_below="@id/tvNoPostsError" -->
+
+        </ListView>
+    </RelativeLayout>
+
+
+</RelativeLayout>

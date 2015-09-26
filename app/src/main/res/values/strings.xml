@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">BarterApp</string>
+    <string name="facebook_app_id">1696926803863273</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item >Home</item>
+        <item >My Posts</item>
+        <item >Offers</item>
+        <item >Wish List</item>
+        <item >My Account</item>
+        <item >About Us</item>
+        <item >Share App</item>
+    </string-array>
+    <!-- We can have another array here with corresponding icon images -->>
+
+    <!-- Content Description -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="title_activity_sub_categories">SubCategoriesActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Select a Sub-category</string>
+    <string name="title_activity_splash">Splash</string>
+    <string name="title_activity_post_ad">PostAdA</string>
+    <string name="title_activity_test_db">TestDb</string>
+    <string name="LOCATION_NOT_READ">Could not Read Your Location!</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/txtLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:textSize="16dp"
+        android:text="Home View"/>
+
+    <GridView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gvHome"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:numColumns="3"
+        android:layout_marginRight="3pt"
+        android:layout_marginLeft="3pt"
+        android:verticalSpacing="1pt"
+        android:horizontalSpacing="1pt"
+        />
+    <include layout="@layout/floating_post_ad"
+
+        />
+
+
+</RelativeLayout>

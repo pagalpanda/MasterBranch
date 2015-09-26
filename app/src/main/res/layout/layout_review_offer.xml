@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:background="@android:color/black" android:clickable="true"
+    >
+    <Button
+        android:layout_marginTop="2px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnStatus"
+        android:textStyle="bold"/>
+    <TextView
+        android:background="@android:color/black"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="My Items In This Offer"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="16dp"/>
+    <ListView
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/listViewMine"
+        android:layout_weight="1"
+        />
+
+    <TextView
+        android:background="@android:color/black"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="His Items In This Offer"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="16dp"/>
+    <ListView
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/listViewHis"
+        android:layout_weight="1"
+         />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:id="@+id/btnEditOffer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:layout_weight="1"
+
+
+            />
+        <Button
+            android:id="@+id/btnSubmitOffer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            android:layout_weight="1"
+
+
+            />
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnMakeAnotherOffer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Make New Offer"
+        android:visibility="gone"
+
+
+        />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:orientation="horizontal"
+        android:id="@+id/layout_ongoing_buttons_holder"
+        android:visibility="gone"
+        >
+        <Button
+            android:id="@+id/btnEditOfferOnGoing"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:layout_weight="1"
+
+
+            />
+        <Button
+            android:id="@+id/btnMakeNewOfferOnGoing"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="New Offer"
+            android:layout_weight="1"
+
+
+            />
+        <Button
+            android:id="@+id/btnDelteOfferOnGoing"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:layout_weight="1"
+
+
+            />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:orientation="horizontal"
+        android:id="@+id/layout_counter_buttons_holder"
+        android:visibility="gone"
+        >
+        <Button
+            android:id="@+id/btnAcceptOffersToMe"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Accept"
+            android:layout_weight="1"
+
+
+            />
+        <Button
+            android:id="@+id/btnRejectOffersToMe"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Reject"
+            android:layout_weight="1"
+
+
+            />
+        <Button
+            android:id="@+id/btnCounterOffer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Counter"
+            android:layout_weight="1"
+
+
+            />
+
+
+    </LinearLayout>
+
+</LinearLayout>

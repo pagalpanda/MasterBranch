@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentBottom="true"
+    >
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:src="@drawable/shopping_cart_add_icon"
+        app:backgroundTint="@color/button_material_dark"
+        android:id="@+id/fab2"
+        app:layout_anchorGravity="bottom|right|end"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+
+
+        />
+</RelativeLayout>

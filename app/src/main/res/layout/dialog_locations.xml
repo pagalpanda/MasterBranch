@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_alignParentTop="true" android:clickable="true"
+
+
+    ><TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/tvTitleOfLocationsDialog"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"/>
+    <Button
+        android:layout_width="220dip"
+        android:layout_height="wrap_content"
+        android:text="Current Location"
+        android:id="@+id/btn_set_current_location"
+
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tvTitleOfLocationsDialog"
+        />
+
+    <AutoCompleteTextView
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/btn_set_current_location"
+        android:id="@+id/actvLocatioNames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:dropDownWidth="220dip"
+        android:textStyle="bold"
+        android:width="220dip"
+        android:autoText="false"
+
+        android:gravity="center_horizontal"
+        android:textAlignment="center"
+        android:hint="Locations"
+        />
+
+</RelativeLayout>

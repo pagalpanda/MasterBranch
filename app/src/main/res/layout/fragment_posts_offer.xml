@@ -1,0 +1,31 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="common.barter.com.barterapp.PostsFragment"
+    android:clickable="true" android:background="@android:color/white" android:id="@+id/fragmentPostsOffer">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <!--android:layout_below="@id/btnGetPosts" -->
+
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="@string/hello_blank_fragment"
+            android:id="@+id/tvNoPostsErrorOffer"
+            android:layout_alignParentTop="true"
+            android:visibility="visible"
+
+            />
+
+        <ListView
+            android:id="@+id/listViewPostsOffer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+
+            android:layout_marginBottom="2px">
+            <!--android:layout_below="@id/tvNoPostsError" -->
+
+        </ListView>
+    </RelativeLayout>
+
+
+</RelativeLayout>
