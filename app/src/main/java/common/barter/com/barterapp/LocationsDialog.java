@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -64,6 +65,7 @@ class LocationsDialog extends Dialog{
         this.list_of_Cities = list_of_Cities;
         this.isClickedFromLocality = isClickedFromLocality;
         this.activity = activity;
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);// This brings the list to appear on top of the keyboard
     }
 
     @Override
