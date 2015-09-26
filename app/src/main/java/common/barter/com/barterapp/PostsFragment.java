@@ -73,17 +73,6 @@ public class PostsFragment extends Fragment{
     }
 
     GlobalHome activity;
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        Fragment f = getActivity().getSupportFragmentManager().findFragmentById(R.id.frame_container);
-//        if (f instanceof PostsFragment) {
-//            // do something with f
-//
-//            activity.setActionBarTitle(SubCategoryFragment.selectedCategory);
-//            getFragmentManager().popBackStack();
-//        }
-//        return false;
-//    }
 
     String subCategory;
     public PostsFragment( String calledFor, String subCategory){
@@ -132,7 +121,7 @@ public class PostsFragment extends Fragment{
             }
         });
 
-        new GetPosts().execute();
+        doInBackground();
     }
 
     @Override
@@ -177,103 +166,73 @@ public class PostsFragment extends Fragment{
 
 
 
-    class GetPosts extends AsyncTask<String, String, String> {
-
-        /**
-         * Before starting background thread Show Progress Dialog
-         * */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(getContext());
-            pDialog.setMessage("Fetching Posts..");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
-        }
-
         /**
          * Creating product
          * */
-        protected String doInBackground(String... args) {
+        protected void doInBackground() {
 
             // Building Parameters
-            HashMap <String,String> params = new HashMap <String,String>();
-            String uniqueid = (String)new CommonResources(getContext()).loadFromSharedPrefs("uniqueid");
+            HashMap<String, String> params = new HashMap<String, String>();
+            String uniqueid = (String) new CommonResources(getContext()).loadFromSharedPrefs("uniqueid");
             JSONObject json = new JSONObject();
-            if("userview".equalsIgnoreCase(calledFor)) {
+            String urlToForCall = "";
+            if ("userview".equalsIgnoreCase(calledFor)) {
                 params.put("subcategory", subCategory);
                 String city = new CommonResources(getContext()).readLocation();
-                if("Select Location".equalsIgnoreCase(city) || "".equalsIgnoreCase(city)){
+                if ("Select Location".equalsIgnoreCase(city) || "".equalsIgnoreCase(city)) {
                     city = "";
                 }
-                params.put("city",city);
+                params.put("city", city);
 
-                if(uniqueid == null || "".equalsIgnoreCase(uniqueid)) {//user not logged in
+                if (uniqueid == null || "".equalsIgnoreCase(uniqueid)) {//user not logged in
                     params.put("uniqueid", "0");
-                }
-                else { // user logged in
+                } else { // user logged in
                     params.put("uniqueid", uniqueid);
                 }
-                json = jsonParser.makeHttpRequest(CommonResources.getURL("get_all_posts"),
-                        "POST", params);
 
-            }
-            else {
+                urlToForCall = CommonResources.getURL("get_all_posts");
+
+            } else {
                 params.put("uniqueid", uniqueid);
-                json = jsonParser.makeHttpRequest(CommonResources.getURL("get_my_posts"),
-                        "POST", params);
+                urlToForCall = CommonResources.getURL("get_my_posts");
 
             }
-
-
-            // check log cat fro response
-            if(json == null){
-                //latch.countDown();
-                return null;
-            }
-            Log.d("Fetching Posts", json.toString());
-
-            // check for success tag
-            String TAG_SUCCESS = "success";
-            try {
-                 int success = json.getInt(TAG_SUCCESS);
-
-                if (success == 0) {
-
-                    posts = json.getJSONArray("posts");
-                    if(posts.length() == 0) return "empty";
-                    for (int i = 0; i < posts.length(); i++) {
-                        JSONObject c = posts.getJSONObject(i);
-                        listOfPosts.add(new Post(c.getString("uniqueid"),c.getString("title"), c.getString("createddate"), c.getString("locality"),  c.getString("hasimage"), c.getString("postid"), c.getString("numofimages"), c.getString("description"), c.getString("subcategory"), c.getString("category"), c.getString("city") ));
+            AsyncConnection as = new AsyncConnection(context, urlToForCall, "POST", params, false, null) {
+                @Override
+                public void receiveData(JSONObject json) {
+                    if (json == null) {
+                        //latch.countDown();
+                        return;
                     }
 
-                } else if(success == 1){
-                    // failed to create product
-                }else{
-                    //Invalid input
+                    String TAG_SUCCESS = "success";
+                    try {
+                        int success = json.getInt(TAG_SUCCESS);
+
+                        if (success == 0) {
+
+                            posts = json.getJSONArray("posts");
+                            if (posts.length() == 0) {
+                                Toast.makeText(getContext(), "There are not posts in your city in this sub-category", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            for (int i = 0; i < posts.length(); i++) {
+                                JSONObject c = posts.getJSONObject(i);
+                                listOfPosts.add(new Post(c.getString("uniqueid"), c.getString("title"), c.getString("createddate"), c.getString("locality"), c.getString("hasimage"), c.getString("postid"), c.getString("numofimages"), c.getString("description"), c.getString("subcategory"), c.getString("category"), c.getString("city")));
+                            }
+                            adapter.notifyDataSetChanged();
+                        } else if (success == 1) {
+                            // failed to create product
+                        } else {
+                            //Invalid input
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
-            return null;
-
+            };
+            as.execute();
         }
-
-        /**
-         * After completing background task Dismiss the progress dialog
-         * **/
-        protected void onPostExecute(String isEmpty) {
-            // dismiss the dialog once done
-            pDialog.dismiss();
-            adapter.notifyDataSetChanged();
-            if("empty".equalsIgnoreCase(isEmpty))
-                Toast.makeText(getContext(),"There are not posts in your city in this sub-category",Toast.LENGTH_LONG).show();
-        }
-
-    }
-
-
-
 }
