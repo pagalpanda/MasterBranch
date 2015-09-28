@@ -93,11 +93,11 @@ public class HomeFragment extends Fragment {
         super.onDetach();
 
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((GlobalHome) getActivity()).setActionBarTitle("Home");
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        ((GlobalHome) getActivity()).setActionBarTitle("Home");
+//    }
 
 
 
