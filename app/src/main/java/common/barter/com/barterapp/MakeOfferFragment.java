@@ -281,29 +281,33 @@ public class MakeOfferFragment extends Fragment{
 
 
     void refreshChildListViews(String calledFor){
-        List<Fragment> l = getChildFragmentManager().getFragments();
-        if(!"view".equalsIgnoreCase(calledFor)) {
-            for (Fragment f : l) {
-                if (f instanceof PostsOfferFragment) {
-                    ((PostsOfferFragment) f).methodInFragmentB();
-                }
-
-            }
-        }
-        int currentTabId = mTabHost.getCurrentTab();
-        mTabHost.clearAllTabs();
-
-
-//        mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
-
-
-
-        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator(tabs[0]),
-                PostsOfferFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator(tabs[1]),
-                PostsOfferFragment.class, null);
-
-        mTabHost.setCurrentTab(currentTabId);
+        adapter = new MakeOfferAdapter(
+                getFragmentManager(), 2);
+        viewPager.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+//        List<Fragment> l = getChildFragmentManager().getFragments();
+//        if(!"view".equalsIgnoreCase(calledFor)) {
+//            for (Fragment f : l) {
+//                if (f instanceof PostsOfferFragment) {
+//                    ((PostsOfferFragment) f).methodInFragmentB();
+//                }
+//
+//            }
+//        }
+//        int currentTabId = mTabHost.getCurrentTab();
+//        mTabHost.clearAllTabs();
+//
+//
+////        mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
+//
+//
+//
+//        mTabHost.addTab(mTabHost.newTabSpec("tab1").setIndicator(tabs[0]),
+//                PostsOfferFragment.class, null);
+//        mTabHost.addTab(mTabHost.newTabSpec("tab2").setIndicator(tabs[1]),
+//                PostsOfferFragment.class, null);
+//
+//        mTabHost.setCurrentTab(currentTabId);
     }
 
 
