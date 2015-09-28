@@ -180,43 +180,51 @@ public class CommonResources {
         public static ArrayList<String> getSubCategories(String categoryName){
                 ArrayList<String> subCategories = new ArrayList<String>();
                 if(categoryName.equals("Books")){
+                        subCategories.add("All Posts in Books");
                         subCategories.add("Literature & Fiction");
                         subCategories.add("Academic & Professional");
                         subCategories.add("Children & Teens");
                         subCategories.add("Business & Management");
                         subCategories.add("Religion & Spirituality");
                 }else if(categoryName.equals("Electronics")){
+                        subCategories.add("All Posts in Electronics");
                         subCategories.add("Computers & Accessories");
                         subCategories.add("Storage");
                         subCategories.add("Camera & Accessories");
                         subCategories.add("Home Appliances");
                         subCategories.add("Personal Grooming");
                 }else if(categoryName.equals("Sports")){
+                        subCategories.add("All Posts in Sports");
                         subCategories.add("Fitness Equipment");
                         subCategories.add("Outdoor Gear");
                         subCategories.add("Health Devices");
 
                 }else if(categoryName.equals("Gadgets")){
+                        subCategories.add("All Posts in Gadgets");
                         subCategories.add("Mobiles & Tablets");
                         subCategories.add("Camera & Accessories");
                         subCategories.add("Earphones & Headphones");
 
                 }else if(categoryName.equals("Pets")){
+                        subCategories.add("All Posts in Pets");
                         subCategories.add("Dogs");
                         subCategories.add("Cats");
                         subCategories.add("Pet Food");
                         subCategories.add("Others");
                 }else if(categoryName.equals("Fashion")){
+                        subCategories.add("All Posts in Fashion");
                         subCategories.add("Hand Bags");
                         subCategories.add("Watch");
                         subCategories.add("Shoes");
                         subCategories.add("Clothing");
 
                 }else if(categoryName.equals("Child Care")){
+                        subCategories.add("All Posts in Child Care");
                         subCategories.add("Toys and Games");
                         subCategories.add("Prams, Strollers & Walkers");
 
                 }else if(categoryName.equals("School or Office")){
+                        subCategories.add("All Posts in School or Office");
                         subCategories.add("Office Stationary");
                         subCategories.add("Tables & Chairs");
                         subCategories.add("Bags");
