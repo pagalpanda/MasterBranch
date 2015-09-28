@@ -27,6 +27,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 public class ManageUser extends Fragment {
 
     Activity context;
@@ -38,16 +43,9 @@ public class ManageUser extends Fragment {
     private RadioButton rbmale;
     private RadioButton rbfemale;
     private EditText etOTP;
-    private Button btLogOut;
+    private Button btSave;
     private ImageView ivVerified;
 
-    private TextView tvcountdown;
-    private EditText etotp;
-    private PopupWindow popupWindow;
-    private CountDownTimer countDownTimer;
-    private boolean timerHasStarted = false;
-    private final long startTime = 30 * 1000;
-    private final long interval = 1 * 1000;
 
     private DialogFragment dialogFragment;
 
@@ -81,10 +79,21 @@ public class ManageUser extends Fragment {
         btverify = (ImageButton)rootView.findViewById(R.id.btVerify);
         rbmale = (RadioButton)rootView.findViewById(R.id.rbMale);
         rbfemale = (RadioButton)rootView.findViewById(R.id.rbFemale);
-        etOTP = (EditText)rootView.findViewById(R.id.etOTP);
-        btLogOut = (Button)rootView.findViewById(R.id.btSaveManageUser);
+        btSave = (Button)rootView.findViewById(R.id.btSaveManageUser);
         ivVerified= (ImageView)rootView.findViewById(R.id.ivVerified);
         getDetails();
+
+        btverify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //etOTP.setVisibility(View.VISIBLE);
+                flash("Button clicked");
+                LoginDetails.getInstance().setIsverifying(true);
+                //setPopUp(inflater);
+                setDialogFragment();
+
+            }
+        });
 
         btverify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,26 +191,47 @@ public class ManageUser extends Fragment {
 
     }
 
-    public class MyCountDownTimer extends CountDownTimer {
-
-        public  MyCountDownTimer(long startTime,long interval)
-        {
-            super(startTime, interval);
-        }
-
-        @Override
-        public void onTick(long millisUntilFinished) {
-            tvcountdown.setText("" + millisUntilFinished / 1000);
-        }
-
-        @Override
-        public void onFinish() {
-            tvcountdown.setText("Time's up!");
-            popupWindow.dismiss();
-        }
-    }
     public  void flash(String message){
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
+
+    public void updateUser()
+    {
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("userid",LoginDetails.getInstance().getUserid());
+
+        params.put("personname",LoginDetails.getInstance().getPersonName());
+        params.put("gender",LoginDetails.getInstance().getGender());
+        params.put("birthdate",LoginDetails.getInstance().getBirthday());
+        params.put("mobilenum",LoginDetails.getInstance().getMobilenum());
+
+        params.put("instruction", "2");
+        AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
+            public void receiveData(JSONObject json){
+                try {
+                    String TAG_SUCCESS = "success";
+                    int success = json.getInt(TAG_SUCCESS);
+                    if (success == 0) {
+                        LoginDetails.getInstance().setMob_verified(json.getString("is_verified"));
+                        LoginDetails.getInstance().setIsverifying(false);
+                    }
+                    else if (success == 1) {
+
+                        LoginDetails.getInstance().setIsverifying(false);
+                    }
+                    else {
+                        LoginDetails.getInstance().setIsverifying(false);
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        as.execute();
+
     }
 
 }

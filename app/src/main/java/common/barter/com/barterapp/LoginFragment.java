@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -36,7 +37,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     Activity context;
     Button btnLogin;
-    Button btnForgotPass;
+    TextView tvForgotPwd;
     EditText etEmailID;
     EditText etPassword;
     EditText etPasswordConf;
@@ -93,7 +94,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 //        item.setVisible(false);
         setHasOptionsMenu(true);
         btnLogin = (Button)rootView.findViewById(R.id.btnLoginLogin);
-        btnForgotPass = (Button)rootView.findViewById(R.id.btnForgotPasswordLogin);
+        tvForgotPwd = (TextView)rootView.findViewById(R.id.tvforgotpwd);
         etEmailID = (EditText)rootView.findViewById(R.id.etEmailIdlogin);
         etPassword = (EditText)rootView.findViewById(R.id.etPasswordLogin);
         etPasswordConf = (EditText)rootView.findViewById(R.id.etConfPassword);
@@ -158,7 +159,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-        btnForgotPass.setOnClickListener(new View.OnClickListener() {
+        tvForgotPwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,"Forgot Pass Clicked", Toast.LENGTH_SHORT).show();
