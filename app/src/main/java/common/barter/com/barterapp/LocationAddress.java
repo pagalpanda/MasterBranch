@@ -152,16 +152,22 @@ public class LocationAddress extends AsyncTask<String, String, String> implement
     }
 
     private boolean checkPlayServices() {
+
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, activity,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
-            } else {
-                GlobalHome.location = MessagesString.LOCATION_SET_MANUALLY;
-                flash("This device is not supported.");
+        try {
+            if (resultCode != ConnectionResult.SUCCESS) {
+                if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                    GooglePlayServicesUtil.getErrorDialog(resultCode, activity,
+                            PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                } else {
+                    GlobalHome.location = MessagesString.LOCATION_SET_MANUALLY;
+                    flash("This device is not supported.");
+                }
+                return false;
             }
-            return false;
+        }catch (Exception e){
+            Log.i(TAG,"Exception while checking services\n" +
+                    "    "+ e.getMessage());
         }
         return true;
     }
