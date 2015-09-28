@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fb="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:background="@android:color/white"
-    >
+    android:background="@android:color/white">
 
     <EditText
         android:layout_width="fill_parent"
@@ -11,23 +11,29 @@
         android:id="@+id/etEmailIdlogin"
         android:inputType="textEmailAddress"
         android:hint="Email"
-        android:layout_marginTop="20pt"/>
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/etPasswordLogin"
+        android:layout_alignParentLeft="true" />
     <EditText
         android:layout_width="fill_parent"
-        android:layout_below="@+id/etEmailIdlogin"
         android:layout_height="wrap_content"
         android:id="@+id/etPasswordLogin"
         android:inputType="textPassword"
-        android:hint="Password"/>
+        android:hint="Password"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="68dp" />
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New User??"
         android:id="@+id/ckNewUser"
-        android:layout_below="@+id/etPasswordLogin"
-        android:layout_toRightOf="@+id/relativeLayout"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:textStyle="bold"
+        android:layout_below="@+id/etEmailIdlogin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/etConfPassword" />
 
     <EditText
         android:layout_width="fill_parent"
@@ -36,53 +42,57 @@
         android:inputType="textPassword"
         android:hint="Password"
         android:visibility="invisible"
-        android:layout_below="@+id/ckNewUser"
-        android:layout_toRightOf="@+id/relativeLayout"
-        android:layout_toEndOf="@+id/relativeLayout" />
+        android:layout_above="@+id/btnLoginLogin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/btnLoginLogin"
         android:text="Log in"
-        android:layout_below="@+id/etConfPassword"
-        android:layout_toRightOf="@+id/relativeLayout"
-        android:layout_toEndOf="@+id/relativeLayout" />
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnLoginLogin"
-        android:layout_marginTop="10pt"
-        android:id="@+id/relativeLayout"></RelativeLayout>
-
-    <RelativeLayout android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/relativeLayout2"></RelativeLayout>
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeLayout"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/btnLoginLogin"
+        android:layout_marginTop="65dp"
+        />
+
     <com.facebook.login.widget.LoginButton
         android:id="@+id/authButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_alignTop="@+id/sign_in_button"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/sign_in_button"
+        android:layout_alignLeft="@+id/sign_in_button"
+        android:layout_alignStart="@+id/sign_in_button"
+        android:layout_marginTop="43dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        fb:login_text="Sign in with Facebook"
+        fb:logout_text="LogOut from Facebook"
+        />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnForgotPasswordLogin"
-        android:text="Forgot Password"
-        android:layout_alignTop="@+id/authButton"
-        android:layout_toLeftOf="@+id/authButton"
-        android:layout_toStartOf="@+id/authButton" />
+        android:text="Forgot Password?"
+        android:id="@+id/tvforgotpwd"
+        android:textStyle="bold|italic"
+        android:textAlignment="center"
+        android:linksClickable="false"
+        android:clickable="true"
+        android:textColor="#1f4cff"
+        android:layout_alignTop="@+id/ckNewUser"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/etConfPassword" />
 
 </RelativeLayout>
