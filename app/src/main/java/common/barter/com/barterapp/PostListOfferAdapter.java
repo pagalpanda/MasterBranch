@@ -95,45 +95,47 @@ public class PostListOfferAdapter extends BaseAdapter{
         // TODO Auto-generated method stub
 
         rowView= null;
+        Holder holder;
 
-        if(convertView == null) {
-            rowView = inflater.inflate(R.layout.list_post_items_offer, null);
-            final Holder holder=new Holder();
-            holder.tvTitle=(TextView) rowView.findViewById(R.id.tvTitleNamePostOffer);
-            holder.ivPrimaryImage=(ImageView) rowView.findViewById(R.id.ivPrimaryImageOffer);
-            holder.tvLocality=(TextView) rowView.findViewById(R.id.tvLocalityPostsOffer);
-            holder.tvDateCreated=(TextView) rowView.findViewById(R.id.tvDateCreatedOffer);
-            holder.cbSelected = (CheckBox) rowView.findViewById(R.id.cbPostSelected);
-            rowView.setTag(holder);
-        }else {
-            rowView=convertView;
-        }
-
-        Holder holder = (Holder) rowView.getTag();
-        holder.ivPrimaryImage.setId(position);
-        holder.ivPrimaryImage.setTag(listOfPosts.get(position).getPostId());
-        holder.ivPrimaryImage.setImageBitmap(null); // Added for flickering issue
-        holder.tvTitle.setText(listOfPosts.get(position).getTitle());
-        holder.tvLocality.setText(listOfPosts.get(position).getLocality());
-        holder.tvDateCreated.setText(CommonResources.convertDate(listOfPosts.get(position).getCreatedDate()));
-        postId = listOfPosts.get(position).getPostId();
-        Image image = new Image();
-        image.setImg(holder.ivPrimaryImage);
-        holder.position = position;
-        String url = CommonResources.getStaticURL()+"uploadedimages/"+postId+"_1";
-
-        Picasso.with(context).load(url).fit().into(holder.ivPrimaryImage, new Callback() {
-            @Override
-            public void onSuccess() {
-
+            if (convertView == null) {
+                rowView = inflater.inflate(R.layout.list_post_items_offer, null);
+                holder = new Holder();
+                holder.tvTitle = (TextView) rowView.findViewById(R.id.tvTitleNamePostOffer);
+                holder.ivPrimaryImage = (ImageView) rowView.findViewById(R.id.ivPrimaryImageOffer);
+                holder.tvLocality = (TextView) rowView.findViewById(R.id.tvLocalityPostsOffer);
+                holder.tvDateCreated = (TextView) rowView.findViewById(R.id.tvDateCreatedOffer);
+                holder.cbSelected = (CheckBox) rowView.findViewById(R.id.cbPostSelected);
+                rowView.setTag(holder);
+            } else {
+                rowView = convertView;
             }
 
-            @Override
-            public void onError() {
+            holder = (Holder) rowView.getTag();
+            holder.ivPrimaryImage.setId(position);
+            holder.ivPrimaryImage.setTag(listOfPosts.get(position).getPostId());
+            holder.ivPrimaryImage.setImageBitmap(null); // Added for flickering issue
+            holder.tvTitle.setText(listOfPosts.get(position).getTitle());
+            holder.tvLocality.setText(listOfPosts.get(position).getLocality());
+            holder.tvDateCreated.setText(CommonResources.convertDate(listOfPosts.get(position).getCreatedDate()));
+            postId = listOfPosts.get(position).getPostId();
+            Image image = new Image();
+            image.setImg(holder.ivPrimaryImage);
+            holder.position = position;
+            String url = CommonResources.getStaticURL() + "uploadedimages/" + postId + "_1";
+
+            Picasso.with(context).load(url).fit().into(holder.ivPrimaryImage, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError() {
 
 
-            }
-        });
+                }
+            });
+
         if(!"review".equalsIgnoreCase(mode)) {
 
             holder.cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -162,7 +164,7 @@ public class PostListOfferAdapter extends BaseAdapter{
             }
         }else {
             //rowView.setBackgroundColor(Color.WHITE);
-            holder.cbSelected.setVisibility(View.GONE);
+            //holder.cbSelected.setVisibility(View.GONE);
         }
 
 

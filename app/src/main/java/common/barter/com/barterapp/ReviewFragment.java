@@ -14,11 +14,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -49,8 +52,8 @@ public class ReviewFragment extends Fragment {
     ArrayList<Post> listSelectedMine,listSelectedHis;
     private ProgressDialog pDialog;
     JSONParser jsonParser = new JSONParser();
-    ListView lvPostsMine;
-    ListView lvPostsHis;
+    //GridView lvPostsMine;
+    //GridView lvPostsHis;
     CountDownLatch latch;
     JSONArray posts = null;
     PostListOfferAdapter adapter;
@@ -61,7 +64,9 @@ public class ReviewFragment extends Fragment {
     String currentOfferId;
     boolean isCounterOffer = false;
 
-
+    RecyclerView mRecyclerView;
+    GridLayoutManager mLayoutManager;
+    RecyclerView.Adapter mAdapter;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -129,10 +134,54 @@ public class ReviewFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.layout_review_offer, container, false);
-        lvPostsMine = (ListView)rootView.findViewById(R.id.listViewMine);
-        lvPostsHis = (ListView)rootView.findViewById(R.id.listViewHis);
+        //lvPostsMine = (GridView)rootView.findViewById(R.id.listViewMine);
+        //lvPostsHis = (GridView)rootView.findViewById(R.id.listViewHis);
 //        MenuItem item = menu.findItem(R.id.my_item);
 //        item.setVisible(false);
+
+        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        // The number of Columns
+        mLayoutManager = new GridLayoutManager(getActivity(), 3);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        int pos = position-1;
+                        Fragment fragment = null;
+                        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                        ft.setCustomAnimations(R.anim.zoomin, R.anim.zoomout, R.anim.zoomin, R.anim.zoomout);
+
+                        if(pos<listSelectedMine.size()) {
+                            fragment = new PostDetailsFragment(listSelectedMine.get(pos), "viewonly");
+
+                        }else{
+                            int numOfRowsMine = 0;
+                            if(listSelectedMine.size()%3 == 0){
+                                numOfRowsMine = listSelectedMine.size()/3;
+                            }else
+                                numOfRowsMine = (listSelectedMine.size()/3)+1;
+
+                            int posHis = pos  - numOfRowsMine*3-1;
+                            fragment = new PostDetailsFragment(listSelectedHis.get(posHis), "viewonly");
+                        }
+                        if (fragment != null) {
+                            ft.add(R.id.frame_container, fragment).addToBackStack("post_details").commit();
+                        } else {
+                            Log.e("MainActivity", "Error in creating fragment");
+                        }
+
+                    }
+
+
+                })
+        );
+
+
+
         Button btnEditOffer = (Button)rootView.findViewById(R.id.btnEditOffer);
         Button btnSubmitOffer = (Button)rootView.findViewById(R.id.btnSubmitOffer);
         Button btnShowStatus = (Button)rootView.findViewById(R.id.btnStatus);
@@ -372,13 +421,31 @@ public class ReviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //setListOfPosts();
+//        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams)lvPostsHis.getLayoutParams();
+//        linearParams.width=100*listSelectedHis.size();
+//        lvPostsHis.setLayoutParams(linearParams);
+//        //lvPostsHis.setColumnWidth(100);
 
+        mAdapter = new ReviewOfferGridAdapter(getContext(), listSelectedMine,listSelectedHis, "review");
+        //mLayoutManager.
+        mLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return (((ReviewOfferGridAdapter)mAdapter).isHeaderMine(position) || ((ReviewOfferGridAdapter)mAdapter).isHeaderHis(position) ) ? mLayoutManager .getSpanCount() : 1;
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
         adapter = new PostListOfferAdapter(getContext(), listSelectedMine, "review");
 
-        lvPostsMine.setAdapter(adapter);
+        //lvPostsMine.setAdapter(adapter);
         adapter = new PostListOfferAdapter(getContext(),listSelectedHis, "review");
-        lvPostsHis.setAdapter(adapter);
+        //lvPostsHis.setAdapter(adapter);
 
+
+
+
+
+/*
         lvPostsMine.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -412,7 +479,7 @@ public class ReviewFragment extends Fragment {
 
             }
         });
-
+*/
        // new GetPosts().execute();
     }
 
