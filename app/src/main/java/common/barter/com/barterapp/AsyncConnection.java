@@ -60,8 +60,8 @@ public abstract class AsyncConnection extends AsyncTask<String, String, String> 
         json = jsonParser.makeHttpRequest(phpName,
                 method, params);
 
-
-        Log.d("Create Response", json.toString());
+        if(null != json)
+            Log.d("Create Response", json.toString());
 
         return null;
 
