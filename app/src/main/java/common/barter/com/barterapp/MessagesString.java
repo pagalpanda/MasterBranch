@@ -18,4 +18,5 @@ public class MessagesString {
     public final static String DIALOG_TITLE_TEXT_CATEGORY = "Select Category";
     public final static String DIALOG_TITLE_TEXT_SUBCATEGORY = "Select Sub-category";
     public final static String CONNECT_TO_INTERNET = "No internet connection";
+    public final static String OTP_NUMBER_MESSAGE = "Please enter the pin we\\n just sent to ";
 }
