@@ -1,53 +1,59 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:clickable="true"
+
+    android:alpha="1"
+    android:background="@android:color/white"
+
     >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:lines="2"
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="VERIFY"
-        android:id="@+id/btverify"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textStyle="bold" />
-
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:id="@+id/tvmobilenum"
+            android:text="Please enter the pin we just sent to 8106671762"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp"
+            android:layout_marginTop="40dp"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="numberSigned"
-        android:ems="10"
+        android:ems="5"
         android:id="@+id/etotp"
-        android:layout_above="@+id/btverify"
+        android:textSize="25sp"
+        android:layout_below="@+id/tvmobilenum"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="177dp" />
+        android:gravity="center_horizontal"
+        android:maxLength="5"
+        android:cursorVisible="true"
+        android:textCursorDrawable="@null"
+        android:layout_marginTop="25dp"
+        />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="numberSigned"
-        android:ems="10"
-        android:id="@+id/etmobilenum"
-        android:layout_above="@+id/etotp"
-        android:layout_alignLeft="@+id/etotp"
-        android:layout_alignStart="@+id/etotp"
-        android:layout_marginBottom="46dp"
-        android:enabled="false"
-        android:editable="false" />
+
+
+
+
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/pbstatus"
-        android:layout_above="@+id/btverify"
+
         android:layout_alignRight="@+id/etotp"
         android:layout_alignEnd="@+id/etotp"
         android:layout_alignLeft="@+id/etotp"
-        android:layout_alignStart="@+id/etotp" />
+        android:layout_alignStart="@+id/etotp"
+        android:visibility="gone"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -58,6 +64,66 @@
         android:layout_alignStart="@+id/pbstatus"
         android:layout_alignRight="@+id/pbstatus"
         android:layout_alignEnd="@+id/pbstatus"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:visibility="gone"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:layout_marginBottom="10dp"
+
+            android:textSize="12sp"
+            android:textColor="@android:color/black"
+
+            android:id="@+id/tvOTPDelayMessage"
+            android:text="This might take a minute. Didn't receive it yet?"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+
+            android:textSize="15sp"
+            android:textColor="?attr/colorPrimary"
+
+            android:id="@+id/tvResendCode"
+            android:text="RESEND VERIFICATION CODE"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+
+
+            />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/colorPrimary"
+        android:orientation="vertical"
+        >
+    <Button
+        android:layout_marginTop="3px"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CONTINUE"
+        android:id="@+id/btverify"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:layout_gravity="right"
+
+
+
+        android:textStyle="bold" />
+    </LinearLayout>
+    </LinearLayout>
 
 </RelativeLayout>
+
