@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -32,7 +33,7 @@ public class OTPFragment extends Fragment {
     private Boolean result = false;
 
     private Button btverify;
-    private EditText etmobilenum;
+    private TextView tvmobilenum;
     private EditText etotp;
     private EditText etstatus;
     private ProgressBar pbstatus;
@@ -42,19 +43,42 @@ public class OTPFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View dialogFragmentView = inflater.inflate(R.layout.otp_popup, container, false);
-        receiveWebOTP();
+        //receiveWebOTP();
         etotp = (EditText) dialogFragmentView.findViewById(R.id.etotp);
-        etmobilenum = (EditText) dialogFragmentView.findViewById(R.id.etmobilenum);
+        tvmobilenum = (TextView) dialogFragmentView.findViewById(R.id.tvmobilenum);
         etstatus = (EditText) dialogFragmentView.findViewById(R.id.etstatus);
         pbstatus = (ProgressBar) dialogFragmentView.findViewById(R.id.pbstatus);
         btverify = (Button) dialogFragmentView.findViewById(R.id.btverify);
-
-        setinputData();
+        //((GlobalHome)getActivity()).getSupportActionBar().hide();
+        //setinputData();
+        btverify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                verifyOTP();
+            }
+        });
 
         return dialogFragmentView;
 
     }
 
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.dialog_otp);
+//        setTitle("Enter OTP");
+//
+//        //receiveWebOTP();
+////        etotp = (EditText) findViewById(R.id.etotp);
+////        etmobilenum = (EditText) findViewById(R.id.etmobilenum);
+////        etstatus = (EditText) findViewById(R.id.etstatus);
+////        pbstatus = (ProgressBar) findViewById(R.id.pbstatus);
+////        btverify = (Button) findViewById(R.id.btverify);
+////
+////        setinputData();
+//
+//    }
 
     public class MyCountDownTimer extends CountDownTimer {
 
@@ -163,8 +187,8 @@ public class OTPFragment extends Fragment {
 
     public void setinputData() {
 
-        etmobilenum.setText(LoginDetails.getInstance().getMobilenum());
-        pbstatus.setMax(100);
+        tvmobilenum.setText(MessagesString.OTP_NUMBER_MESSAGE + LoginDetails.getInstance().getMobilenum());
+        //pbstatus.setMax(100);
         if (LoginDetails.getInstance().getIsverifying())
         {
             pbstatus.setProgress(25);
@@ -202,21 +226,32 @@ public class OTPFragment extends Fragment {
                 if(!isExecuted){
                     isExecuted = true;
                     setResult(true);
-                    setProgress(50, "Verifying OTP");
+                    //setProgress(50, "Verifying OTP");
                     btverify.setActivated(false);
                     btverify.setText("VERIFYING");
                     doOTPVerification();
 
                 }
 
+            }else
+            {
+                String otpManual = etotp.getText().toString();
+                if(otpManual!=null && otpManual.length() == 5) {
+                    LoginDetails.getInstance().setOtp_received_from_device(etotp.getText().toString());
+                    doOTPVerification();
+                }
+                else
+                    Toast.makeText(getContext(),"Incorrect Entry",Toast.LENGTH_SHORT).show();
             }
         }
         else if ( (LoginDetails.getInstance().getMob_verified()!=null) && (LoginDetails.getInstance().getMob_verified().equalsIgnoreCase("1")) )
         {
             setResult(true);
-            setProgress(100,"Verified");
+            //setProgress(100,"Verified");
             btverify.setActivated(false);
             btverify.setText("VERIFIED");
+        }else{
+
         }
 
     }
