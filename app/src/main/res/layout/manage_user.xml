@@ -88,7 +88,8 @@
         android:layout_alignTop="@+id/etPhone"
         android:layout_toEndOf="@+id/etPhone"
         android:layout_toRightOf="@+id/etPhone"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        />
 
     <ImageView
         android:layout_width="wrap_content"
