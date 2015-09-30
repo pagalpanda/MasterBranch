@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -76,7 +77,7 @@ class LocationsDialog extends Dialog{
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-
+        thisDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);// Hides the are for title bar
         setContentView(R.layout.dialog_locations);
         prefs  = PreferenceManager.getDefaultSharedPreferences(context);
 
