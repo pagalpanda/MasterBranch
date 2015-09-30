@@ -24,7 +24,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +50,7 @@ public class ManageUser extends Fragment {
     private ImageView ivVerified;
 
 
-    private DialogFragment dialogFragment;
+    private OTPVerificationDialog otpVerificationDialog;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -82,16 +84,22 @@ public class ManageUser extends Fragment {
         rbfemale = (RadioButton)rootView.findViewById(R.id.rbFemale);
         btSave = (Button)rootView.findViewById(R.id.btSaveManageUser);
         ivVerified= (ImageView)rootView.findViewById(R.id.ivVerified);
+        otpVerificationDialog = new OTPVerificationDialog(getContext());
+        otpVerificationDialog.setCancelable(false);
         getDetails();
 
         btverify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //etOTP.setVisibility(View.VISIBLE);
                 flash("Button clicked");
                 LoginDetails.getInstance().setIsverifying(true);
-                //setPopUp(inflater);
                 receiveWebOTP();
+//                createProgressBarProperties();
+//                progress.setMessage("Sending OTP");
+//                progress.show();
+
+
+
 
             }
         });
@@ -182,6 +190,7 @@ public class ManageUser extends Fragment {
     public void updateUser()
     {
 
+
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("userid",LoginDetails.getInstance().getUserid());
 
@@ -203,9 +212,11 @@ public class ManageUser extends Fragment {
                     else if (success == 1) {
 
                         LoginDetails.getInstance().setIsverifying(false);
+                        otpVerificationDialog.dismiss();
                     }
                     else {
                         LoginDetails.getInstance().setIsverifying(false);
+                        otpVerificationDialog.dismiss();
 
                     }
 
@@ -237,22 +248,10 @@ public class ManageUser extends Fragment {
 
     }
 
-    public void createProgressBarProperties(){
-        progress=new ProgressDialog(getContext());
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setCancelable(false);
-        progress.setCanceledOnTouchOutside(false);
 
-        progress.setIndeterminate(true);
-        progress.setProgressNumberFormat(null);
-        progress.setProgressPercentFormat(null);
-        progress.setTitle("OTP Verification");
-
-    }
     public void receiveWebOTP() {
-        createProgressBarProperties();
-        progress.setMessage("Sending OTP");
-        progress.show();
+        //createProgressBarProperties();
+        otpVerificationDialog.show();
         //test data
         LoginDetails.getInstance().testData();
         LoginDetails.getInstance().setIsverifying(true);
@@ -271,16 +270,17 @@ public class ManageUser extends Fragment {
                         LoginDetails.getInstance().setIsverifying(true);
                         CountDownTimer countDownTimer = new MyCountDownTimer(startTime, interval);
                         countDownTimer.start();
-                        progress.setMessage("Waiting for OTP");
+
                         //Add timer to progress bar
 
                     }
                     else if (success == 1) {
-
+                        otpVerificationDialog.dismiss();
                         LoginDetails.getInstance().setIsverifying(false);
                         //Disable Progress bar
                     }
                     else {
+                        otpVerificationDialog.dismiss();
                         LoginDetails.getInstance().setIsverifying(false);
                         //Disable Progress bar
                     }
@@ -294,7 +294,7 @@ public class ManageUser extends Fragment {
 
     }
     private Boolean result = false;
-    ProgressDialog progress;
+
     public Boolean getResult() {
         return result;
     }
@@ -317,7 +317,7 @@ public class ManageUser extends Fragment {
             {
 
             }
-            progress.setMessage("Waiting for OTP \nResend OTP in "+( (startTime - i*interval)/1000)+" s");
+//            progress.setMessage("Waiting for OTP \nResend OTP in "+( (startTime - i*interval)/1000)+" s");
             i++;
             verifyOTP();
         }
@@ -326,9 +326,10 @@ public class ManageUser extends Fragment {
         public void onFinish() {
             if (!getResult())
             {
-                progress.setMessage("Couldn't Read OTP");
-                progress.dismiss();
+                //progress.setMessage("Couldn't Read OTP");
+                //progress.dismiss();
                 setDialogFragment();
+                otpVerificationDialog.dismiss();
 //                btverify.setText("VERIFY");
 //                btverify.setActivated(true);
             }
@@ -358,7 +359,7 @@ public class ManageUser extends Fragment {
         }
         else if ( (LoginDetails.getInstance().getMob_verified()!=null) && (LoginDetails.getInstance().getMob_verified().equalsIgnoreCase("1")) )
         {
-            progress.dismiss();
+            otpVerificationDialog.show();
             setResult(true);
             //setProgress(100,"Verified");
             //btverify.setActivated(false);
@@ -370,7 +371,7 @@ public class ManageUser extends Fragment {
     private final long interval = 1 * 1000;
     public void doOTPVerification()
     {
-        progress.setMessage("Verifying OTP");
+
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("userid",LoginDetails.getInstance().getUserid());
         params.put("mobilenum",LoginDetails.getInstance().getMobilenum());
@@ -384,15 +385,15 @@ public class ManageUser extends Fragment {
                     if (success == 0) {
                         LoginDetails.getInstance().setMob_verified(json.getString("is_verified"));
                         LoginDetails.getInstance().setIsverifying(false);
-                        progress.dismiss();
+                        otpVerificationDialog.dismiss();
                         getFragmentManager().popBackStack();
                     }
                     else if (success == 1) {
-                        progress.dismiss();
+                        otpVerificationDialog.dismiss();
                         LoginDetails.getInstance().setIsverifying(false);// OTP Ver failed : Try Again Later
                     }
                     else {
-                        progress.dismiss();
+                        otpVerificationDialog.dismiss();
                         LoginDetails.getInstance().setIsverifying(false);// OTP Ver failed : Try Again Later
 
                     }
