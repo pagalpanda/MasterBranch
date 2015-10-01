@@ -145,7 +145,7 @@ public class MakeOfferFragment extends Fragment{
 
 
 
-    FragmentTabHost mTabHost;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -222,6 +222,7 @@ public class MakeOfferFragment extends Fragment{
 
         */
         android.support.design.widget.FloatingActionButton  btnProceedToReview = (android.support.design.widget.FloatingActionButton)rootView.findViewById(R.id.fab2);
+        btnProceedToReview.setVisibility(View.VISIBLE);
 
         //Button btnProceedToReview = (Button)rootView.findViewById(R.id.fab2);
         btnProceedToReview.setOnClickListener(new View.OnClickListener() {
