@@ -484,7 +484,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
                 }
                 else
                 {
-                    fragment = new LoginFragment();
+                    fragment = new LoginParentFragment();
                 }
                 break;
             default:
