@@ -7,6 +7,7 @@ import android.app.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +19,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +30,10 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -35,13 +41,17 @@ import java.util.regex.Pattern;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
+    private int tabSelected = 1;
     Activity context;
     Button btnLogin;
     TextView tvForgotPwd;
     EditText etEmailID;
     EditText etPassword;
     EditText etPasswordConf;
-    CheckBox ckNewUser;
+    TextView tvGoogleLoginTxt;
+    TextView tvFBLoginTxt;
+    //CheckBox ckNewUser;
+
 
     String email;
     String pwd;
@@ -81,8 +91,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 //            menu.findItem(R.id.action_sign_up).setVisible(true);
     }
 
-    public LoginFragment( ){
+    public LoginFragment(){
 
+    }
+    public LoginFragment( int tabSelected ){
+        this();
+        this.tabSelected = tabSelected;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,18 +106,36 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 //        MenuItem item = menu.findItem(R.id.my_item);
 //        item.setVisible(false);
+
         setHasOptionsMenu(true);
+        initializeWidgets(rootView);
+
+        if(tabSelected == 1){// User in Login Mode
+            setLayoutForLoginMode();
+        }else if(tabSelected == 2){ //  User in Sign Up mode
+            setLayoutForSignUpMode();
+        }
+
+        return rootView;
+    }
+
+    private void initializeWidgets(View rootView){
         btnLogin = (Button)rootView.findViewById(R.id.btnLoginLogin);
         tvForgotPwd = (TextView)rootView.findViewById(R.id.tvforgotpwd);
         etEmailID = (EditText)rootView.findViewById(R.id.etEmailIdlogin);
         etPassword = (EditText)rootView.findViewById(R.id.etPasswordLogin);
         etPasswordConf = (EditText)rootView.findViewById(R.id.etConfPassword);
-        ckNewUser = (CheckBox)rootView.findViewById(R.id.ckNewUser);
+        tvGoogleLoginTxt = (TextView)rootView.findViewById(R.id.tvGoogleLoginTxt);
+        tvFBLoginTxt = (TextView)rootView.findViewById(R.id.tvFBLoginTxt);
+        //ckNewUser = (CheckBox)rootView.findViewById(R.id.ckNewUser);
+
+
 
         // FB Login
 
         callbackManager = CallbackManager.Factory.create();
         authButton = (LoginButton) rootView.findViewById(R.id.authButton);
+        //setFBButtonProperties();
         authButton.setFragment(this);
         authButton.setReadPermissions(Arrays.asList("user_friends"));
         authButton.setReadPermissions(Arrays.asList("public_profile"));
@@ -113,7 +145,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 flash("FB Success");
-                new FBLoginAsync(getContext(),getFragmentManager(),loginResult).execute();
+                new FBLoginAsync(getContext(), getFragmentManager(), loginResult).execute();
             }
 
             @Override
@@ -128,8 +160,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        rootView.findViewById(R.id.sign_in_button).setOnClickListener(this);
 
+        RelativeLayout btnGoogleSignIn = (RelativeLayout)rootView.findViewById(R.id.sign_in_button);
+        btnGoogleSignIn.setOnClickListener(this);
+
+        //setGooglePlusButtonText(btnGoogleSignIn);//For setting the text of the google+ sign in button
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,7 +172,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 String email = etEmailID.getText().toString();
                 String pwd = etPassword.getText().toString();
 
-                if (ckNewUser.isChecked() && !validateNewUserPassword()) {
+                if (tabSelected == 2 && !validateNewUserPassword()) {
                     etPasswordConf.setError("Password mismatch");
                 }
                 if (!isValidEmail(email)) {
@@ -150,7 +185,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         LoginDetails.getInstance().resetDetails();
                         LoginDetails.getInstance().setEmail(email);
                         LoginDetails.getInstance().setPassword(pwd);
-                        if (ckNewUser.isChecked())
+                        if (tabSelected == 2)
                             setLogin_mode(3);
                         else
                             setLogin_mode(2);
@@ -166,21 +201,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        ckNewUser.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-            {
-                if ( isChecked ) {
-                    etPasswordConf.setVisibility(View.VISIBLE);
-                    Toast.makeText(context, "Checked", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    etPasswordConf.setVisibility(View.GONE);
-                    Toast.makeText(context, "Unchecked", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
 
         etPasswordConf.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -191,7 +212,50 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        return rootView;
+    }
+
+    private void setLayoutForLoginMode() {
+        etPasswordConf.setVisibility(View.GONE);
+
+        tvForgotPwd.setVisibility(View.VISIBLE);
+        btnLogin.setText("Login");
+        tvGoogleLoginTxt.setText("Log in via Google+");
+        tvFBLoginTxt.setText("Log in via Facebook");
+
+    }
+    private void setLayoutForSignUpMode(){
+        etPasswordConf.setVisibility(View.VISIBLE);
+        tvForgotPwd.setVisibility(View.GONE);
+        //authButton.setText("Sign up via Facebook");
+
+        btnLogin.setText("Sign Up");
+        tvGoogleLoginTxt.setText("Sign up via Google+");
+        tvFBLoginTxt.setText("Sign up via Facebook");
+    }
+    private void setFBButtonProperties() {
+        //authButton.setBackgroundResource(R.drawable.facebook); // Replace image
+        float fbIconScale = 1.45F;
+        Drawable drawable = getActivity().getResources().getDrawable(
+                com.facebook.R.drawable.com_facebook_button_icon);
+        drawable.setBounds(0, 0, (int)(drawable.getIntrinsicWidth()*fbIconScale),
+                (int)(drawable.getIntrinsicHeight()*fbIconScale));
+        if(tabSelected == 1){
+            authButton.setText("Log in via Facebook");
+        }else {
+            authButton.setText("Sign uo via Facebook");
+        }
+        authButton.setCompoundDrawables(drawable, null, null, null);
+        authButton.setCompoundDrawablePadding(getActivity().getResources().
+                getDimensionPixelSize(R.dimen.fb_margin_override_textpadding));
+
+//        authButton.setPadding(
+//                getActivity().getResources().getDimensionPixelSize(
+//                        R.dimen.fb_margin_override_lr),
+//                getActivity().getResources().getDimensionPixelSize(
+//                        R.dimen.fb_margin_override_top),
+//                0,
+//                getActivity().getResources().getDimensionPixelSize(
+//                        R.dimen.fb_margin_override_bottom));
     }
 
     @Override
@@ -276,7 +340,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     {
         new LoginAsync(getContext(),login_mode,getFragmentManager() ).execute();
     }
+    protected void setGooglePlusButtonText(Button signInButton) {
+        // Find the TextView that is inside of the SignInButton and set its text
 
+        signInButton.setText("Log in with Google+");
+        signInButton.setAllCaps(false);
+    }
     /** Hashing the username password
      public String hashUser(String username, String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
