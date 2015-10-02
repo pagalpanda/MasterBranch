@@ -3,10 +3,12 @@ package common.barter.com.barterapp;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -38,7 +40,7 @@ public class GplusLoginAsync extends AsyncTask<String, String, String> implement
     /* Should we automatically resolve ConnectionResults when possible? */
     private boolean mGoogleAPIConnected = false;
     //Google sign in
-    private static final int RC_SIGN_IN = 0;
+    private static final int RC_SIGN_IN = 14;
 
     public GplusLoginAsync (Activity activity,Context context,FragmentManager fragmentManager)
     {
@@ -96,7 +98,7 @@ public class GplusLoginAsync extends AsyncTask<String, String, String> implement
 
     public void addUser(int cond)
     {
-        new LoginAsync(context,1,fragmentManager ).execute();
+        new LoginAsync(context,0,fragmentManager ).execute();
     }
 
     public  void flash(String message){
