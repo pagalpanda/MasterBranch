@@ -1,50 +1,238 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/scrollViewLogin">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fb="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingBottom="20dp">
+    <RelativeLayout
+        android:layout_marginTop="25dp"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:id="@+id/layoutFBContainer"
+        android:background="@android:color/darker_gray"
 
+        android:elevation="2dp"
+
+        >
+        <com.facebook.login.widget.LoginButton
+
+            android:id="@+id/authButton"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+
+            fb:login_text=""
+            fb:logout_text=""
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            style="@style/FacebookLoginButton"
+
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvFBLoginTxt"
+
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/sign_in_button"
+
+        android:elevation="2dp"
+        android:layout_below="@+id/layoutFBContainer"
+        android:background="@android:color/darker_gray"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvGoogleLoginTxt"
+            android:text="Log in via Google+"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+
+            android:textStyle="bold"/>
+    </RelativeLayout>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/sign_in_button"
+        android:text="Email permission is mandatory for login with Facebook"
+        android:textSize="10sp"
+        android:id="@+id/tvGetFBEmailMsg"/>
+    <TextView
+        android:layout_marginTop="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/tvGetFBEmailMsg"
+        android:text="OR USE EMAIL"
+        android:textSize="15sp"
+        android:id="@+id/tvUseEmailMsg"/>
+    <RelativeLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/containerManualLogin"
+        android:layout_below="@+id/tvUseEmailMsg"
+        android:background="@android:color/darker_gray"
+        android:paddingBottom="5dp"
+        android:elevation="2dp">
+        <EditText
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etFirstName"
+            android:inputType="textEmailAddress"
+            android:hint="First Name"
+            android:layout_marginTop="20dp"
+            android:textCursorDrawable="@null"
+
+            />
+        <EditText
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etLastName"
+            android:inputType="textEmailAddress"
+            android:hint="Last Name"
+            android:layout_marginTop="20dp"
+            android:textCursorDrawable="@null"
+            android:layout_below="@+id/etFirstName"
+            />
     <EditText
+
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etEmailIdlogin"
         android:inputType="textEmailAddress"
-        android:hint="Email"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/etPasswordLogin"
-        android:layout_alignParentLeft="true" />
+        android:hint="Email id"
+        android:layout_marginTop="20dp"
+        android:textCursorDrawable="@null"
+        android:layout_below="@+id/etLastName"
+
+        />
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/etPasswordLogin"
         android:inputType="textPassword"
         android:hint="Password"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="68dp" />
+        android:layout_below="@+id/etEmailIdlogin"
+        android:textCursorDrawable="@null"
+        android:layout_marginTop="20dp"
+        />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etConfPassword"
+        android:inputType="textPassword"
+        android:hint="Confirm Password"
+        android:visibility="gone"
+        android:textCursorDrawable="@null"
+        android:layout_below="@+id/etPasswordLogin"
+        android:layout_marginTop="20dp"
+
+        />
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etMobileNum"
+            android:inputType="phone"
+            android:hint="Phone Number"
+
+            android:textCursorDrawable="@null"
+            android:layout_below="@+id/etConfPassword"
+            android:layout_marginTop="20dp"
+
+            />
+        <RadioGroup
+            android:layout_marginTop="20dp"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/etMobileNum"
+            android:id="@+id/rgGender">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:id="@+id/rbGenderMale"
+                android:text="Male"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rbGenderFemale"
+                android:text="Female"/>
+        </RadioGroup>
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/rgGender"
+            android:text="By Signing up you will agree Privacy Policy and Terms of Service"
+            android:textSize="12sp"
+            android:id="@+id/tvSignUpTermsAndConditions"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:id="@+id/tvforgotpwd"
+            android:textStyle="bold|italic"
+
+            android:linksClickable="false"
+            android:clickable="true"
+            android:textColor="?attr/colorPrimary"
+            android:layout_below="@+id/etPasswordLogin"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            />
+    </RelativeLayout>
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New User??"
         android:id="@+id/ckNewUser"
         android:textStyle="bold"
-        android:layout_below="@+id/etEmailIdlogin"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/etConfPassword" />
-
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/etConfPassword"
-        android:inputType="textPassword"
-        android:hint="Password"
-        android:visibility="invisible"
-        android:layout_above="@+id/btnLoginLogin"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:visibility="gone"/>
 
     <Button
         android:layout_width="fill_parent"
@@ -52,47 +240,11 @@
         android:id="@+id/btnLoginLogin"
         android:text="Log in"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/btnLoginLogin"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/containerManualLogin"
+        android:background="?attr/colorPrimary"
         />
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/authButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/sign_in_button"
-        android:layout_alignLeft="@+id/sign_in_button"
-        android:layout_alignStart="@+id/sign_in_button"
-        android:layout_marginTop="43dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        fb:login_text="Sign in with Facebook"
-        fb:logout_text="LogOut from Facebook"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Forgot Password?"
-        android:id="@+id/tvforgotpwd"
-        android:textStyle="bold|italic"
-        android:textAlignment="center"
-        android:linksClickable="false"
-        android:clickable="true"
-        android:textColor="#1f4cff"
-        android:layout_alignTop="@+id/ckNewUser"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/etConfPassword" />
 
 </RelativeLayout>
+</ScrollView>
