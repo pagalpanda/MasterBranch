@@ -39,7 +39,7 @@ public class ManageUser extends Fragment {
 
     Activity context;
     private EditText etemail;
-    private Button btchangePwd;
+    private TextView btchangePwd;
     private EditText etphone;
     private ImageButton btverify;
     private EditText etname;
@@ -78,7 +78,7 @@ public class ManageUser extends Fragment {
         etemail = (EditText)rootView.findViewById(R.id.etEmailIdlogin);
         etphone = (EditText)rootView.findViewById(R.id.etPhone);
         etname = (EditText)rootView.findViewById(R.id.etName);
-        btchangePwd = (Button)rootView.findViewById(R.id.btChangePwd);
+        btchangePwd = (TextView)rootView.findViewById(R.id.btChangePwd);
         btverify = (ImageButton)rootView.findViewById(R.id.btVerify);
         rbmale = (RadioButton)rootView.findViewById(R.id.rbMale);
         rbfemale = (RadioButton)rootView.findViewById(R.id.rbFemale);
@@ -149,10 +149,13 @@ public class ManageUser extends Fragment {
 //        rbmale.setChecked(true);
 //
 //        Commented to test
-
-        etemail.setText(LoginDetails.getInstance().getEmail());
-        etname.setText(LoginDetails.getInstance().getPersonName());
-        etphone.setText(LoginDetails.getInstance().getMobilenum()); // Test
+        String email = LoginDetails.getInstance().getEmail();
+        etemail.setText(email);
+        String name = LoginDetails.getInstance().getPersonName();
+        etname.setText(name);
+        String phoneNum = LoginDetails.getInstance().getMobilenum();
+        if(phoneNum!=null)
+            etphone.setText(phoneNum); // Test
         if((LoginDetails.getInstance().getGender())!=null)
         {
             if (LoginDetails.getInstance().getGender().equalsIgnoreCase("M"))
@@ -170,10 +173,12 @@ public class ManageUser extends Fragment {
             if (LoginDetails.getInstance().getMob_verified().equals("0"))
             {
                 btverify.setVisibility(View.VISIBLE);
+                ivVerified.setVisibility(View.GONE);
             }
             else
             {
                 ivVerified.setVisibility(View.VISIBLE);
+                btverify.setVisibility(View.GONE);
             }
 
         }

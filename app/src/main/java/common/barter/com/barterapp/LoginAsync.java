@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,13 +56,17 @@ protected String doInBackground(String... args) {
         params.put("username", LoginDetails.getInstance().getEmail());
         params.put("password", LoginDetails.getInstance().getPassword());
         params.put("loginmode", String.valueOf(login_mode));
-        if (LoginDetails.getInstance().getPersonName()!=null)
+        String personName = LoginDetails.getInstance().getPersonName();
+        if (personName !=null && personName.trim().length() != 0)
             params.put("personname", LoginDetails.getInstance().getPersonName());
-        if (LoginDetails.getInstance().getMobilenum()!=null)
+        String mobileNum = LoginDetails.getInstance().getMobilenum();
+        if (mobileNum != null && mobileNum.trim().length() != 0)
             params.put("mobilenum", LoginDetails.getInstance().getMobilenum());
-        if (LoginDetails.getInstance().getGender()!=null)
+        String gender = LoginDetails.getInstance().getGender();
+        if (gender != null && gender.length() != 0)
             params.put("gender", LoginDetails.getInstance().getGender());
-        if (LoginDetails.getInstance().getBirthday()!=null)
+        String birthDate = LoginDetails.getInstance().getBirthday();
+        if (birthDate != null && birthDate.trim().length() != 0)
             params.put("birthdate", LoginDetails.getInstance().getBirthday());
 
 
@@ -70,6 +75,7 @@ protected String doInBackground(String... args) {
 
         JSONObject json = jsonParser.makeHttpRequest(CommonResources.getURL("login"),
         "POST", params);
+    LoginDetails.getInstance().resetDetails();
 
 
 //    JSONObject json = new JSONObject();
@@ -84,7 +90,7 @@ protected String doInBackground(String... args) {
     //{"success":"0", "error":"200", "userid":"1", "message":""};
         // check log cat fro response
         if(json == null){
-        return null;
+            return null;
         }
         Log.d("Create Response", json.toString());
 
@@ -92,27 +98,20 @@ protected String doInBackground(String... args) {
         String TAG_SUCCESS = "success";
         try {
 
-        int success = json.getInt(TAG_SUCCESS);
+            int success = json.getInt(TAG_SUCCESS);
 
         if (success == 0) {
         // successfully created product
 //                    Toast.makeText(getApplicationContext(),"Created",Toast.LENGTH_LONG).show();
-        CommonResources resources = new CommonResources(context);
-        resources.saveToSharedPrefs("isLoggedIn", "true");
-        resources.saveToSharedPrefs("username", LoginDetails.getInstance().getEmail());
-        resources.saveToSharedPrefs("uniqueid", json.getString("userid"));
         setLoginDetailsData(json);
         navigateToManageUser(fragmentmanager);
         //finish();
         } else if(success == 1){
         // failed to create product
-        CommonResources resources = new CommonResources(context);
-        resources.saveToSharedPrefs("uniqueid", json.getString("userid"));
-        resources.saveToSharedPrefs("isLoggedIn", "true");
-        resources.saveToSharedPrefs("username", LoginDetails.getInstance().getEmail());
         setLoginDetailsData(json);
         navigateToManageUser(fragmentmanager);
-        }else{
+        }else if(success == 2){
+            Toast.makeText(context, json.getString("message"),Toast.LENGTH_SHORT).show();
         //Invalid input
         }
         } catch (JSONException e) {
@@ -134,12 +133,19 @@ protected void onPostExecute(String file_url) {
     public void setLoginDetailsData(JSONObject json)
     {
         try{
+            CommonResources resources = new CommonResources(context);
+            resources.saveToSharedPrefs("uniqueid", json.getString("userid"));
+            resources.saveToSharedPrefs("isLoggedIn", "true");
+            resources.saveToSharedPrefs("username", json.getString("username"));
+
             LoginDetails.getInstance().setUserid(json.getString("userid"));
-            LoginDetails.getInstance().setPersonName(json.getString("name"));
+            String personName = json.getString("name");
+            LoginDetails.getInstance().setPersonName("null".equalsIgnoreCase(personName) ? null : personName);
             LoginDetails.getInstance().setGender(json.getString("gender"));
-            LoginDetails.getInstance().setEmail(json.getString("userid"));
+            LoginDetails.getInstance().setEmail(json.getString("username"));
             LoginDetails.getInstance().setBirthday(json.getString("birthdate"));
-            LoginDetails.getInstance().setMobilenum(json.getString("mobilenum"));
+            String mobileNum = json.getString("mobilenum");
+            LoginDetails.getInstance().setMobilenum("null".equalsIgnoreCase(mobileNum) ? null : mobileNum);
             LoginDetails.getInstance().setMob_verified(json.getString("mob_verified"));
 
         } catch (JSONException e) {

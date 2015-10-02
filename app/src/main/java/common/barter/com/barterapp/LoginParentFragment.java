@@ -101,9 +101,11 @@ public class LoginParentFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_make_offer, container, false);
 
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
-
+        //((GlobalHome)getActivity()).getSupportActionBar().setHideOnContentScrollEnabled(true);
         tabLayout.addTab(tabLayout.newTab().setText(tabs[0]));
         tabLayout.addTab(tabLayout.newTab().setText(tabs[1]));
+
+
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) rootView.findViewById(R.id.pager);
@@ -117,7 +119,9 @@ public class LoginParentFragment extends Fragment {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                new CommonResources(getContext()).hideKeyboard(getActivity());
                 viewPager.setCurrentItem(tab.getPosition());
+
 
             }
 
