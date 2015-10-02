@@ -63,7 +63,10 @@ protected String doInBackground(String... args) {
 protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
         pDialog.dismiss();
+    if(isEmailIdReturned)
         addUser(1);
+    else// Email permission not set in FB
+        Toast.makeText(context, "Email Permission not set in Facebook",Toast.LENGTH_SHORT).show();
         }
 
     private void getFacebookInfo( ) {
@@ -84,21 +87,31 @@ protected void onPostExecute(String file_url) {
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id,name,email,gender, birthday,location");
         request.setParameters(parameters);
-        request.executeAsync();
+        request.executeAndWait();
         //setLogin_mode(1);
         //addUser(1);
 
     }
+    boolean isEmailIdReturned;
 
     public void setFBinfo(JSONObject user) {
 
         LoginDetails.getInstance().resetDetails();
-        LoginDetails.getInstance().setEmail(user.optString("id"));
-        LoginDetails.getInstance().setId(user.optString("id"));
-        LoginDetails.getInstance().setPersonName(user.optString("name"));
-        LoginDetails.getInstance().setGender(user.optString("gender"));
-        LoginDetails.getInstance().setBirthday(user.optString("birthday"));
-        LoginDetails.getInstance().setPassword(LoginDetails.getInstance().getEmail().concat("123"));
+        String email = user.optString("email");
+        if(email != null && !"".equalsIgnoreCase(email)) {
+            LoginDetails.getInstance().setEmail(user.optString("email"));
+
+
+            LoginDetails.getInstance().setId(user.optString("id"));
+            LoginDetails.getInstance().setPersonName(user.optString("name"));
+            LoginDetails.getInstance().setGender(user.optString("gender"));
+            LoginDetails.getInstance().setBirthday(user.optString("birthday"));
+            LoginDetails.getInstance().setPassword(LoginDetails.getInstance().getEmail().concat("123"));
+            isEmailIdReturned = true;
+        }
+        else
+            isEmailIdReturned = false;
+
 
     }
 
