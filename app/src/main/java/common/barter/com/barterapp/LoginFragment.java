@@ -10,17 +10,22 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +55,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     EditText etPasswordConf;
     TextView tvGoogleLoginTxt;
     TextView tvFBLoginTxt;
+    EditText etFirstName;
+    EditText etLastName;
+    EditText etMobileNum;
+    ScrollView scrollViewLogin;
+    TextView tvSignUpTermsAndConditions;
+    RadioGroup rgGender;
+    RadioButton rbGenderMale;
+    RadioButton rbGenderFemale;
     //CheckBox ckNewUser;
 
 
@@ -127,6 +140,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         etPasswordConf = (EditText)rootView.findViewById(R.id.etConfPassword);
         tvGoogleLoginTxt = (TextView)rootView.findViewById(R.id.tvGoogleLoginTxt);
         tvFBLoginTxt = (TextView)rootView.findViewById(R.id.tvFBLoginTxt);
+        etFirstName = (EditText)rootView.findViewById(R.id.etFirstName);
+        etLastName = (EditText) rootView.findViewById(R.id.etLastName);
+        etMobileNum = (EditText) rootView.findViewById(R.id.etMobileNum);
+        scrollViewLogin = (ScrollView)rootView.findViewById(R.id.scrollViewLogin);
+        tvSignUpTermsAndConditions = (TextView)rootView.findViewById(R.id.tvSignUpTermsAndConditions);
+        rgGender = (RadioGroup)rootView.findViewById(R.id.rgGender);
+        rbGenderMale = (RadioButton)rootView.findViewById(R.id.rbGenderMale);
+        rbGenderFemale = (RadioButton)rootView.findViewById(R.id.rbGenderFemale);
+//        scrollViewLogin.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+//            @Override
+//            public void onScrollChanged() {
+//                int scrollY = scrollViewLogin.getScrollY();
+//                ((GlobalHome)getActivity()).getSupportActionBar().hide();
+//            }
+//        });
         //ckNewUser = (CheckBox)rootView.findViewById(R.id.ckNewUser);
 
 
@@ -174,6 +202,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
                 if (tabSelected == 2 && !validateNewUserPassword()) {
                     etPasswordConf.setError("Password mismatch");
+                    return;
                 }
                 if (!isValidEmail(email)) {
                     etEmailID.setError("Invalid Email");
@@ -185,6 +214,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         LoginDetails.getInstance().resetDetails();
                         LoginDetails.getInstance().setEmail(email);
                         LoginDetails.getInstance().setPassword(pwd);
+                        LoginDetails.getInstance().setPersonName(etFirstName.getText().toString().trim().concat(" " + etLastName.getText().toString().trim()));
+                        LoginDetails.getInstance().setMobilenum(etMobileNum.getText().toString().trim());
+                        LoginDetails.getInstance().setGender(rbGenderMale.isChecked()?"m":"f");
                         if (tabSelected == 2)
                             setLogin_mode(3);
                         else
@@ -221,16 +253,25 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         btnLogin.setText("Login");
         tvGoogleLoginTxt.setText("Log in via Google+");
         tvFBLoginTxt.setText("Log in via Facebook");
+        etFirstName.setVisibility(View.GONE);
+        etLastName.setVisibility(View.GONE);
+        etMobileNum.setVisibility(View.GONE);
+        tvSignUpTermsAndConditions.setVisibility(View.GONE);
+        rgGender.setVisibility(View.GONE);
 
     }
     private void setLayoutForSignUpMode(){
         etPasswordConf.setVisibility(View.VISIBLE);
         tvForgotPwd.setVisibility(View.GONE);
         //authButton.setText("Sign up via Facebook");
-
+        etFirstName.setVisibility(View.VISIBLE);
+        etLastName.setVisibility(View.VISIBLE);
+        etMobileNum.setVisibility(View.VISIBLE);
         btnLogin.setText("Sign Up");
         tvGoogleLoginTxt.setText("Sign up via Google+");
         tvFBLoginTxt.setText("Sign up via Facebook");
+        tvSignUpTermsAndConditions.setVisibility(View.VISIBLE);
+        rgGender.setVisibility(View.VISIBLE);
     }
     private void setFBButtonProperties() {
         //authButton.setBackgroundResource(R.drawable.facebook); // Replace image
@@ -310,6 +351,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+
+
     private void onSignInClicked() {
         flash("Signing in");
         new GplusLoginAsync(getActivity(),getContext(),getFragmentManager()).execute();
