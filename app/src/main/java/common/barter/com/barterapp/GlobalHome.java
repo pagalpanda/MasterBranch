@@ -388,6 +388,8 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
                 return false;
             case R.id.action_confirm_make_offer:
                 return false;
+            case R.id.action_logout:
+                return false;
             default:
                 if(mDrawerToggle.isDrawerIndicatorEnabled()) {
                     Toast.makeText(getApplicationContext(), "In Global Home loading location2", Toast.LENGTH_LONG).show();
@@ -542,17 +544,16 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public Boolean isLoggedInFromClass(){
+    public boolean isLoggedInFromClass(){
 
 // COMMENTED FOR TESTING
 
-//        if(LoginDetails.getInstance().getUserid() == null){
-//            //logic for reading current location should go here
-//            return false;
-//        }else{
-//            return true;
-//        }
-        return false;
+        if(LoginDetails.getInstance().getUserid() == null){
+            //logic for reading current location should go here
+            return false;
+        }
+        return true;
+
     }
     public Boolean isLoggedInFromPrefs(){
         Object LoggedInFromPrefs = loadFromSharedPrefs("uniqueid");
