@@ -12,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by vikram on 15/09/15.
@@ -111,7 +112,7 @@ protected String doInBackground(String... args) {
         setLoginDetailsData(json);
         navigateToManageUser(fragmentmanager);
         }else if(success == 2){
-            Toast.makeText(context, json.getString("message"),Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, json.getString("message"),Toast.LENGTH_SHORT).show();
         //Invalid input
         }
         } catch (JSONException e) {
@@ -130,23 +131,28 @@ protected void onPostExecute(String file_url) {
         pDialog.dismiss();
         }
 
+    // Following method creates a map and sends the value to be saved in SharedPrefs and in the LoginDetails singleton class
     public void setLoginDetailsData(JSONObject json)
     {
         try{
             CommonResources resources = new CommonResources(context);
-            resources.saveToSharedPrefs("uniqueid", json.getString("userid"));
             resources.saveToSharedPrefs("isLoggedIn", "true");
-            resources.saveToSharedPrefs("username", json.getString("username"));
-
-            LoginDetails.getInstance().setUserid(json.getString("userid"));
+            Map<String,String> mapUserDetails  = new HashMap<>();
+            String userId = json.getString("userid");
+            mapUserDetails.put("uniqueid",userId);
             String personName = json.getString("name");
-            LoginDetails.getInstance().setPersonName("null".equalsIgnoreCase(personName) ? null : personName);
-            LoginDetails.getInstance().setGender(json.getString("gender"));
-            LoginDetails.getInstance().setEmail(json.getString("username"));
-            LoginDetails.getInstance().setBirthday(json.getString("birthdate"));
+            mapUserDetails.put("personname",personName);
+            String gender = json.getString("gender");
+            mapUserDetails.put("gender",gender);
+            String email = json.getString("username");
+            mapUserDetails.put("email", email);
+            String username = json.getString("username");
+            mapUserDetails.put("username",username);
             String mobileNum = json.getString("mobilenum");
-            LoginDetails.getInstance().setMobilenum("null".equalsIgnoreCase(mobileNum) ? null : mobileNum);
-            LoginDetails.getInstance().setMob_verified(json.getString("mob_verified"));
+            mapUserDetails.put("mobilenum",mobileNum);
+            String mobVerified = json.getString("mob_verified");
+            mapUserDetails.put("ismobileverified",mobVerified);
+            resources.setUserDetailsInSharedPref(mapUserDetails);
 
         } catch (JSONException e) {
             e.printStackTrace();
