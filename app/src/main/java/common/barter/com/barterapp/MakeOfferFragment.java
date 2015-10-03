@@ -71,8 +71,8 @@ public class MakeOfferFragment extends Fragment{
         super.onCreateOptionsMenu(menu, inflater);
 
         if (menu.findItem(R.id.action_confirm_make_offer) != null) {
-                menu.findItem(R.id.action_confirm_make_offer).setVisible(false);
-                menu.removeItem(R.id.action_confirm_make_offer);
+            menu.findItem(R.id.action_confirm_make_offer).setVisible(false);
+            menu.removeItem(R.id.action_confirm_make_offer);
 
         }
         if (menu.findItem(R.id.action_proceed_make_offer) != null) {
@@ -151,7 +151,7 @@ public class MakeOfferFragment extends Fragment{
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        View rootView = inflater.inflate(R.layout.fragment_make_offer, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_make_offer2, container, false);
         this.uniqueidMine=(String)new CommonResources(getContext()).loadFromSharedPrefs("uniqueid");
 
         if( null == calledFor || "".equalsIgnoreCase(calledFor))
@@ -165,13 +165,13 @@ public class MakeOfferFragment extends Fragment{
         /*Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         ((GlobalHome)getActivity()).setSupportActionBar(toolbar);*/
 
-        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
+        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout2);
         tabLayout.addTab(tabLayout.newTab().setText("My Posts"));
         tabLayout.addTab(tabLayout.newTab().setText("His Posts"));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        viewPager = (ViewPager) rootView.findViewById(R.id.pager);
+        viewPager = (ViewPager) rootView.findViewById(R.id.pager2);
 //        adapter = new MakeOfferAdapter(
 //                getFragmentManager(), 2);
 //        viewPager.setAdapter(adapter);
@@ -236,8 +236,7 @@ public class MakeOfferFragment extends Fragment{
         return rootView;
     }
 
-    MakeOfferAdapter makeOfferAdapter;
-    ViewPager mViewPager;
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -336,7 +335,7 @@ public class MakeOfferFragment extends Fragment{
             JSONObject json = new JSONObject();
 
             json = jsonParser.makeHttpRequest(CommonResources.getURL("get_make_offer_post"),
-                        "POST", params);
+                    "POST", params);
 
 
             // check log cat fro response
@@ -386,10 +385,14 @@ public class MakeOfferFragment extends Fragment{
 
             PostsOfferFragment.sListOfPostsMine=listOfPostsMine;
             PostsOfferFragment.sListOfPostsHis=listOfPostsHis;
+            viewPager.destroyDrawingCache();
             adapter = new MakeOfferAdapter(
                     getFragmentManager(), 2);
             viewPager.setAdapter(adapter);
+
             adapter.notifyDataSetChanged();
+
+
             //refreshChildListViews("");
         }
 

@@ -2,6 +2,8 @@ package common.barter.com.barterapp;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,7 +17,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
-public class PostListOfferAdapter extends BaseAdapter{
+public class PostListOfferAdapter extends RecyclerView.Adapter<PostListOfferAdapter.Holder>{
     //String [] result;
     Context context;
     int [] imageId;
@@ -60,81 +62,55 @@ public class PostListOfferAdapter extends BaseAdapter{
 
 
     }
+//    @Override
+//    public int getCount() {
+//        // TODO Auto-generated method stub
+//        return listOfPosts.size();
+//    }
+
+//    @Override
+//    public Object getItem(int position) {
+//        // TODO Auto-generated method stub
+//        return position;
+//    }
+
     @Override
-    public int getCount() {
-        // TODO Auto-generated method stub
-        return listOfPosts.size();
+    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_post_items_offer, parent, false);
+
+        Holder viewHolder = new Holder(v,viewType);
+
+        return viewHolder;
+
     }
 
     @Override
-    public Object getItem(int position) {
-        // TODO Auto-generated method stub
-        return position;
-    }
+    public void onBindViewHolder(Holder holder,final int position) {
+        holder.ivPrimaryImage.setId(position);
+        holder.ivPrimaryImage.setTag(listOfPosts.get(position).getPostId());
+        holder.ivPrimaryImage.setImageBitmap(null); // Added for flickering issue
+        holder.tvTitle.setText(listOfPosts.get(position).getTitle());
+        holder.tvLocality.setText(listOfPosts.get(position).getLocality());
+        holder.tvDateCreated.setText(CommonResources.convertDate(listOfPosts.get(position).getCreatedDate()));
+        postId = listOfPosts.get(position).getPostId();
+        Image image = new Image();
+        image.setImg(holder.ivPrimaryImage);
+        holder.position = position;
+        String url = CommonResources.getStaticURL() + "uploadedimages/" + postId + "_1";
 
-    @Override
-    public long getItemId(int position) {
-        // TODO Auto-generated method stub
-        return position;
-    }
+        Picasso.with(context).load(url).fit().into(holder.ivPrimaryImage, new Callback() {
+            @Override
+            public void onSuccess() {
 
-    public class Holder
-    {
-        TextView tvTitle;
-        ImageView ivPrimaryImage;
-        TextView tvLocality;
-        TextView tvDateCreated;
-        int position;
-        CheckBox cbSelected;
-    }
-    //Holder holder;
-    View rowView;
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-
-        // TODO Auto-generated method stub
-
-        rowView= null;
-        Holder holder;
-
-            if (convertView == null) {
-                rowView = inflater.inflate(R.layout.list_post_items_offer, null);
-                holder = new Holder();
-                holder.tvTitle = (TextView) rowView.findViewById(R.id.tvTitleNamePostOffer);
-                holder.ivPrimaryImage = (ImageView) rowView.findViewById(R.id.ivPrimaryImageOffer);
-                holder.tvLocality = (TextView) rowView.findViewById(R.id.tvLocalityPostsOffer);
-                holder.tvDateCreated = (TextView) rowView.findViewById(R.id.tvDateCreatedOffer);
-                holder.cbSelected = (CheckBox) rowView.findViewById(R.id.cbPostSelected);
-                rowView.setTag(holder);
-            } else {
-                rowView = convertView;
             }
 
-            holder = (Holder) rowView.getTag();
-            holder.ivPrimaryImage.setId(position);
-            holder.ivPrimaryImage.setTag(listOfPosts.get(position).getPostId());
-            holder.ivPrimaryImage.setImageBitmap(null); // Added for flickering issue
-            holder.tvTitle.setText(listOfPosts.get(position).getTitle());
-            holder.tvLocality.setText(listOfPosts.get(position).getLocality());
-            holder.tvDateCreated.setText(CommonResources.convertDate(listOfPosts.get(position).getCreatedDate()));
-            postId = listOfPosts.get(position).getPostId();
-            Image image = new Image();
-            image.setImg(holder.ivPrimaryImage);
-            holder.position = position;
-            String url = CommonResources.getStaticURL() + "uploadedimages/" + postId + "_1";
-
-            Picasso.with(context).load(url).fit().into(holder.ivPrimaryImage, new Callback() {
-                @Override
-                public void onSuccess() {
-
-                }
-
-                @Override
-                public void onError() {
+            @Override
+            public void onError() {
 
 
-                }
-            });
+            }
+        });
 
         if(!"review".equalsIgnoreCase(mode)) {
 
@@ -167,10 +143,121 @@ public class PostListOfferAdapter extends BaseAdapter{
             //holder.cbSelected.setVisibility(View.GONE);
         }
 
-
-
-        return rowView;
     }
 
+    @Override
+    public long getItemId(int position) {
+        // TODO Auto-generated method stub
+        return position;
+    }
+
+    @Override
+    public int getItemCount() {
+        return listOfPosts.size();
+    }
+
+    public class Holder extends RecyclerView.ViewHolder
+    {
+        TextView tvTitle;
+        ImageView ivPrimaryImage;
+        TextView tvLocality;
+        TextView tvDateCreated;
+        int position;
+        CheckBox cbSelected;
+
+        public Holder(View rowView, int i) {
+            super(rowView);
+            tvTitle = (TextView) rowView.findViewById(R.id.tvTitleNamePostOffer);
+            ivPrimaryImage = (ImageView) rowView.findViewById(R.id.ivPrimaryImageOffer);
+            tvLocality = (TextView) rowView.findViewById(R.id.tvLocalityPostsOffer);
+            tvDateCreated = (TextView) rowView.findViewById(R.id.tvDateCreatedOffer);
+            cbSelected = (CheckBox) rowView.findViewById(R.id.cbPostSelected);
+        }
+    }
+    //Holder holder;
+//    View rowView;
+//    @Override
+//    public View getView(final int position, View convertView, ViewGroup parent) {
+//
+//        // TODO Auto-generated method stub
+//
+//        rowView= null;
+//        Holder holder;
+//
+//            if (convertView == null) {
+//                rowView = inflater.inflate(R.layout.list_post_items_offer, null);
+//                holder = new Holder();
+//                holder.tvTitle = (TextView) rowView.findViewById(R.id.tvTitleNamePostOffer);
+//                holder.ivPrimaryImage = (ImageView) rowView.findViewById(R.id.ivPrimaryImageOffer);
+//                holder.tvLocality = (TextView) rowView.findViewById(R.id.tvLocalityPostsOffer);
+//                holder.tvDateCreated = (TextView) rowView.findViewById(R.id.tvDateCreatedOffer);
+//                holder.cbSelected = (CheckBox) rowView.findViewById(R.id.cbPostSelected);
+//                rowView.setTag(holder);
+//            } else {
+//                rowView = convertView;
+//            }
+//
+//            holder = (Holder) rowView.getTag();
+//            holder.ivPrimaryImage.setId(position);
+//            holder.ivPrimaryImage.setTag(listOfPosts.get(position).getPostId());
+//            holder.ivPrimaryImage.setImageBitmap(null); // Added for flickering issue
+//            holder.tvTitle.setText(listOfPosts.get(position).getTitle());
+//            holder.tvLocality.setText(listOfPosts.get(position).getLocality());
+//            holder.tvDateCreated.setText(CommonResources.convertDate(listOfPosts.get(position).getCreatedDate()));
+//            postId = listOfPosts.get(position).getPostId();
+//            Image image = new Image();
+//            image.setImg(holder.ivPrimaryImage);
+//            holder.position = position;
+//            String url = CommonResources.getStaticURL() + "uploadedimages/" + postId + "_1";
+//
+//            Picasso.with(context).load(url).fit().into(holder.ivPrimaryImage, new Callback() {
+//                @Override
+//                public void onSuccess() {
+//
+//                }
+//
+//                @Override
+//                public void onError() {
+//
+//
+//                }
+//            });
+//
+//        if(!"review".equalsIgnoreCase(mode)) {
+//
+//            holder.cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    if (isChecked) {
+//                        //rowView.setBackgroundColor(Color.GRAY);
+//                        if (isListMine)
+//                            PostsOfferFragment.sListOfPostsMine.get(position).setIsSelected(true);
+//                        else PostsOfferFragment.sListOfPostsHis.get(position).setIsSelected(true);
+//                    } else {
+//                        //rowView.setBackgroundColor(Color.WHITE);
+//                        if (isListMine)
+//                            PostsOfferFragment.sListOfPostsMine.get(position).setIsSelected(false);
+//                        else PostsOfferFragment.sListOfPostsHis.get(position).setIsSelected(false);
+//                    }
+//                }
+//            });
+//            if (listOfPosts.get(position).isSelected()) {
+//
+//                //rowView.setBackgroundColor(Color.GRAY);
+//                holder.cbSelected.setChecked(true);
+//            } else {
+//                //rowView.setBackgroundColor(Color.WHITE);
+//                holder.cbSelected.setChecked(false);
+//            }
+//        }else {
+//            //rowView.setBackgroundColor(Color.WHITE);
+//            //holder.cbSelected.setVisibility(View.GONE);
+//        }
+//
+//
+//
+//        return rowView;
+//    }
+//
 
 }

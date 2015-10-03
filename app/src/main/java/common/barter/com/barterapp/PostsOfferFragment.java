@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -52,7 +54,7 @@ public class PostsOfferFragment extends Fragment {
     static ArrayList<Post> listOfPosts;
     private ProgressDialog pDialog;
     JSONParser jsonParser = new JSONParser();
-    ListView lvPosts;
+    RecyclerView lvPosts;
     CountDownLatch latch;
     JSONArray posts = null;
     PostListOfferAdapter adapter;
@@ -101,9 +103,9 @@ public class PostsOfferFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_posts_offer, container, false);
         commonResources = new CommonResources(getContext());
 
-        lvPosts = (ListView)rootView.findViewById(R.id.listViewPostsOffer);
+        lvPosts = (RecyclerView)rootView.findViewById(R.id.listViewPostsOffer);
 
-            ((GlobalHome) getActivity()).setActionBarTitle("Make an Offer");
+
             lvPosts.setAdapter(null);
 
         return rootView;
@@ -112,7 +114,7 @@ public class PostsOfferFragment extends Fragment {
     public void methodInFragmentB(){
 
         adapter.notifyDataSetChanged();
-        adapter.notifyDataSetInvalidated();
+        //adapter.notifyDataSetInvalidated();
     }
 
     @Override
@@ -127,32 +129,49 @@ public class PostsOfferFragment extends Fragment {
             adapter = new PostListOfferAdapter(getContext(),sListOfPostsHis, false );
 
         lvPosts.setAdapter(adapter);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());                 // Creating a layout Manager
 
+        lvPosts.setLayoutManager(mLayoutManager);
 
         TextView test = (TextView)view.findViewById(R.id.tvNoPostsErrorOffer);
         if("1".equalsIgnoreCase(tabSelected)){
             test.setText("Tab 1");
-        lvPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Fragment fragment = null;
-                fragment = new PostDetailsFragment(sListOfPostsMine.get(position), "viewonly");
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.anim.zoomin,R.anim.zoomout,R.anim.zoomin,R.anim.zoomout);
-                if (fragment != null) {
-                    ft.add(R.id.frame_container, fragment).addToBackStack("post_details").commit();
-                } else {
-                    Log.e("MainActivity", "Error in creating fragment");
+            lvPosts.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Fragment fragment = null;
+                    fragment = new PostDetailsFragment(sListOfPostsMine.get(position), "viewonly");
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.setCustomAnimations(R.anim.zoomin,R.anim.zoomout,R.anim.zoomin,R.anim.zoomout);
+                    if (fragment != null) {
+                        ft.add(R.id.frame_container, fragment).addToBackStack("post_details").commit();
+                    } else {
+                        Log.e("MainActivity", "Error in creating fragment");
+                    }
                 }
+            }));
 
-            }
-        });
+//        lvPosts.addOnItemTouchListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Fragment fragment = null;
+//                fragment = new PostDetailsFragment(sListOfPostsMine.get(position), "viewonly");
+//                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//                ft.setCustomAnimations(R.anim.zoomin,R.anim.zoomout,R.anim.zoomin,R.anim.zoomout);
+//                if (fragment != null) {
+//                    ft.add(R.id.frame_container, fragment).addToBackStack("post_details").commit();
+//                } else {
+//                    Log.e("MainActivity", "Error in creating fragment");
+//                }
+//
+//            }
+//        });
 
         } else{
             test.setText("Tab 2");
-            lvPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            lvPosts.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                public void onItemClick(View view, int position) {
                     Fragment fragment = null;
 
                     fragment = new PostDetailsFragment(sListOfPostsHis.get(position), "viewonly");
@@ -165,9 +184,26 @@ public class PostsOfferFragment extends Fragment {
                     } else {
                         Log.e("MainActivity", "Error in creating fragment");
                     }
-
                 }
-            });
+            }));
+//            lvPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    Fragment fragment = null;
+//
+//                    fragment = new PostDetailsFragment(sListOfPostsHis.get(position), "viewonly");
+//                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//                    ft.setCustomAnimations(R.anim.zoomin,R.anim.zoomout,R.anim.zoomin,R.anim.zoomout);
+//                    //Animation zoomin = AnimationUtils.loadAnimation(getContext(),R.anim.zoomin);
+//
+//                    if (fragment != null) {
+//                        ft.add(R.id.frame_container, fragment).addToBackStack("post_details").commit();
+//                    } else {
+//                        Log.e("MainActivity", "Error in creating fragment");
+//                    }
+//
+//                }
+//            });
 
 
         }

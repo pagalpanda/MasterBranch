@@ -2,11 +2,13 @@ package common.barter.com.barterapp;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.widget.Toast;
 
 import common.barter.com.barterapp.PostsOfferFragment;
 
-public class MakeOfferAdapter extends FragmentStatePagerAdapter {
+public class MakeOfferAdapter extends FragmentPagerAdapter {
     int mNumOfTabs;
 
     public MakeOfferAdapter(FragmentManager fm, int NumOfTabs) {
@@ -30,7 +32,15 @@ public class MakeOfferAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
+    @Override
     public int getCount() {
         return mNumOfTabs;
     }
+
+
+
 }
