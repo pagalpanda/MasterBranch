@@ -4,5 +4,5 @@
         android:icon="@drawable/shopping_cart_add_icon"
 
         android:title="Edit"
-        yourapp:showAsAction="ifRoom" /> />
+        yourapp:showAsAction="ifRoom" />
 </menu>
