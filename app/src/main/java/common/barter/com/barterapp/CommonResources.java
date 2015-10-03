@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by amitpa on 8/20/2015.
@@ -252,6 +255,27 @@ public class CommonResources {
                         return (String)locationFromPrefs;
                 }
         }
+
+        public void setUserDetailsInSharedPref(Map<String,String> mapUserDetails){
+                Set<String> keys = mapUserDetails.keySet();
+                for(String key: keys){
+                        String value = mapUserDetails.get(key);
+                        if("uniqueid".equalsIgnoreCase(key)){
+                                LoginDetails.getInstance().setUserid(value);
+                        }else if("personname".equalsIgnoreCase(key)){
+                                LoginDetails.getInstance().setPersonName("null".equalsIgnoreCase(value) ? null : value);
+                        }else if("gender".equalsIgnoreCase(key)){
+                                LoginDetails.getInstance().setGender(value);
+                        }else if("email".equalsIgnoreCase(key)){
+                                LoginDetails.getInstance().setEmail(value);
+                        }else if("mobilenum".equalsIgnoreCase(key)){
+                                LoginDetails.getInstance().setMobilenum("null".equalsIgnoreCase(value) ? null : value);
+                        }else if("ismobileverified".equalsIgnoreCase(key)){
+                                LoginDetails.getInstance().setMob_verified(value);
+                        }
+                        saveToSharedPrefs(key,mapUserDetails.get(key));
+                }
+        }
         Object obj;
         public  Object loadFromSharedPrefs(String key){
                 prefs  = PreferenceManager.getDefaultSharedPreferences(context);
@@ -402,5 +426,21 @@ public class CommonResources {
                 NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
                 return activeNetworkInfo != null && activeNetworkInfo.isConnected();
         }
+
+        public void logoutUserFromAllAccounts(){
+                LoginDetails.getInstance().resetDetails();
+                saveToSharedPrefs("isLoggedIn", "false");
+                saveToSharedPrefs("uniqueid",null);
+                saveToSharedPrefs("personname", null);
+                saveToSharedPrefs("gender", null);
+                saveToSharedPrefs("email", null);
+                saveToSharedPrefs("username", null);
+                saveToSharedPrefs("mobilenum", null);
+                saveToSharedPrefs("ismobileverified", null);
+
+
+                //resources.setUserDetailsInSharedPref(mapUserDetails);
+        }
+
         Type mapType;
 }
