@@ -140,9 +140,9 @@ public class GplusLoginAsync extends AsyncTask<String, String, String> implement
                 LoginDetails.getInstance().setEmail(Plus.AccountApi.getAccountName(mGoogleApiClient));
                 LoginDetails.getInstance().setBirthday(currentPerson.getBirthday());
                 LoginDetails.getInstance().setLoginLocation(currentPerson.getCurrentLocation());
-                LoginDetails.getInstance().setGender(currentPerson.getGender());
+                LoginDetails.getInstance().setGender(currentPerson.getGender() == 0?"M":"F");
                 LoginDetails.getInstance().setId(currentPerson.getId());
-                LoginDetails.getInstance().setPlacesLived(currentPerson.getPlacesLived());
+
                 LoginDetails.getInstance().setPassword(LoginDetails.getInstance().getEmail().concat("123"));
                 addUser(2);
             } else {
