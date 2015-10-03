@@ -11,12 +11,14 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -57,8 +59,36 @@ public class ManageUser extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         if (menu.findItem(R.id.action_search) != null)
             menu.findItem(R.id.action_search).setVisible(false);
+        menu.clear();
+        inflater.inflate(R.menu.menu_test_db, menu);
 //        if (menu.findItem(R.id.action_sign_up) != null)
 //            menu.findItem(R.id.action_sign_up).setVisible(true);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_logout){
+            //logout user
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    new CommonResources(context).logoutUserFromAllAccounts();
+                }
+            });
+            t.start();
+            navigateToLogin();
+
+        }
+        return false;
+    }
+
+    private void navigateToLogin() {
+        Fragment fragment = new LoginParentFragment();
+        FragmentManager fragmentManager = ((GlobalHome)getActivity()).getSupportFragmentManager();
+        FragmentTransaction ft  = fragmentManager.beginTransaction();
+        ft.setCustomAnimations(R.anim.enter_from_left,R.anim.abc_fade_out,R.anim.enter_from_left,R.anim.abc_fade_out);
+        ft.replace(R.id.frame_container, fragment).commit();
     }
 
     public ManageUser( ){
