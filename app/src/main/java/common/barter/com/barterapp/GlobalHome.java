@@ -623,6 +623,18 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
 
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 14){ // handling the callback from google account popup
+
+            //new GplusLoginAsync(this,getApplicationContext(),getSupportFragmentManager()).execute();
+        }
+
+    }
+
+
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
 
