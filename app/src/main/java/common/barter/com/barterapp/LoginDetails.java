@@ -77,6 +77,7 @@ public class LoginDetails {
 
     public void setEmail(String email) {
         this.email = email;
+
     }
 
 
@@ -114,26 +115,21 @@ public class LoginDetails {
     public String getGender() {
         return gender;
     }
-
     public void setGender(String gender) {
         if (gender!=null)
         {
-            if ((gender.equalsIgnoreCase("male"))|| (gender.equalsIgnoreCase("m")))
+            if ((gender.equalsIgnoreCase("male"))|| (gender.equalsIgnoreCase("m"))) {
                 this.gender = "M";
-            if ((gender.equalsIgnoreCase("female"))|| (gender.equalsIgnoreCase("f")))
+
+            }
+            else if ((gender.equalsIgnoreCase("female"))|| (gender.equalsIgnoreCase("f"))) {
                 this.gender = "F";
+
+            }
 
         }
     }
 
-    public void setGender(int gender) {
-
-        if ((gender==0))
-            this.gender = "M";
-        if ((gender==1))
-            this.gender = "F";
-
-    }
 
     public List<Person.PlacesLived> getPlacesLived() {
         return placesLived;
