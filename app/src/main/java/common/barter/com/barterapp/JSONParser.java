@@ -90,6 +90,7 @@ public class JSONParser {
                 jObj = new JSONObject(new JSONTokener(response.toString()));
             }catch (Exception j)
             {
+                jObj = null;
                 j.printStackTrace();
             }
 
