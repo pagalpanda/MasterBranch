@@ -4,5 +4,5 @@
 
 
         android:title="Proceed"
-        yourapp:showAsAction="ifRoom" /> />
+        yourapp:showAsAction="ifRoom" />
 </menu>
