@@ -91,13 +91,15 @@ public class PostsFragment extends Fragment{
 //        item.setVisible(false);
 
         setHasOptionsMenu(true);
-        if(!"userview".equalsIgnoreCase(calledFor))
+        if(!"userview".equalsIgnoreCase(calledFor)) {
             activity.setActionBarTitle("My Posts");
+
+        }
         else {
             activity.setActionBarTitle(subCategory);
-            lvPosts.setAdapter(null);
+
         }
-       
+        lvPosts.setAdapter(null);
 
         return rootView;
     }
@@ -193,6 +195,9 @@ public class PostsFragment extends Fragment{
                 urlToForCall = CommonResources.getURL("get_all_posts");
 
             } else {
+                if (null == uniqueid || "null".equalsIgnoreCase(uniqueid) || "".equalsIgnoreCase(uniqueid)) { // user is not logged in
+                    return;
+                }
                 params.put("uniqueid", uniqueid);
                 urlToForCall = CommonResources.getURL("get_my_posts");
 
