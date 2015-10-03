@@ -25,6 +25,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 
 public class Splash extends AppCompatActivity implements LocationAddress.LocationCallback {
@@ -97,8 +102,38 @@ public class Splash extends AppCompatActivity implements LocationAddress.Locatio
         });
 
         t.start();
+        setUserDateDetailsData();
 
 
+    }
+    public void setUserDateDetailsData()
+    {
+        try{
+
+            LoginDetails.getInstance().resetDetails();
+            String userId = (String)loadFromSharedPrefs("uniqueid");
+
+            if(null == userId || "null".equalsIgnoreCase(userId) || "".equalsIgnoreCase(userId)){
+                //User not logged in
+                return;
+            }
+            LoginDetails.getInstance().setUserid(userId);
+            String personName = (String)loadFromSharedPrefs("personname");
+            LoginDetails.getInstance().setPersonName("null".equalsIgnoreCase(personName) ? null : personName);
+            String gender = (String)loadFromSharedPrefs("gender");
+            LoginDetails.getInstance().setGender(gender);
+            String email = (String)loadFromSharedPrefs("email");
+            LoginDetails.getInstance().setEmail(email);
+            String mobileNum = (String)loadFromSharedPrefs("mobilenum");
+            LoginDetails.getInstance().setMobilenum("null".equalsIgnoreCase(mobileNum) ? null : mobileNum);
+            String mobVerified = (String)loadFromSharedPrefs("ismobileverified");
+            LoginDetails.getInstance().setMob_verified(mobVerified);
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
