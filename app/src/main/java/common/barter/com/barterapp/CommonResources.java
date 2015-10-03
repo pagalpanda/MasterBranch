@@ -174,7 +174,11 @@ public class CommonResources {
             new Categories("Fashion",R.drawable.search),
             new Categories("Child Care",R.drawable.search),
             new Categories("School or Office",R.drawable.search),
-            new Categories("Others",R.drawable.search)};
+            new Categories("School or Office",R.drawable.search),
+            new Categories("School or Office",R.drawable.search),
+            new Categories("School or Office",R.drawable.search),
+            new Categories("Others",R.drawable.search)
+    };
 
 
         public static ArrayList<String> getSubCategories(String categoryName){
