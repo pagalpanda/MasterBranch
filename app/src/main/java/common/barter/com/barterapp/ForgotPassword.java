@@ -97,13 +97,14 @@ public class ForgotPassword extends Fragment {
         params.put("sendTo",etEmailOrMob.getText().toString());
         params.put("instruction", isValidEmail(etEmailOrMob.getText().toString()) ? "0" : "1");
 
-        AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("ForgotPwd"),"POST",params,false,null){
+        AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("ForgotPwd"),"POST",params,true,"Sending Password"){
             public void receiveData(JSONObject json){
                 try {
                     String TAG_SUCCESS = "success";
                     int success = json.getInt(TAG_SUCCESS);
                     if (success == 0) {
                         flash("Your new Password has been sent to".concat(etEmailOrMob.getText().toString()));
+                        ((GlobalHome)getActivity()).getSupportFragmentManager().popBackStack();
                     }
                     else if (success == 1) {
                         flash("We are facing some issues. Please try again later.");
