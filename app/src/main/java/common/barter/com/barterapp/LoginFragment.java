@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -159,6 +160,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
 
+
         // FB Login
 
         callbackManager = CallbackManager.Factory.create();
@@ -230,6 +232,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,"Forgot Pass Clicked", Toast.LENGTH_SHORT).show();
+                Fragment fragment = new ForgotPassword();
+
+                if(fragment!=null)
+                {
+                    getFragmentManager().beginTransaction()
+                            .add(R.id.frame_container, fragment).commit();
+                }
+                else
+                {
+                    // error in creating fragment
+                    Log.e("MainActivity", "Error in creating fragment");
+                }
             }
         });
 
@@ -245,6 +259,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         });
 
     }
+
 
     private void setLayoutForLoginMode() {
         etPasswordConf.setVisibility(View.GONE);
@@ -389,6 +404,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         signInButton.setText("Log in with Google+");
         signInButton.setAllCaps(false);
     }
+
+
     /** Hashing the username password
      public String hashUser(String username, String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 
