@@ -154,7 +154,7 @@ public class ManageUser extends Fragment {
             @Override
             public void onClick(View v) {
                 String newPhoneEntered = etphone.getText().toString();
-                if(null != newPhoneEntered && !newPhoneEntered.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum()) && !"".equalsIgnoreCase(newPhoneEntered)) {
+                if(null != newPhoneEntered && !(newPhoneEntered.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum()) && "1".equalsIgnoreCase(LoginDetails.getInstance().getMob_verified()) ) && !"".equalsIgnoreCase(newPhoneEntered)) {
                     LoginDetails.getInstance().setIsverifying(true);
                     LoginDetails.getInstance().setMob_verified("0");
                     LoginDetails.getInstance().setMobilenum(newPhoneEntered);
@@ -300,17 +300,10 @@ public class ManageUser extends Fragment {
     {
         Fragment fragment = new OTPFragment();
 
-        if (fragment != null) {
-
-//            fragmentManager.beginTransaction()
-//                    .replace(R.id.frame_container, fragment).addToBackStack("Manage User").commit();
-            getFragmentManager().beginTransaction()
-                    .add(R.id.frame_container, fragment).commit();
-
-        } else {
-            // error in creating fragment
-            Log.e("MainActivity", "Error in creating Manage user fragment");
-        }
+        FragmentManager fragmentManager = ((GlobalHome)getActivity()).getSupportFragmentManager();
+        FragmentTransaction ft  = fragmentManager.beginTransaction();
+        ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
+        ft.replace(R.id.frame_container, fragment).commit();
 
 
     }
@@ -327,7 +320,7 @@ public class ManageUser extends Fragment {
         params.put("userid",LoginDetails.getInstance().getUserid());
         params.put("mobilenum",LoginDetails.getInstance().getMobilenum());
         params.put("instruction", "0");
-        AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
+        as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
             public void receiveData(JSONObject json){
                 try {
                     String TAG_SUCCESS = "success";
@@ -391,12 +384,16 @@ public class ManageUser extends Fragment {
 
         @Override
         public void onFinish() {
+            otpVerificationDialog.dismiss();
             if (!getResult())
             {
                 //progress.setMessage("Couldn't Read OTP");
                 //progress.dismiss();
+                if(as != null){
+                    as.cancel(true);
+                }
                 setDialogFragment();
-                otpVerificationDialog.dismiss();
+
 //                btverify.setText("VERIFY");
 //                btverify.setActivated(true);
             }
@@ -434,8 +431,9 @@ public class ManageUser extends Fragment {
         }
 
     }
-    private final long startTime = 40 * 1000;
+    private final long startTime = 25 * 1000;
     private final long interval = 1 * 1000;
+    AsyncConnection as;
     public void doOTPVerification()
     {
 
@@ -444,7 +442,7 @@ public class ManageUser extends Fragment {
         params.put("mobilenum",LoginDetails.getInstance().getMobilenum());
         params.put("otp",LoginDetails.getInstance().getOtp_received_from_device());
         params.put("instruction", "1");
-        AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
+        as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
             public void receiveData(JSONObject json){
                 try {
                     String TAG_SUCCESS = "success";
@@ -473,6 +471,7 @@ public class ManageUser extends Fragment {
             }
         };
         as.execute();
+
 
     }
 
