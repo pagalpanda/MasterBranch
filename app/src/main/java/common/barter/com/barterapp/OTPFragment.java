@@ -131,7 +131,7 @@ public class OTPFragment extends Fragment {
     public void receiveWebOTP() {
 
         //test data
-        LoginDetails.getInstance().testData();
+        //LoginDetails.getInstance().testData();
         LoginDetails.getInstance().setIsverifying(true);
 
         HashMap<String, String> params = new HashMap<String, String>();
