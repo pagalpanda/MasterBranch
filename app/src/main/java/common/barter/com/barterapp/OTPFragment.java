@@ -5,7 +5,11 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,6 +41,7 @@ public class OTPFragment extends Fragment {
     private EditText etotp;
     private EditText etstatus;
     private ProgressBar pbstatus;
+    private OTPVerificationDialog otpVerificationDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,11 +49,15 @@ public class OTPFragment extends Fragment {
 
         View dialogFragmentView = inflater.inflate(R.layout.otp_popup, container, false);
         //receiveWebOTP();
+        setHasOptionsMenu(true);
         etotp = (EditText) dialogFragmentView.findViewById(R.id.etotp);
         tvmobilenum = (TextView) dialogFragmentView.findViewById(R.id.tvmobilenum);
         etstatus = (EditText) dialogFragmentView.findViewById(R.id.etstatus);
         pbstatus = (ProgressBar) dialogFragmentView.findViewById(R.id.pbstatus);
         btverify = (Button) dialogFragmentView.findViewById(R.id.btverify);
+        tvmobilenum.setText(MessagesString.OTP_NUMBER_MESSAGE + LoginDetails.getInstance().getMobilenum());
+        otpVerificationDialog = new OTPVerificationDialog(getContext());
+        otpVerificationDialog.setCancelable(false);
         //((GlobalHome)getActivity()).getSupportActionBar().hide();
         //setinputData();
         btverify.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +71,18 @@ public class OTPFragment extends Fragment {
 
     }
 
-//    @Override
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (menu.findItem(R.id.action_logout) != null) {
+            menu.findItem(R.id.action_logout).setVisible(false);
+            menu.removeItem(R.id.action_logout);
+
+        }
+        menu.clear();
+    }
+
+
+    //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //
 //        super.onCreate(savedInstanceState);
@@ -220,28 +240,31 @@ public class OTPFragment extends Fragment {
     {
         if (LoginDetails.getInstance().getIsverifying())
         {
-            if( (LoginDetails.getInstance().getOtp_received_from_device()!=null) && (LoginDetails.getInstance().getOtp_received_from_web()!=null))
+//            if( (LoginDetails.getInstance().getOtp_received_from_device()!=null) && (LoginDetails.getInstance().getOtp_received_from_web()!=null))
+//            {
+//
+//                if(!isExecuted){
+//                    isExecuted = true;
+//                    setResult(true);
+//                    //setProgress(50, "Verifying OTP");
+//                    btverify.setActivated(false);
+//                    btverify.setText("VERIFYING");
+//                    doOTPVerification();
+//
+//                }
+//
+//            }else
             {
-
-                if(!isExecuted){
-                    isExecuted = true;
-                    setResult(true);
-                    //setProgress(50, "Verifying OTP");
-                    btverify.setActivated(false);
-                    btverify.setText("VERIFYING");
-                    doOTPVerification();
-
-                }
-
-            }else
-            {
+                otpVerificationDialog.show();
                 String otpManual = etotp.getText().toString();
                 if(otpManual!=null && otpManual.length() == 5) {
-                    LoginDetails.getInstance().setOtp_received_from_device(etotp.getText().toString());
+                    LoginDetails.getInstance().setOtp_received_from_device(otpManual);
                     doOTPVerification();
                 }
-                else
-                    Toast.makeText(getContext(),"Incorrect Entry",Toast.LENGTH_SHORT).show();
+                else {
+                    otpVerificationDialog.dismiss();
+                    Toast.makeText(getContext(), "Incorrect Entry", Toast.LENGTH_SHORT).show();
+                }
             }
         }
         else if ( (LoginDetails.getInstance().getMob_verified()!=null) && (LoginDetails.getInstance().getMob_verified().equalsIgnoreCase("1")) )
@@ -272,7 +295,10 @@ public class OTPFragment extends Fragment {
                     int success = json.getInt(TAG_SUCCESS);
                     if (success == 0) {
                         LoginDetails.getInstance().setMob_verified(json.getString("is_verified"));
+                        new CommonResources(context).saveToSharedPrefs(MessagesString.SHARED_PREFS_IS_MOBILE_VERIFIED, LoginDetails.getInstance().getMob_verified());
                         LoginDetails.getInstance().setIsverifying(false);
+                        navigateToManageUser();
+
                     }
                     else if (success == 1) {
 
@@ -282,13 +308,25 @@ public class OTPFragment extends Fragment {
                         LoginDetails.getInstance().setIsverifying(false);
 
                     }
+                    otpVerificationDialog.dismiss();
 
                 } catch (JSONException e) {
+                    otpVerificationDialog.dismiss();
                     e.printStackTrace();
                 }
             }
         };
         as.execute();
+
+    }
+
+    private void navigateToManageUser() {
+
+            Fragment fragment = new ManageUser();
+            FragmentManager fragmentManager = ((GlobalHome)getActivity()).getSupportFragmentManager();
+            FragmentTransaction ft  = fragmentManager.beginTransaction();
+            ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
+            ft.replace(R.id.frame_container, fragment).commit();
 
     }
 
