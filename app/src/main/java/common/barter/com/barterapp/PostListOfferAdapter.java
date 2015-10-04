@@ -2,6 +2,7 @@ package common.barter.com.barterapp;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -164,6 +165,7 @@ public class PostListOfferAdapter extends RecyclerView.Adapter<PostListOfferAdap
         TextView tvDateCreated;
         int position;
         CheckBox cbSelected;
+        CardView cardView;
 
         public Holder(View rowView, int i) {
             super(rowView);
@@ -172,6 +174,7 @@ public class PostListOfferAdapter extends RecyclerView.Adapter<PostListOfferAdap
             tvLocality = (TextView) rowView.findViewById(R.id.tvLocalityPostsOffer);
             tvDateCreated = (TextView) rowView.findViewById(R.id.tvDateCreatedOffer);
             cbSelected = (CheckBox) rowView.findViewById(R.id.cbPostSelected);
+            cardView = (CardView)rowView.findViewById(R.id.cvPostOfferItems);
         }
     }
     //Holder holder;
