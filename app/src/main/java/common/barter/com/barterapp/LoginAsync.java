@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -104,13 +105,13 @@ protected String doInBackground(String... args) {
         if (success == 0) {
         // successfully created product
 //                    Toast.makeText(getApplicationContext(),"Created",Toast.LENGTH_LONG).show();
-        setLoginDetailsData(json);
-        navigateToManageUser(fragmentmanager);
+            setLoginDetailsData(json);
+            navigateToManageUser(fragmentmanager);
         //finish();
         } else if(success == 1){
         // failed to create product
-        setLoginDetailsData(json);
-        navigateToManageUser(fragmentmanager);
+            setLoginDetailsData(json);
+            navigateToManageUser(fragmentmanager);
         }else if(success == 2){
             //Toast.makeText(context, json.getString("message"),Toast.LENGTH_SHORT).show();
         //Invalid input
@@ -139,19 +140,19 @@ protected void onPostExecute(String file_url) {
             resources.saveToSharedPrefs("isLoggedIn", "true");
             Map<String,String> mapUserDetails  = new HashMap<>();
             String userId = json.getString("userid");
-            mapUserDetails.put("uniqueid",userId);
+            mapUserDetails.put(MessagesString.SHARED_PREFS_UNIQUE_ID,userId);
             String personName = json.getString("name");
-            mapUserDetails.put("personname",personName);
+            mapUserDetails.put(MessagesString.SHARED_PREFS_PERSON_NAME,personName);
             String gender = json.getString("gender");
-            mapUserDetails.put("gender",gender);
+            mapUserDetails.put(MessagesString.SHARED_PREFS_GENDER,gender);
             String email = json.getString("username");
-            mapUserDetails.put("email", email);
+            mapUserDetails.put(MessagesString.SHARED_PREFS_EMAIL, email);
             String username = json.getString("username");
-            mapUserDetails.put("username",username);
+            mapUserDetails.put(MessagesString.SHARED_PREFS_USERNAME,username);
             String mobileNum = json.getString("mobilenum");
-            mapUserDetails.put("mobilenum",mobileNum);
+            mapUserDetails.put(MessagesString.SHARED_PREFS_MOBILE,mobileNum);
             String mobVerified = json.getString("mob_verified");
-            mapUserDetails.put("ismobileverified",mobVerified);
+            mapUserDetails.put(MessagesString.SHARED_PREFS_IS_MOBILE_VERIFIED,mobVerified);
             resources.setUserDetailsInSharedPref(mapUserDetails);
 
         } catch (JSONException e) {
@@ -166,13 +167,15 @@ protected void onPostExecute(String file_url) {
         Fragment fragment = null;
         fragment = new ManageUser();
 
+        FragmentTransaction ft  = fragmentManager.beginTransaction();
 
         if (fragment != null) {
 
 //            fragmentManager.beginTransaction()
 //                    .replace(R.id.frame_container, fragment).addToBackStack("Manage User").commit();
+            ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
             fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).commit();
+                    .add(R.id.frame_container, fragment).commit();
 
         } else {
             // error in creating fragment
