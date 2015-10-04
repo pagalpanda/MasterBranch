@@ -13,6 +13,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -87,7 +89,7 @@ public class ManageUser extends Fragment {
         Fragment fragment = new LoginParentFragment();
         FragmentManager fragmentManager = ((GlobalHome)getActivity()).getSupportFragmentManager();
         FragmentTransaction ft  = fragmentManager.beginTransaction();
-        ft.setCustomAnimations(R.anim.enter_from_left,R.anim.abc_fade_out,R.anim.enter_from_left,R.anim.abc_fade_out);
+        ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
         ft.replace(R.id.frame_container, fragment).commit();
     }
 
@@ -109,7 +111,7 @@ public class ManageUser extends Fragment {
         etphone = (EditText)rootView.findViewById(R.id.etPhone);
         etname = (EditText)rootView.findViewById(R.id.etName);
         btchangePwd = (TextView)rootView.findViewById(R.id.btChangePwd);
-        btverify = (ImageButton)rootView.findViewById(R.id.btVerify);
+        btverify = (ImageButton)rootView.findViewById(R.id.btVerifyManageUser);
         rbmale = (RadioButton)rootView.findViewById(R.id.rbMale);
         rbfemale = (RadioButton)rootView.findViewById(R.id.rbFemale);
         btSave = (Button)rootView.findViewById(R.id.btSaveManageUser);
@@ -117,34 +119,59 @@ public class ManageUser extends Fragment {
         otpVerificationDialog = new OTPVerificationDialog(getContext());
         otpVerificationDialog.setCancelable(false);
         getDetails();
-
-        btverify.setOnClickListener(new View.OnClickListener() {
+        etphone.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                flash("Button clicked");
-                LoginDetails.getInstance().setIsverifying(true);
-                receiveWebOTP();
-//                createProgressBarProperties();
-//                progress.setMessage("Sending OTP");
-//                progress.show();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+                String currentNum = s==null?null:s.toString();
+                if(currentNum != null && currentNum.length() == 10 && !currentNum.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum()) ){
+                    btverify.setVisibility(View.VISIBLE);
+                    btverify.setImageResource(R.drawable.search);
+                }else if(currentNum != null && currentNum.length() == 10 && currentNum.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum()) ){
+                    if("0".equalsIgnoreCase(LoginDetails.getInstance().getMob_verified())){
+                        btverify.setVisibility(View.VISIBLE);
+                        btverify.setImageResource(R.drawable.search);
+                    }else{
+                        btverify.setVisibility(View.VISIBLE);
+                        btverify.setImageResource(R.drawable.home);
+                    }
+                }else {
+                    btverify.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
 
             }
         });
-
-//        btverify.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //etOTP.setVisibility(View.VISIBLE);
-//                flash("Button clicked");
-//                LoginDetails.getInstance().setIsverifying(true);
-//                //setPopUp(inflater);
-//                setDialogFragment();
+        btverify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newPhoneEntered = etphone.getText().toString();
+                if(null != newPhoneEntered && !newPhoneEntered.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum()) && !"".equalsIgnoreCase(newPhoneEntered)) {
+                    LoginDetails.getInstance().setIsverifying(true);
+                    LoginDetails.getInstance().setMob_verified("0");
+                    LoginDetails.getInstance().setMobilenum(newPhoneEntered);
+                    new CommonResources(context).saveToSharedPrefs(MessagesString.SHARED_PREFS_MOBILE, LoginDetails.getInstance().getMobilenum());
+                    receiveWebOTP();
+                }else {
+                    etphone.setText(LoginDetails.getInstance().getMobilenum());
+                }
+//                if(LoginDetails.getInstance().getMob_verified().equals("0")) // mobile number not verified case
+//                {
 //
-//            }
-//        });
+//
+//                }
+            }
+        });
+
+
 
         btchangePwd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,19 +225,24 @@ public class ManageUser extends Fragment {
                 rbfemale.setChecked(true);
             }
         }
-        if (LoginDetails.getInstance().getMobilenum() !=null)
+        if (LoginDetails.getInstance().getMobilenum() !=null && !"".equalsIgnoreCase(LoginDetails.getInstance().getMobilenum()))
         {
+            btverify.setVisibility(View.VISIBLE);
             if (LoginDetails.getInstance().getMob_verified().equals("0"))
             {
-                btverify.setVisibility(View.VISIBLE);
-                ivVerified.setVisibility(View.GONE);
+//                btverify.setVisibility(View.VISIBLE);
+//                ivVerified.setVisibility(View.GONE);
+                btverify.setImageResource(R.drawable.search);
             }
             else
             {
-                ivVerified.setVisibility(View.VISIBLE);
-                btverify.setVisibility(View.GONE);
+                btverify.setImageResource(R.drawable.home);
+//                ivVerified.setVisibility(View.VISIBLE);
+//                btverify.setVisibility(View.GONE);
             }
 
+        }else{
+            btverify.setVisibility(View.GONE);
         }
 
     }
@@ -218,51 +250,51 @@ public class ManageUser extends Fragment {
 
 
 
-    public  void flash(String message){
-        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
-    }
-
-    public void updateUser()
-    {
-
-
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("userid",LoginDetails.getInstance().getUserid());
-
-        params.put("personname",LoginDetails.getInstance().getPersonName());
-        params.put("gender",LoginDetails.getInstance().getGender());
-        params.put("birthdate",LoginDetails.getInstance().getBirthday());
-        params.put("mobilenum",LoginDetails.getInstance().getMobilenum());
-
-        params.put("instruction", "2");
-        AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
-            public void receiveData(JSONObject json){
-                try {
-                    String TAG_SUCCESS = "success";
-                    int success = json.getInt(TAG_SUCCESS);
-                    if (success == 0) {
-                        LoginDetails.getInstance().setMob_verified(json.getString("is_verified"));
-                        LoginDetails.getInstance().setIsverifying(false);
-                    }
-                    else if (success == 1) {
-
-                        LoginDetails.getInstance().setIsverifying(false);
-                        otpVerificationDialog.dismiss();
-                    }
-                    else {
-                        LoginDetails.getInstance().setIsverifying(false);
-                        otpVerificationDialog.dismiss();
-
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        as.execute();
-
-    }
+//    public  void flash(String message){
+//        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+//    }
+//
+//    public void updateUser()
+//    {
+//
+//
+//        HashMap<String, String> params = new HashMap<String, String>();
+//        params.put("userid",LoginDetails.getInstance().getUserid());
+//
+//        params.put("personname",LoginDetails.getInstance().getPersonName());
+//        params.put("gender",LoginDetails.getInstance().getGender());
+//        params.put("birthdate",LoginDetails.getInstance().getBirthday());
+//        params.put("mobilenum",LoginDetails.getInstance().getMobilenum());
+//
+//        params.put("instruction", "2");
+//        AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
+//            public void receiveData(JSONObject json){
+//                try {
+//                    String TAG_SUCCESS = "success";
+//                    int success = json.getInt(TAG_SUCCESS);
+//                    if (success == 0) {
+//                        LoginDetails.getInstance().setMob_verified(json.getString("is_verified"));
+//                        LoginDetails.getInstance().setIsverifying(false);
+//                    }
+//                    else if (success == 1) {
+//
+//                        LoginDetails.getInstance().setIsverifying(false);
+//                        otpVerificationDialog.dismiss();
+//                    }
+//                    else {
+//                        LoginDetails.getInstance().setIsverifying(false);
+//                        otpVerificationDialog.dismiss();
+//
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        };
+//        as.execute();
+//
+//    }
 
     public void setDialogFragment()
     {
@@ -288,7 +320,7 @@ public class ManageUser extends Fragment {
         //createProgressBarProperties();
         otpVerificationDialog.show();
         //test data
-        LoginDetails.getInstance().testData();
+        //LoginDetails.getInstance().testData();
         LoginDetails.getInstance().setIsverifying(true);
 
         HashMap<String, String> params = new HashMap<String, String>();
@@ -394,7 +426,7 @@ public class ManageUser extends Fragment {
         }
         else if ( (LoginDetails.getInstance().getMob_verified()!=null) && (LoginDetails.getInstance().getMob_verified().equalsIgnoreCase("1")) )
         {
-            otpVerificationDialog.show();
+            //otpVerificationDialog.show();
             setResult(true);
             //setProgress(100,"Verified");
             //btverify.setActivated(false);
@@ -402,7 +434,7 @@ public class ManageUser extends Fragment {
         }
 
     }
-    private final long startTime = 10 * 1000;
+    private final long startTime = 40 * 1000;
     private final long interval = 1 * 1000;
     public void doOTPVerification()
     {
@@ -419,9 +451,11 @@ public class ManageUser extends Fragment {
                     int success = json.getInt(TAG_SUCCESS);
                     if (success == 0) {
                         LoginDetails.getInstance().setMob_verified(json.getString("is_verified"));
+                        new CommonResources(context).saveToSharedPrefs(MessagesString.SHARED_PREFS_IS_MOBILE_VERIFIED, LoginDetails.getInstance().getMob_verified());
                         LoginDetails.getInstance().setIsverifying(false);
                         otpVerificationDialog.dismiss();
-                        getFragmentManager().popBackStack();
+                        btverify.setImageResource(R.drawable.home);
+                        //getFragmentManager().popBackStack();
                     }
                     else if (success == 1) {
                         otpVerificationDialog.dismiss();
