@@ -47,10 +47,29 @@
         android:layout_marginTop="20dp"
         android:inputType="phone"
         android:ems="10"
+        android:maxLength="10"
         android:id="@+id/etPhone"
         android:hint="Mobile"
         android:layout_below="@+id/etEmailIdlogin"
         />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btVerifyManageUser"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/etEmailIdlogin"
+            android:visibility="visible"
+
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ivVerified"
+            android:layout_alignBaseline="@+id/etPhone"
+            android:layout_toRightOf="@+id/btVerifyManageUser"
+            android:visibility="gone"
+            android:src="@drawable/search"/>
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -106,23 +125,8 @@
         android:background="?attr/colorPrimary"
         android:layout_centerVertical="true"/>
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btVerify"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
 
-        android:visibility="invisible"
-        />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ivVerified"
-        android:layout_toEndOf="@+id/btVerify"
-        android:layout_alignTop="@+id/btVerify"
-        android:layout_toRightOf="@+id/btVerify"
-        android:visibility="invisible"/>
+
 
 </RelativeLayout>
