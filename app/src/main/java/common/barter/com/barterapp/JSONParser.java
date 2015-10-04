@@ -83,7 +83,7 @@ public class JSONParser {
             }
             else {
                 response="";
-
+                json = null;
                 throw new HttpException(responseCode+"");
             }
             try {
