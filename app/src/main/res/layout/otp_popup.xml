@@ -17,7 +17,7 @@
             android:textColor="@android:color/black"
             android:textStyle="bold"
             android:id="@+id/tvmobilenum"
-            android:text="Please enter the pin we just sent to 8106671762"
+
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="35dp"
             android:layout_marginRight="35dp"
