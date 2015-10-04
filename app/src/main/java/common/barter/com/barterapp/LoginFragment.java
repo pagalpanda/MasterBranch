@@ -64,6 +64,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     RadioGroup rgGender;
     RadioButton rbGenderMale;
     RadioButton rbGenderFemale;
+    CommonResources resource;
     //CheckBox ckNewUser;
 
 
@@ -149,6 +150,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         rgGender = (RadioGroup)rootView.findViewById(R.id.rgGender);
         rbGenderMale = (RadioButton)rootView.findViewById(R.id.rbGenderMale);
         rbGenderFemale = (RadioButton)rootView.findViewById(R.id.rbGenderFemale);
+        resource = new CommonResources(context);
 //        scrollViewLogin.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 //            @Override
 //            public void onScrollChanged() {
@@ -172,8 +174,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         authButton.setReadPermissions(Arrays.asList("email"));
         authButton.setReadPermissions(Arrays.asList("user_birthday"));
         authButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
             @Override
             public void onSuccess(LoginResult loginResult) {
+                resource.hideKeyboard(getActivity());
                 flash("FB Success");
                 new FBLoginAsync(getContext(), getFragmentManager(), loginResult).execute();
             }
@@ -181,11 +185,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCancel() {
                 flash("FB Cancel");
+                resource.hideKeyboard(getActivity());
             }
 
             @Override
             public void onError(FacebookException e) {
                 flash("FB Error");
+                resource.hideKeyboard(getActivity());
                 flash(e.toString());
             }
         });
@@ -198,6 +204,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resource.hideKeyboard(getActivity());
                 Toast.makeText(context, "Login Clicked", Toast.LENGTH_SHORT).show();
                 String email = etEmailID.getText().toString();
                 String pwd = etPassword.getText().toString();
@@ -231,6 +238,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         tvForgotPwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resource.hideKeyboard(getActivity());
                 Toast.makeText(context,"Forgot Pass Clicked", Toast.LENGTH_SHORT).show();
                 Fragment fragment = new ForgotPassword();
 
@@ -362,6 +370,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.sign_in_button) {
+            resource.hideKeyboard(getActivity());
             onSignInClicked();
         }
 
