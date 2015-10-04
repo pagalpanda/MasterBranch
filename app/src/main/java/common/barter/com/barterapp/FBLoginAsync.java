@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,9 +11,10 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -29,6 +29,7 @@ public class FBLoginAsync extends AsyncTask<String, String, String> {
         ProgressDialog pDialog;
         FragmentManager fragmentManager;
         LoginResult loginResult;
+        String error;
 
         public FBLoginAsync (Context context,FragmentManager fragmentManager,LoginResult loginResult)
         {
@@ -63,16 +64,28 @@ protected String doInBackground(String... args) {
 protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
         pDialog.dismiss();
-    if(isEmailIdReturned)
-        addUser(1);
-    else// Email permission not set in FB
-        Toast.makeText(context, "Email Permission not set in Facebook",Toast.LENGTH_SHORT).show();
+        FBLogout();
+        if(isEmailIdReturned)
+        {
+            addUser(1);
         }
+        else {
+            // Email permission not set in FB
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void getFacebookInfo( ) {
 
         //flash("In getFacebookInfo: Information received");
         final AccessToken accessToken = loginResult.getAccessToken();
+
+        if (!(accessToken.getPermissions().contains("email")))
+        {
+            isEmailIdReturned = false;
+            error ="Please grant email permission";
+        }
+
         GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject user, GraphResponse graphResponse) {
@@ -80,14 +93,29 @@ protected void onPostExecute(String file_url) {
                     // handle error
                 } else {
 
+
                     setFBinfo(user);
                 }
             }
         });
         Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,gender, birthday,location");
+        parameters.putString("fields", "id,name,gender,link,birthday,email");
         request.setParameters(parameters);
         request.executeAndWait();
+
+//        Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
+//
+//            @Override
+//            public void onCompleted(GraphUser user, Response response) {
+//                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+//                String userId = (String) user.asMap().get("email");
+//                i.putExtra("epuzzle", userId);
+//                startActivity(i);
+//            }
+//        });
+
+
+
         //setLogin_mode(1);
         //addUser(1);
 
@@ -100,7 +128,7 @@ protected void onPostExecute(String file_url) {
         String email = user.optString("email");
         if(email != null && !"".equalsIgnoreCase(email)) {
             LoginDetails.getInstance().setEmail(user.optString("email"));
-
+//            String safeEmail = user.asMap().get("email").toString();
 
             LoginDetails.getInstance().setId(user.optString("id"));
             LoginDetails.getInstance().setPersonName(user.optString("name"));
@@ -110,7 +138,11 @@ protected void onPostExecute(String file_url) {
             isEmailIdReturned = true;
         }
         else
+        {
             isEmailIdReturned = false;
+            error ="Please grant email permission";
+
+        }
 
 
     }
@@ -123,5 +155,12 @@ protected void onPostExecute(String file_url) {
     public  void flash(String message){
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
+    public void FBLogout()
+    {
+        if(loginResult.getAccessToken() != null){
+            LoginManager.getInstance().logOut();
+        }
+    }
+
 }
 
