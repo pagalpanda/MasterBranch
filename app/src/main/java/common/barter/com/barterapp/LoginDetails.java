@@ -233,24 +233,5 @@ public class LoginDetails {
         //gps_location = null;
 
     }
-    public void testData()
-    {
-        // To reset values
-        userid="1";
-        personName = "Vikram Singh Bhati";
-        personPhoto = null;
-        email = "bhativ1303";
-        birthday = "25/05/89";
-        id = null;
-        gender = "M";
-        placesLived = null;
-        loginLocation = null;
-        homeTown = null;
-        mobilenum="7032910032";
-        isverifying = false;
-        otp_received_from_device = null;
-        otp_received_from_web = null;
-        //gps_location = null;
 
-    }
 }
