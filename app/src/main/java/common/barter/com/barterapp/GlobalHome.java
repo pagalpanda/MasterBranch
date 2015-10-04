@@ -469,24 +469,31 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     private void displayView(int position) {
         new CommonResources(getApplicationContext()).clearBackStack(getSupportFragmentManager());
         Fragment fragment = null;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction ft  = fragmentManager.beginTransaction();
         switch (position) {
             case 0:
                 fragment = new HomeFragment();
+                ft.setCustomAnimations(R.anim.enter_from_left,R.anim.abc_fade_out,R.anim.enter_from_left,R.anim.abc_fade_out);
                 break;
             case 1:
                 fragment = new PostsFragment("myposts", "");
+                ft.setCustomAnimations(R.anim.enter_from_left,R.anim.abc_fade_out,R.anim.enter_from_left,R.anim.abc_fade_out);
                 break;
             case 2:
                 fragment = new ChooseOptionsOffersFragment();
+                ft.setCustomAnimations(R.anim.enter_from_left,R.anim.abc_fade_out,R.anim.enter_from_left,R.anim.abc_fade_out);
                 break;
             case 4:
                 if (isLoggedInFromClass())
                 {
                     fragment = new ManageUser();
+                    ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
                 }
                 else
                 {
                     fragment = new LoginParentFragment();
+                    ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
                 }
                 break;
             default:
@@ -494,9 +501,8 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
         }
 
         if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction ft  = fragmentManager.beginTransaction();
-            ft.setCustomAnimations(R.anim.enter_from_left,R.anim.abc_fade_out,R.anim.enter_from_left,R.anim.abc_fade_out);
+
+
             switch (position) {
                 case 0:
 
