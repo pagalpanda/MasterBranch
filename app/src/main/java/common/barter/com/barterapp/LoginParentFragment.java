@@ -6,6 +6,7 @@ package common.barter.com.barterapp;
         import android.app.Activity;
 
         import android.app.ProgressDialog;
+        import android.content.Intent;
         import android.os.AsyncTask;
         import android.os.Bundle;
         import android.support.design.widget.TabLayout;
@@ -178,6 +179,12 @@ public class LoginParentFragment extends Fragment {
     public boolean validateInput() {
 
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
 

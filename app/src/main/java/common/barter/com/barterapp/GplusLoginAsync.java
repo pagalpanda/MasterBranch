@@ -140,7 +140,7 @@ public class GplusLoginAsync extends AsyncTask<String, String, String> implement
                 LoginDetails.getInstance().setEmail(Plus.AccountApi.getAccountName(mGoogleApiClient));
                 LoginDetails.getInstance().setBirthday(currentPerson.getBirthday());
                 LoginDetails.getInstance().setLoginLocation(currentPerson.getCurrentLocation());
-                LoginDetails.getInstance().setGender(currentPerson.getGender() == 0?"M":"F");
+                LoginDetails.getInstance().setGender(currentPerson.getGender() == 0 ? "M" : "F");
                 LoginDetails.getInstance().setId(currentPerson.getId());
 
                 LoginDetails.getInstance().setPassword(LoginDetails.getInstance().getEmail().concat("123"));
@@ -174,7 +174,8 @@ public class GplusLoginAsync extends AsyncTask<String, String, String> implement
                 try {
 
                     connectionResult.startResolutionForResult(activity, RC_SIGN_IN);
-                    mIsResolving = true;
+                    //mIsResolving = true;
+                    mGoogleApiClient.connect();
                 } catch (IntentSender.SendIntentException e) {
                     flash("Could not resolve ConnectionResult:" + e);
                     mIsResolving = false;

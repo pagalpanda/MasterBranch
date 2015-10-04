@@ -6,10 +6,14 @@ package common.barter.com.barterapp;
 import android.app.Activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -36,8 +40,13 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 
 import org.w3c.dom.Text;
 
@@ -45,7 +54,8 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginFragment extends Fragment implements View.OnClickListener {
+public class LoginFragment extends Fragment implements View.OnClickListener,GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,GoogleplusListener {
 
     private int tabSelected = 1;
     Activity context;
@@ -75,12 +85,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     // FB Sign in
     LoginButton authButton;
     private CallbackManager callbackManager;
-
-    //Google sign in
-    private static final int RC_SIGN_IN = 0;
-    private GoogleApiClient mGoogleApiClient;
-    /* Is there a ConnectionResult resolution in progress? */
-    private boolean mIsResolving = false;
 
     /* Should we automatically resolve ConnectionResults when possible? */
     private boolean mShouldResolve = false;
@@ -169,10 +173,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         authButton = (LoginButton) rootView.findViewById(R.id.authButton);
         //setFBButtonProperties();
         authButton.setFragment(this);
-        authButton.setReadPermissions(Arrays.asList("user_friends"));
         authButton.setReadPermissions(Arrays.asList("public_profile"));
-        authButton.setReadPermissions(Arrays.asList("email"));
         authButton.setReadPermissions(Arrays.asList("user_birthday"));
+        authButton.setReadPermissions(Arrays.asList("email"));
+
         authButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
@@ -301,8 +305,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         float fbIconScale = 1.45F;
         Drawable drawable = getActivity().getResources().getDrawable(
                 com.facebook.R.drawable.com_facebook_button_icon);
-        drawable.setBounds(0, 0, (int)(drawable.getIntrinsicWidth()*fbIconScale),
-                (int)(drawable.getIntrinsicHeight()*fbIconScale));
+        drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * fbIconScale),
+                (int) (drawable.getIntrinsicHeight() * fbIconScale));
         if(tabSelected == 1){
             authButton.setText("Log in via Facebook");
         }else {
@@ -379,18 +383,54 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void onSignInClicked() {
         flash("Signing in");
-        new GplusLoginAsync(getActivity(),getContext(),getFragmentManager()).execute();
+        buildGoogleApiClient();
+        if (mGoogleApiClient !=null)
+        {
+            mGoogleApiClient.connect();
+        }
+        else {
+            flash("Please check Connectivity");
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        flash("onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            // If the error resolution was not successful we should not resolve further.
+            if (resultCode != Activity.RESULT_OK) {
+                mShouldResolve = false;
+            }
+            else {
+                mShouldResolve = true;
+            }
+            mIsResolving = false;
+            if(mShouldResolve) {
+                if (mGoogleApiClient == null) {
+                    buildGoogleApiClient();
+                    mGoogleApiClient.connect();
+                } else {
+                    mGoogleApiClient.connect();
+                }
+            }
+
+        }
+        else
+        {
+            flash("onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+
     }
 
     public void showSignedOutUI() {
         flash("showSignedOutUI");
+        // Clear the default account so that GoogleApiClient will not automatically
+        // connect in the future.
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+        }
 
     }
 
@@ -415,22 +455,107 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    /** Hashing the username password
-     public String hashUser(String username, String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        private GoogleApiClient mGoogleApiClient;
+        /* Is there a ConnectionResult resolution in progress? */
+        private boolean mIsResolving = false;
 
-     String hashUser = SHA1.Sha1Hash(username);
-     String hashPass = SHA1.Sha1Hash(password);
-     String luser = hashPass+hashUser;
-     String lastUser = SHA1.Sha1Hash(luser);
-     return lastUser;
-     }
+        /* Should we automatically resolve ConnectionResults when possible? */
+        private boolean mGoogleAPIConnected = false;
+        //Google sign in
+        private static final int RC_SIGN_IN = 14;
+        public void loginUser()
+        {
+            new LoginAsync(context,0,getFragmentManager() ).execute();
+        }
 
-     public String hashPass(String username, String password) throws NoSuchAlgorithmException, UnsupportedEncodingException{
-     String hashUser = SHA1.Sha1Hash(username);
-     String hashPass = SHA1.Sha1Hash(password);
-     String lpass = hashPass+hashUser;
-     String lastPass = SHA1.Sha1Hash(lpass);
-     return lastPass;
-     }
-     */
+        protected synchronized void buildGoogleApiClient() {
+            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(Plus.API)
+                    .addScope(new Scope(Scopes.PROFILE))
+                    .addScope(new Scope(Scopes.PLUS_LOGIN))
+                    .addScope(new Scope(Scopes.PLUS_ME))
+                    .build();
+        }
+
+    @Override
+        public void onConnected(Bundle bundle) {
+// onConnected indicates that an account was selected on the device, that the selected
+            // account has granted any requested permissions to our app and that we were able to
+            // establish a service connection to Google Play services.
+            flash("onConnected:" + bundle);
+            mGoogleAPIConnected=true;
+            getGoogleInfo();
+
+            // Show the signed-in UI
+        }
+
+        private void getGoogleInfo() {
+
+            if (mGoogleApiClient.isConnected()) {
+                if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+                    flash("In getGoogleInfo: Information received");
+
+                    Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+                    LoginDetails.getInstance().resetDetails();
+                    LoginDetails.getInstance().setPersonName(currentPerson.getDisplayName());
+                    LoginDetails.getInstance().setPersonPhoto(currentPerson.getImage().getUrl());
+                    LoginDetails.getInstance().setEmail(Plus.AccountApi.getAccountName(mGoogleApiClient));
+                    LoginDetails.getInstance().setBirthday(currentPerson.getBirthday());
+                    LoginDetails.getInstance().setLoginLocation(currentPerson.getCurrentLocation());
+                    LoginDetails.getInstance().setGender(currentPerson.getGender() == 0 ? "M" : "F");
+                    LoginDetails.getInstance().setId(currentPerson.getId());
+
+                    LoginDetails.getInstance().setPassword(LoginDetails.getInstance().getEmail().concat("123"));
+                    loginUser();
+                } else {
+                    flash("In getGoogleInfo: Information not received");
+                }
+            } else
+            {
+                buildGoogleApiClient();
+                mGoogleApiClient.connect();
+            }
+        }
+
+        @Override
+        public void onConnectionSuspended(int i) {
+            mGoogleApiClient.connect();
+
+        }
+
+        @Override
+        public void onConnectionFailed(ConnectionResult connectionResult) {
+            // Could not connect to Google Play Services.  The user needs to select an account,
+            // grant permissions or resolve an error in order to sign in. Refer to the javadoc for
+            // ConnectionResult to see possible error codes.
+            flash("onConnectionFailed:" + connectionResult);
+
+            if (!mIsResolving) {
+
+                if (connectionResult.hasResolution()) {
+                    try {
+
+                        connectionResult.startResolutionForResult(getActivity(), RC_SIGN_IN);
+                        mIsResolving = true;
+                       // mGoogleApiClient.connect();
+                    } catch (IntentSender.SendIntentException e) {
+                        flash("Could not resolve ConnectionResult:" + e);
+                        mIsResolving = false;
+                        mGoogleApiClient.connect();
+                    }
+                } else {
+                    // Could not resolve the connection result, show the user an
+                    // error dialog.
+                    //showErrorDialog(connectionResult);
+                    flash(new Integer(connectionResult.getErrorCode()).toString());
+                }
+            } else {
+                // Show the signed-out UI
+                showSignedOutUI();
+            }
+        }
+
+
 }
