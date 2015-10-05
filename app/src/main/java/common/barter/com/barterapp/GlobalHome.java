@@ -1,6 +1,7 @@
 package common.barter.com.barterapp;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,6 +50,7 @@ import android.support.v7.widget.RecyclerView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class GlobalHome extends ActionBarActivity implements LocationAddress.LocationCallback, LocationListener{
@@ -634,9 +636,25 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 14){ // handling the callback from google account popup
+        if (requestCode == 14) {
+            // If the error resolution was not successful we should not resolve further.
 
-            //new GplusLoginAsync(this,getApplicationContext(),getSupportFragmentManager()).execute();
+//                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+//                if(fragment!=null)
+//                    fragment.onActivityResult(requestCode, resultCode, data);
+
+            List<Fragment> fragments = getSupportFragmentManager().getFragments();
+            if (fragments != null) {
+                for (Fragment fragment : fragments) {
+                    if (fragment instanceof GoogleplusListener)
+                    {
+                        fragment.onActivityResult(requestCode, resultCode, data);
+                        break;
+                    }
+                }
+            }
+
+            //mGoogleApiClient.connect();
         }
 
     }
