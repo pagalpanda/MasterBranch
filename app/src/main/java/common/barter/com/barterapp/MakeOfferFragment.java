@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.Toast;
 
@@ -166,38 +168,39 @@ public class MakeOfferFragment extends Fragment{
         ((GlobalHome)getActivity()).setSupportActionBar(toolbar);*/
 
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout2);
-        tabLayout.addTab(tabLayout.newTab().setText("My Posts"));
-        tabLayout.addTab(tabLayout.newTab().setText("His Posts"));
+//        tabLayout.addTab(tabLayout.newTab().setText("My Posts"));
+//        tabLayout.addTab(tabLayout.newTab().setText("His Posts"));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) rootView.findViewById(R.id.pager2);
-//        adapter = new MakeOfferAdapter(
-//                getFragmentManager(), 2);
-//        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-//                int tabPos = tab.getPosition();
-//                if(tabPos == 0){
-//                    PostsOfferFragment.tabSelected="1";
-//                }else{
-//                    PostsOfferFragment.tabSelected="2";
-//                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        adapter = new MakeOfferAdapter(
+                getFragmentManager(), 2);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+        //viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+//        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                viewPager.setCurrentItem(tab.getPosition());
+////                int tabPos = tab.getPosition();
+////                if(tabPos == 0){
+////                    PostsOfferFragment.tabSelected="1";
+////                }else{
+////                    PostsOfferFragment.tabSelected="2";
+////                }
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
         /*
         mTabHost = (FragmentTabHost)rootView.findViewById(android.R.id.tabhost);
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
