@@ -75,7 +75,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
 
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;
-    Toolbar toolbar;
+    static Toolbar toolbar;
     // nav drawer title
     private CharSequence mDrawerTitle;
 
@@ -100,6 +100,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     LocationsDialog dialog;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +112,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
         this.globalHome = this;
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-
+        new CommonResources(getApplicationContext()).setToolBarHeight(toolbar.getHeight());
         mTitle = mDrawerTitle = getTitle();
 
         // load slide menu items
@@ -271,6 +272,11 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
 
 
 
+    }
+
+
+    public Toolbar getToolbar() {
+        return toolbar;
     }
 
     public boolean checkGPS() {
