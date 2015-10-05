@@ -41,6 +41,10 @@ public class MakeOfferAdapter extends FragmentPagerAdapter {
         return mNumOfTabs;
     }
 
+    @Override
+    public CharSequence getPageTitle(int position) {
 
+        return position == 0? "My Posts":"His Posts";
+    }
 
 }
