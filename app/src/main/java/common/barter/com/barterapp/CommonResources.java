@@ -415,7 +415,7 @@ public class CommonResources {
                 prefs  = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = prefs.edit();
                 Gson gson = new Gson();
-                String json = gson.toJson(objToSave,type);
+                String json = gson.toJson(objToSave, type);
                 editor.putString(key, json);
                 editor.commit();
         }
@@ -443,4 +443,14 @@ public class CommonResources {
         }
 
         Type mapType;
+
+        public int getToolBarHeight() {
+                return toolBarHeight;
+        }
+
+        private int toolBarHeight;
+
+        public void setToolBarHeight(int toolBarHeight) {
+                this.toolBarHeight = toolBarHeight;
+        }
 }
