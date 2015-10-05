@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -154,6 +155,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         rgGender = (RadioGroup)rootView.findViewById(R.id.rgGender);
         rbGenderMale = (RadioButton)rootView.findViewById(R.id.rbGenderMale);
         rbGenderFemale = (RadioButton)rootView.findViewById(R.id.rbGenderFemale);
+        rbGenderMale.setChecked(true);
         resource = new CommonResources(context);
 //        scrollViewLogin.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 //            @Override
