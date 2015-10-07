@@ -183,7 +183,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-                resource.hideKeyboard(getActivity());
+                CommonResources.hideKeyboard(getActivity());
                 flash("FB Success");
                 new FBLoginAsync(getContext(), getFragmentManager(), loginResult).execute();
             }
@@ -191,13 +191,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
             @Override
             public void onCancel() {
                 flash("FB Cancel");
-                resource.hideKeyboard(getActivity());
+                CommonResources.hideKeyboard(getActivity());
             }
 
             @Override
             public void onError(FacebookException e) {
                 flash("FB Error");
-                resource.hideKeyboard(getActivity());
+                CommonResources.hideKeyboard(getActivity());
                 flash(e.toString());
             }
         });
@@ -210,7 +210,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resource.hideKeyboard(getActivity());
+                CommonResources.hideKeyboard(getActivity());
                 Toast.makeText(context, "Login Clicked", Toast.LENGTH_SHORT).show();
                 String email = etEmailID.getText().toString();
                 String pwd = etPassword.getText().toString();
@@ -231,11 +231,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
                         LoginDetails.getInstance().setPassword(pwd);
                         LoginDetails.getInstance().setPersonName(etFirstName.getText().toString().trim().concat(" " + etLastName.getText().toString().trim()));
                         LoginDetails.getInstance().setMobilenum(etMobileNum.getText().toString().trim());
-                        LoginDetails.getInstance().setGender(rbGenderMale.isChecked()?"m":"f");
+                        LoginDetails.getInstance().setGender(rbGenderMale.isChecked() ? "m" : "f");
+
                         if (tabSelected == 2)
                             setLogin_mode(3);
                         else
                             setLogin_mode(2);
+
                         addUser(1);
                     }
                 }
@@ -245,13 +247,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
             @Override
             public void onClick(View v) {
                 resource.hideKeyboard(getActivity());
-                Toast.makeText(context,"Forgot Pass Clicked", Toast.LENGTH_SHORT).show();
                 Fragment fragment = new ForgotPassword();
 
                 if(fragment!=null)
                 {
                     getFragmentManager().beginTransaction()
-                            .add(R.id.frame_container, fragment).commit();
+                            .add(R.id.frame_container, fragment).addToBackStack("Forgot_Pass").commit();
                 }
                 else
                 {
@@ -302,31 +303,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         tvSignUpTermsAndConditions.setVisibility(View.VISIBLE);
         rgGender.setVisibility(View.VISIBLE);
     }
-    private void setFBButtonProperties() {
-        //authButton.setBackgroundResource(R.drawable.facebook); // Replace image
-        float fbIconScale = 1.45F;
-        Drawable drawable = getActivity().getResources().getDrawable(
-                com.facebook.R.drawable.com_facebook_button_icon);
-        drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * fbIconScale),
-                (int) (drawable.getIntrinsicHeight() * fbIconScale));
-        if(tabSelected == 1){
-            authButton.setText("Log in via Facebook");
-        }else {
-            authButton.setText("Sign uo via Facebook");
-        }
-        authButton.setCompoundDrawables(drawable, null, null, null);
-        authButton.setCompoundDrawablePadding(getActivity().getResources().
-                getDimensionPixelSize(R.dimen.fb_margin_override_textpadding));
-
-//        authButton.setPadding(
-//                getActivity().getResources().getDimensionPixelSize(
-//                        R.dimen.fb_margin_override_lr),
-//                getActivity().getResources().getDimensionPixelSize(
-//                        R.dimen.fb_margin_override_top),
-//                0,
-//                getActivity().getResources().getDimensionPixelSize(
-//                        R.dimen.fb_margin_override_bottom));
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -376,7 +352,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.sign_in_button) {
-            resource.hideKeyboard(getActivity());
+            CommonResources.hideKeyboard(getActivity());
             onSignInClicked();
         }
 
@@ -449,15 +425,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
     {
         new LoginAsync(getContext(),login_mode,getFragmentManager() ).execute();
     }
-    protected void setGooglePlusButtonText(Button signInButton) {
-        // Find the TextView that is inside of the SignInButton and set its text
-
-        signInButton.setText("Log in with Google+");
-        signInButton.setAllCaps(false);
-    }
 
 
-        private GoogleApiClient mGoogleApiClient;
+
+    private GoogleApiClient mGoogleApiClient;
         /* Is there a ConnectionResult resolution in progress? */
         private boolean mIsResolving = false;
 
@@ -468,6 +439,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         public void loginUser()
         {
             new LoginAsync(context,0,getFragmentManager() ).execute();
+            showSignedOutUI();
         }
 
         protected synchronized void buildGoogleApiClient() {
