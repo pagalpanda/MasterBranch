@@ -37,8 +37,11 @@ public class ForgotPassword extends Fragment {
         btSendPwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CommonResources.hideKeyboard(getActivity());
                 if (isValidInput()) {
                     sendPwd();
+                }else {
+                    flash("Please enter a valid email address");
                 }
 
             }
@@ -55,7 +58,7 @@ public class ForgotPassword extends Fragment {
 
     public Boolean isValidInput() {
 
-        if ( (!isValidEmail(etEmailOrMob.getText().toString())) && (!isValidMobile(etEmailOrMob.getText().toString())) )
+        if ( (!isValidEmail(etEmailOrMob.getText().toString())) )
         {
             return false;
         }
@@ -97,14 +100,15 @@ public class ForgotPassword extends Fragment {
         params.put("sendTo",etEmailOrMob.getText().toString());
         params.put("instruction", isValidEmail(etEmailOrMob.getText().toString()) ? "0" : "1");
 
-        AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("ForgotPwd"),"POST",params,true,"Sending Password"){
+        AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("ForgotPwd"),"POST",params,true,"Sending Email"){
             public void receiveData(JSONObject json){
                 try {
                     String TAG_SUCCESS = "success";
                     int success = json.getInt(TAG_SUCCESS);
                     if (success == 0) {
-                        flash("Your new Password has been sent to".concat(etEmailOrMob.getText().toString()));
-                        ((GlobalHome)getActivity()).getSupportFragmentManager().popBackStack();
+                        flash("Your new Password has been sent to ".concat(etEmailOrMob.getText().toString()));
+
+                        navigateToLogin();
                     }
                     else if (success == 1) {
                         flash("We are facing some issues. Please try again later.");
@@ -127,6 +131,11 @@ public class ForgotPassword extends Fragment {
         as.execute();
 
     }
+
+    private void navigateToLogin() {
+        ((GlobalHome)getActivity()).getSupportFragmentManager().popBackStack();
+    }
+
 
 }
 
