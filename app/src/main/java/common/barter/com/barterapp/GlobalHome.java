@@ -226,7 +226,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
 
         // enabling action bar app icon and behaving it as toggle button
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#2096f3")));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f68b23")));
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
