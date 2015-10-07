@@ -111,23 +111,25 @@ public class Splash extends AppCompatActivity implements LocationAddress.Locatio
         try{
 
             LoginDetails.getInstance().resetDetails();
-            String userId = (String)loadFromSharedPrefs("uniqueid");
+            String userId = (String)loadFromSharedPrefs(MessagesString.SHARED_PREFS_UNIQUE_ID);
 
             if(null == userId || "null".equalsIgnoreCase(userId) || "".equalsIgnoreCase(userId)){
                 //User not logged in
                 return;
             }
             LoginDetails.getInstance().setUserid(userId);
-            String personName = (String)loadFromSharedPrefs("personname");
+            String personName = (String)loadFromSharedPrefs(MessagesString.SHARED_PREFS_PERSON_NAME);
             LoginDetails.getInstance().setPersonName("null".equalsIgnoreCase(personName) ? null : personName);
-            String gender = (String)loadFromSharedPrefs("gender");
+            String gender = (String)loadFromSharedPrefs(MessagesString.SHARED_PREFS_GENDER);
             LoginDetails.getInstance().setGender(gender);
-            String email = (String)loadFromSharedPrefs("email");
+            String email = (String)loadFromSharedPrefs(MessagesString.SHARED_PREFS_EMAIL);
             LoginDetails.getInstance().setEmail(email);
-            String mobileNum = (String)loadFromSharedPrefs("mobilenum");
+            String mobileNum = (String)loadFromSharedPrefs(MessagesString.SHARED_PREFS_MOBILE);
             LoginDetails.getInstance().setMobilenum("null".equalsIgnoreCase(mobileNum) ? null : mobileNum);
-            String mobVerified = (String)loadFromSharedPrefs("ismobileverified");
+            String mobVerified = (String)loadFromSharedPrefs(MessagesString.SHARED_PREFS_IS_MOBILE_VERIFIED);
             LoginDetails.getInstance().setMob_verified(mobVerified);
+            String loginMode = (String)loadFromSharedPrefs(MessagesString.SHARED_PREFS_LOGIN_MODE);
+            LoginDetails.getInstance().setLoginMethod(loginMode);
 
 
 
