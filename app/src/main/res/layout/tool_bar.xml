@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_floating_material_dark"
     android:elevation="4dp"
-    android:paddingTop="1dp"
-    app:layout_scrollFlags="scroll|enterAlways">
+    android:paddingTop="1dp">
+    <!--app:layout_scrollFlags="scroll|enterAlways"-->
+
 
 </android.support.v7.widget.Toolbar>
