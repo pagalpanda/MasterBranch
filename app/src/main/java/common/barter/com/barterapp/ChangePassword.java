@@ -56,6 +56,7 @@ public class ChangePassword extends Fragment {
         btSavePwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CommonResources.hideKeyboard(getActivity());
                 if (isValidInput())
                 {
                     if(isNewPassDifferent())
