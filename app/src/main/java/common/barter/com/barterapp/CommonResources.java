@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by amitpa on 8/20/2015.
@@ -260,20 +262,22 @@ public class CommonResources {
                 Set<String> keys = mapUserDetails.keySet();
                 for(String key: keys){
                         String value = mapUserDetails.get(key);
-                        if("uniqueid".equalsIgnoreCase(key)){
+                        if(MessagesString.SHARED_PREFS_UNIQUE_ID.equalsIgnoreCase(key)){
                                 LoginDetails.getInstance().setUserid(value);
-                        }else if("personname".equalsIgnoreCase(key)){
+                        }else if(MessagesString.SHARED_PREFS_PERSON_NAME.equalsIgnoreCase(key)){
                                 LoginDetails.getInstance().setPersonName("null".equalsIgnoreCase(value) ? null : value);
-                        }else if("gender".equalsIgnoreCase(key)){
+                        }else if(MessagesString.SHARED_PREFS_GENDER.equalsIgnoreCase(key)){
                                 LoginDetails.getInstance().setGender(value);
-                        }else if("email".equalsIgnoreCase(key)){
+                        }else if(MessagesString.SHARED_PREFS_EMAIL.equalsIgnoreCase(key)){
                                 LoginDetails.getInstance().setEmail(value);
-                        }else if("mobilenum".equalsIgnoreCase(key)){
+                        }else if(MessagesString.SHARED_PREFS_MOBILE.equalsIgnoreCase(key)){
                                 LoginDetails.getInstance().setMobilenum("null".equalsIgnoreCase(value) ? null : value);
-                        }else if("ismobileverified".equalsIgnoreCase(key)){
+                        }else if(MessagesString.SHARED_PREFS_IS_MOBILE_VERIFIED.equalsIgnoreCase(key)){
                                 LoginDetails.getInstance().setMob_verified(value);
+                        }else if(MessagesString.SHARED_PREFS_LOGIN_MODE.equalsIgnoreCase(key)){
+                                LoginDetails.getInstance().setLoginMethod(value);
                         }
-                        saveToSharedPrefs(key,mapUserDetails.get(key));
+                        saveToSharedPrefs(key,value);
                 }
         }
         Object obj;
@@ -368,7 +372,7 @@ public class CommonResources {
         }
 
         //Hides the keyboard
-        public void hideKeyboard( Activity activity) {
+        public static void hideKeyboard( Activity activity) {
                 // Check if no view has focus:
                 if(activity != null) {
                         View view = activity.getCurrentFocus();
@@ -453,4 +457,13 @@ public class CommonResources {
         public void setToolBarHeight(int toolBarHeight) {
                 this.toolBarHeight = toolBarHeight;
         }
+
+        public static boolean isValidMobile(String mobilenum) {
+
+                String MOBILE_PATTERN = "^[1-9][0-9]{9}$";
+                Pattern pattern = Pattern.compile(MOBILE_PATTERN);
+                Matcher matcher = pattern.matcher(mobilenum);
+                return matcher.matches();
+        }
+
 }
