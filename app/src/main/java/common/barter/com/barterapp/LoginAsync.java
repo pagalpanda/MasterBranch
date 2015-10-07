@@ -153,6 +153,8 @@ protected void onPostExecute(String file_url) {
             mapUserDetails.put(MessagesString.SHARED_PREFS_MOBILE,mobileNum);
             String mobVerified = json.getString("mob_verified");
             mapUserDetails.put(MessagesString.SHARED_PREFS_IS_MOBILE_VERIFIED,mobVerified);
+            String loginMethod = json.getString("loginmode");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_LOGIN_MODE,loginMethod);
             resources.setUserDetailsInSharedPref(mapUserDetails);
 
         } catch (JSONException e) {
