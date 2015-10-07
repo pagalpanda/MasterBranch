@@ -158,13 +158,13 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
         for (int i = 0; i < dotsCount; i++) {
             dots[i] = new TextView(getContext());
             dots[i].setText(".");
-            dots[i].setTextSize(45);
+            dots[i].setTextSize(80);
             dots[i].setTypeface(null, Typeface.BOLD);
-            dots[i].setTextColor(android.graphics.Color.GRAY);
+            dots[i].setTextColor(getResources().getColor(R.color.colorBackGround));
             dotsLayout.addView(dots[i]);
         }
         if (dots.length > 0)
-            dots[0].setTextColor(Color.GREEN);
+            dots[0].setTextColor(getResources().getColor(R.color.colorPrimary));
 
         btnMakeOffer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,7 +221,7 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
             dots[i].setTextColor(Color.GRAY);
         }
         // only one selected
-        dots[position].setTextColor(Color.GREEN);
+        dots[position].setTextColor(getResources().getColor(R.color.colorPrimary));
     }
 
     @Override
