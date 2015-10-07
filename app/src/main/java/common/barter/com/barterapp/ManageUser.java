@@ -128,20 +128,22 @@ public class ManageUser extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                String currentNum = s==null?null:s.toString();
-                if(currentNum != null && currentNum.length() == 10 && !currentNum.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum()) ){
-                    btverify.setVisibility(View.VISIBLE);
-                    btverify.setImageResource(R.drawable.search);
-                }else if(currentNum != null && currentNum.length() == 10 && currentNum.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum()) ){
-                    if("0".equalsIgnoreCase(LoginDetails.getInstance().getMob_verified())){
+                String currentNum = s == null ? null : s.toString();
+                if (currentNum != null) {
+                    if (CommonResources.isValidMobile(currentNum) && !currentNum.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum())) {
                         btverify.setVisibility(View.VISIBLE);
                         btverify.setImageResource(R.drawable.search);
-                    }else{
-                        btverify.setVisibility(View.VISIBLE);
-                        btverify.setImageResource(R.drawable.home);
+                    } else if (CommonResources.isValidMobile(currentNum) && currentNum.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum())) {
+                        if ("0".equalsIgnoreCase(LoginDetails.getInstance().getMob_verified())) {
+                            btverify.setVisibility(View.VISIBLE);
+                            btverify.setImageResource(R.drawable.search);
+                        } else {
+                            btverify.setVisibility(View.VISIBLE);
+                            btverify.setImageResource(R.drawable.home);
+                        }
+                    } else {
+                        btverify.setVisibility(View.GONE);
                     }
-                }else {
-                    btverify.setVisibility(View.GONE);
                 }
             }
 
@@ -154,7 +156,7 @@ public class ManageUser extends Fragment {
             @Override
             public void onClick(View v) {
                 String newPhoneEntered = etphone.getText().toString();
-                if(null != newPhoneEntered && !(newPhoneEntered.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum()) && "1".equalsIgnoreCase(LoginDetails.getInstance().getMob_verified()) ) && !"".equalsIgnoreCase(newPhoneEntered)) {
+                if(newPhoneEntered !=null && CommonResources.isValidMobile(newPhoneEntered) && !(newPhoneEntered.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum()) && "1".equalsIgnoreCase(LoginDetails.getInstance().getMob_verified()) )) {
                     LoginDetails.getInstance().setIsverifying(true);
                     LoginDetails.getInstance().setMob_verified("0");
                     LoginDetails.getInstance().setMobilenum(newPhoneEntered);
@@ -163,25 +165,54 @@ public class ManageUser extends Fragment {
                 }else {
                     etphone.setText(LoginDetails.getInstance().getMobilenum());
                 }
-//                if(LoginDetails.getInstance().getMob_verified().equals("0")) // mobile number not verified case
-//                {
-//
-//
-//                }
             }
         });
 
-
+        if("2".equalsIgnoreCase(LoginDetails.getInstance().getLoginMethod())) //  change pass is visible only in case of manual login/signup
+            btchangePwd.setVisibility(View.VISIBLE);
+        else
+            btchangePwd.setVisibility(View.GONE);
 
         btchangePwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Fragment fragment = new ChangePassword();
 
-
+                FragmentManager fragmentManager = ((GlobalHome)getActivity()).getSupportFragmentManager();
+                FragmentTransaction ft  = fragmentManager.beginTransaction();
+                ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
+                ft.add(R.id.frame_container, fragment).addToBackStack("change_pwd").commit();
+                // ChangePassword fragment
             }
         });
 
+
+        btSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(hasDetailsChanged()){
+                    //save the data to db
+                }else{
+                    Toast.makeText(getContext(),"Data upto-date",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         return rootView;
+    }
+
+    private boolean hasDetailsChanged() {
+        String newPhoneEntered = etphone.getText().toString();
+        String newName = etname.getText().toString();
+        String newGender = rbmale.isChecked()?"m":"f";
+         if( !newName.equals(LoginDetails.getInstance().getPersonName()))
+             return true;
+        else if(!newPhoneEntered.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum())) {
+             return true;
+         }else if(!newGender.equalsIgnoreCase(LoginDetails.getInstance().getGender())){
+             return true;
+         }
+        return false;
+
     }
 
 
@@ -199,13 +230,6 @@ public class ManageUser extends Fragment {
     public void getDetails() {
 
 
-//        etemail.setText("asdasd@ghgg.com");
-//        etname.setText("vvbvvbvb");
-//        etphone.setText("7032910032"); // Test
-//        btverify.setVisibility(View.VISIBLE);
-//        rbmale.setChecked(true);
-//
-//        Commented to test
         String email = LoginDetails.getInstance().getEmail();
         etemail.setText(email);
         String name = LoginDetails.getInstance().getPersonName();
@@ -246,55 +270,6 @@ public class ManageUser extends Fragment {
         }
 
     }
-
-
-
-
-//    public  void flash(String message){
-//        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
-//    }
-//
-//    public void updateUser()
-//    {
-//
-//
-//        HashMap<String, String> params = new HashMap<String, String>();
-//        params.put("userid",LoginDetails.getInstance().getUserid());
-//
-//        params.put("personname",LoginDetails.getInstance().getPersonName());
-//        params.put("gender",LoginDetails.getInstance().getGender());
-//        params.put("birthdate",LoginDetails.getInstance().getBirthday());
-//        params.put("mobilenum",LoginDetails.getInstance().getMobilenum());
-//
-//        params.put("instruction", "2");
-//        AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
-//            public void receiveData(JSONObject json){
-//                try {
-//                    String TAG_SUCCESS = "success";
-//                    int success = json.getInt(TAG_SUCCESS);
-//                    if (success == 0) {
-//                        LoginDetails.getInstance().setMob_verified(json.getString("is_verified"));
-//                        LoginDetails.getInstance().setIsverifying(false);
-//                    }
-//                    else if (success == 1) {
-//
-//                        LoginDetails.getInstance().setIsverifying(false);
-//                        otpVerificationDialog.dismiss();
-//                    }
-//                    else {
-//                        LoginDetails.getInstance().setIsverifying(false);
-//                        otpVerificationDialog.dismiss();
-//
-//                    }
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        };
-//        as.execute();
-//
-//    }
 
     public void setDialogFragment()
     {
@@ -372,14 +347,9 @@ public class ManageUser extends Fragment {
 
         @Override
         public void onTick(long millisUntilFinished) {
-
-            if (!getResult())
-            {
-
-            }
-//            progress.setMessage("Waiting for OTP \nResend OTP in "+( (startTime - i*interval)/1000)+" s");
-            i++;
             verifyOTP();
+            i++;
+
         }
 
         @Override
@@ -412,9 +382,6 @@ public class ManageUser extends Fragment {
                 if(!isExecuted){
                     isExecuted = true;
                     setResult(true);
-                    //setProgress(50, "Verifying OTP");
-                    //btverify.setActivated(false);
-                    //btverify.setText("VERIFYING");
                     doOTPVerification();
 
                 }
@@ -423,11 +390,7 @@ public class ManageUser extends Fragment {
         }
         else if ( (LoginDetails.getInstance().getMob_verified()!=null) && (LoginDetails.getInstance().getMob_verified().equalsIgnoreCase("1")) )
         {
-            //otpVerificationDialog.show();
             setResult(true);
-            //setProgress(100,"Verified");
-            //btverify.setActivated(false);
-            //btverify.setText("VERIFIED");
         }
 
     }
