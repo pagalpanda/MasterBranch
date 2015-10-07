@@ -479,7 +479,7 @@ public class PostAdA extends Fragment {
             @Override
             public void onClick(View v) {
                 CommonResources resources = new CommonResources(getContext());
-                        resources.hideKeyboard(getActivity());
+                CommonResources.hideKeyboard(getActivity());
                 if( "true".equals ((String)resources.loadFromSharedPrefs("isLoggedIn") ) ) {
                     if (validateInput()) {
                         new CreateNewPost().execute();
