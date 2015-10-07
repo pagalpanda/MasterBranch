@@ -26,6 +26,16 @@ public class LoginDetails {
     private String mob_verified; // 0: false; 1: true
     private String mobilenum;
 
+    public String getLoginMethod() {
+        return loginMethod;
+    }
+
+    public void setLoginMethod(String loginMethod) {
+        this.loginMethod = loginMethod;
+    }
+
+    private String loginMethod; //  values: 0:gmail 1:fb 2:manual
+
     // internal processes
     private Boolean isverifying;
     private String otp_received_from_web;
