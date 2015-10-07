@@ -120,7 +120,7 @@ public class LoginParentFragment extends Fragment {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                new CommonResources(getContext()).hideKeyboard(getActivity());
+                CommonResources.hideKeyboard(getActivity());
                 viewPager.setCurrentItem(tab.getPosition());
 
 
