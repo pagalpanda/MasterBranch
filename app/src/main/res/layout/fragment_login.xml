@@ -116,22 +116,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/etFirstName"
             android:inputType="textEmailAddress"
-            android:hint="First Name"
+            android:hint="Name"
             android:layout_marginTop="20dp"
             android:textCursorDrawable="@null"
 
             />
-        <EditText
 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/etLastName"
-            android:inputType="textEmailAddress"
-            android:hint="Last Name"
-            android:layout_marginTop="20dp"
-            android:textCursorDrawable="@null"
-            android:layout_below="@+id/etFirstName"
-            />
     <EditText
 
         android:layout_width="fill_parent"
@@ -141,7 +131,7 @@
         android:hint="Email id"
         android:layout_marginTop="20dp"
         android:textCursorDrawable="@null"
-        android:layout_below="@+id/etLastName"
+        android:layout_below="@+id/etFirstName"
 
         />
     <EditText
