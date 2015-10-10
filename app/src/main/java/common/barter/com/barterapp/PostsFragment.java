@@ -13,6 +13,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -48,7 +50,7 @@ public class PostsFragment extends Fragment{
     ArrayList<Post> listOfPosts;
     private ProgressDialog pDialog;
     JSONParser jsonParser = new JSONParser();
-    ListView lvPosts;
+    RecyclerView lvPosts;
     CountDownLatch latch;
     JSONArray posts = null;
     PostsListAdapter adapter;
@@ -86,7 +88,7 @@ public class PostsFragment extends Fragment{
 
         View rootView = inflater.inflate(R.layout.fragment_posts, container, false);
         activity = (GlobalHome) getActivity();
-        lvPosts = (ListView)rootView.findViewById(R.id.listViewPosts);
+        lvPosts = (RecyclerView)rootView.findViewById(R.id.listViewPosts);
 //        MenuItem item = menu.findItem(R.id.my_item);
 //        item.setVisible(false);
 
@@ -113,15 +115,26 @@ public class PostsFragment extends Fragment{
         adapter = new PostsListAdapter(getContext(), listOfPosts);
 
         lvPosts.setAdapter(adapter);
-        lvPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());                 // Creating a layout Manager
+
+        lvPosts.setLayoutManager(mLayoutManager);
+        lvPosts.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(View view, int position) {
                 TextView tvTitle = (TextView) view.findViewById(R.id.tvTitleNamePost);
 
                 (new CommonResources(getContext())).navigateToPostDetails(getFragmentManager(), listOfPosts.get(position), calledFor);
-
             }
-        });
+        }));
+//        lvPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                TextView tvTitle = (TextView) view.findViewById(R.id.tvTitleNamePost);
+//
+//                (new CommonResources(getContext())).navigateToPostDetails(getFragmentManager(), listOfPosts.get(position), calledFor);
+//
+//            }
+//        });
 
         doInBackground();
     }
