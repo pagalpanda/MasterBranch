@@ -24,16 +24,16 @@
             android:visibility="invisible"
 
             />
-
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/listViewPosts"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-
+            android:background="@color/colorBackGround"
             android:layout_marginBottom="2px">
             <!--android:layout_below="@id/tvNoPostsError" -->
 
-        </ListView>
+        </android.support.v7.widget.RecyclerView>
+
     </RelativeLayout>
     <include layout="@layout/floating_post_ad"></include>
 
