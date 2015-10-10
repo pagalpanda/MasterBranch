@@ -4,6 +4,7 @@ package common.barter.com.barterapp;
 
         import android.support.v4.app.Fragment;
         import android.support.v4.app.FragmentManager;
+        import android.support.v4.app.FragmentPagerAdapter;
         import android.support.v4.app.FragmentStatePagerAdapter;
 
 
@@ -34,5 +35,16 @@ public class LoginFragmentAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return mNumOfTabs;
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+
+        return position == 0? "LOG IN":"SIGN UP";
     }
 }
