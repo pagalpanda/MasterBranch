@@ -42,6 +42,7 @@ package common.barter.com.barterapp;
 
         import org.apache.http.NameValuePair;
         import org.apache.http.message.BasicNameValuePair;
+        import org.json.JSONArray;
         import org.json.JSONException;
         import org.json.JSONObject;
 
@@ -353,10 +354,30 @@ public class PostAdA extends Fragment {
                         GlobalHome.location = cityName;
                         btnSelectCity.setText(cityName);
                         btnSelectLocality.setVisibility(View.VISIBLE);
+                        HashMap param = new HashMap();
+                        param.put("", "");
+                        new AsyncConnection(getContext(), CommonResources.getURL("city_jsons/" + cityName.replace(" ", "%20") + ".json").replace(".php", ""), "POST", param, true, "Fetching Localities") {
+                            @Override
+                            public void receiveData(JSONObject json) {
+                                ArrayList<String> list = new ArrayList<String>();
+                                try {
+                                    JSONArray array = json.getJSONArray("locality");
+
+                                    for (int i = 0; i < array.length(); i++) {
+                                        list.add(array.getString(i));
+                                    }
+                                } catch (Exception e) {
+                                    Log.d("Exception in locality", e.getMessage());
+                                }
+                                CommonResources.setListOfLocalities(list);
+                            }
+                        }.execute();
                         ld.cancel();
+                        ((GlobalHome) getActivity()).getmAdapter().notifyDataSetChanged();
 
                     }
                 });
+
                 actv.setHint(MessagesString.HINT_CITY);
                 btnSetCurrentLocation.setVisibility(View.VISIBLE);
                 btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
@@ -371,6 +392,24 @@ public class PostAdA extends Fragment {
         if(MessagesString.LOCATION_SET_MANUALLY.equalsIgnoreCase(btnSelectCity.getText().toString())){
             btnSelectLocality.setVisibility(View.INVISIBLE);
         }else {
+            HashMap param = new HashMap();
+            param.put("","");
+            new AsyncConnection(getContext(), CommonResources.getURL("city_jsons/" + btnSelectCity.getText().toString().replace(" ", "%20") + ".json").replace(".php",""), "POST", param, true, "Fetching Localities") {
+                @Override
+                public void receiveData(JSONObject json) {
+                    ArrayList<String> list = new ArrayList<String>();
+                    try {
+                        JSONArray array = json.getJSONArray("locality");
+
+                        for(int i = 0; i<array.length();i++){
+                            list.add(array.getString(i));
+                        }
+                    }catch (Exception e){
+                        Log.d("Exception in locality",e.getMessage());
+                    }
+                    CommonResources.setListOfLocalities(list);
+                }
+            }.execute();
             btnSelectLocality.setVisibility(View.VISIBLE);
         }
 
