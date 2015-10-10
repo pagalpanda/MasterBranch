@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import common.barter.com.barterapp.PostsOfferFragment;
 
-public class MakeOfferAdapter extends FragmentPagerAdapter {
+public class MakeOfferAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
 
     public MakeOfferAdapter(FragmentManager fm, int NumOfTabs) {
