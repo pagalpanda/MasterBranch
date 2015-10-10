@@ -103,39 +103,41 @@ public class LoginParentFragment extends Fragment {
 
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
         //((GlobalHome)getActivity()).getSupportActionBar().setHideOnContentScrollEnabled(true);
-        tabLayout.addTab(tabLayout.newTab().setText(tabs[0]));
-        tabLayout.addTab(tabLayout.newTab().setText(tabs[1]));
+//        tabLayout.addTab(tabLayout.newTab().setText(tabs[0]));
+//        tabLayout.addTab(tabLayout.newTab().setText(tabs[1]));
 
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) rootView.findViewById(R.id.pager);
-
+        viewPager.destroyDrawingCache();
         adapter = new LoginFragmentAdapter(getFragmentManager(),2);
         android.support.design.widget.FloatingActionButton  btnProceedToReview = (android.support.design.widget.FloatingActionButton)rootView.findViewById(R.id.fab2);
         btnProceedToReview.setVisibility(View.GONE);
+
         viewPager.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                CommonResources.hideKeyboard(getActivity());
-                viewPager.setCurrentItem(tab.getPosition());
-
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        //adapter.notifyDataSetChanged();
+        //viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setupWithViewPager(viewPager);
+//        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                CommonResources.hideKeyboard(getActivity());
+//                viewPager.setCurrentItem(tab.getPosition());
+//
+//
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
 
 
 
