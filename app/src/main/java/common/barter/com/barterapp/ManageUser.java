@@ -6,17 +6,13 @@ package common.barter.com.barterapp;
 import android.app.Activity;
 
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,10 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class ManageUser extends Fragment {
 
@@ -52,6 +46,34 @@ public class ManageUser extends Fragment {
     private EditText etOTP;
     private Button btSave;
     private ImageView ivVerified;
+
+    private String newName;
+    private String newMobileNum;
+    private String newGender;
+
+    public String getNewName() {
+        return newName;
+    }
+
+    public void setNewName(String newName) {
+        this.newName = newName;
+    }
+
+    public String getNewMobileNum() {
+        return newMobileNum;
+    }
+
+    public void setNewMobileNum(String newMobileNum) {
+        this.newMobileNum = newMobileNum;
+    }
+
+    public String getNewGender() {
+        return newGender;
+    }
+
+    public void setNewGender(String newGender) {
+        this.newGender = newGender;
+    }
 
 
     private OTPVerificationDialog otpVerificationDialog;
@@ -190,31 +212,58 @@ public class ManageUser extends Fragment {
         btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(hasDetailsChanged()){
-                    //save the data to db
-                }else{
-                    Toast.makeText(getContext(),"Data upto-date",Toast.LENGTH_SHORT).show();
+                if(validateInput())
+                {
+                    if(hasDetailsChanged()){
+                        //save the data to db
+                        saveData();
+                    }else{
+                        Toast.makeText(getContext(),"Data upto-date",Toast.LENGTH_SHORT).show();
+                    }
                 }
+                else
+                {
+                    Toast.makeText(getContext(),"Wrong data",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         return rootView;
     }
 
     private boolean hasDetailsChanged() {
-        String newPhoneEntered = etphone.getText().toString();
+         if( hasGenderChanged()||hasMobileNumChanged()||hasNameChanged())
+             return true;
+        else
+            return false;
+
+    }
+
+    private boolean hasNameChanged() {
         String newName = etname.getText().toString();
-        String newGender = rbmale.isChecked()?"m":"f";
-         if( !newName.equals(LoginDetails.getInstance().getPersonName()))
-             return true;
-        else if(!newPhoneEntered.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum())) {
-             return true;
-         }else if(!newGender.equalsIgnoreCase(LoginDetails.getInstance().getGender())){
-             return true;
-         }
+        if( !newName.equals(LoginDetails.getInstance().getPersonName()))
+            return true;
+        else
+            return false;
+
+    }
+    private boolean hasMobileNumChanged() {
+        String newPhoneEntered = etphone.getText().toString();
+        if(!newPhoneEntered.equalsIgnoreCase(LoginDetails.getInstance().getMobilenum())) {
+            return true;
+        }else
         return false;
 
     }
 
+    private boolean hasGenderChanged() {
+        String newGender = rbmale.isChecked()?"M":"F";
+        if(!newGender.equalsIgnoreCase(LoginDetails.getInstance().getGender())){
+            return true;
+        }else
+            return false;
+
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -224,7 +273,19 @@ public class ManageUser extends Fragment {
     }
 
     public boolean validateInput() {
-
+        setNewGender(rbmale.isChecked()?"M":"F");
+        setNewMobileNum(etphone.getText().toString());
+        setNewName(etname.getText().toString());
+        if (getNewMobileNum() !=null && !("".equalsIgnoreCase(getNewMobileNum())) && !(CommonResources.isValidMobile(getNewMobileNum()) ) )
+        {
+            etphone.setError("Please enter correct mobile num");
+            return false;
+        }
+        if (getNewName() ==null ||  "".equalsIgnoreCase(getNewName()))
+        {
+            etname.setError("Please enter valid name");
+            return false;
+        }
         return true;
     }
     public void getDetails() {
@@ -397,6 +458,7 @@ public class ManageUser extends Fragment {
     private final long startTime = 25 * 1000;
     private final long interval = 1 * 1000;
     AsyncConnection as;
+
     public void doOTPVerification()
     {
 
@@ -437,5 +499,74 @@ public class ManageUser extends Fragment {
 
 
     }
+
+    public void saveData()
+    {
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("userid",LoginDetails.getInstance().getUserid());
+        if (hasMobileNumChanged())
+            params.put("mobilenum", (getNewMobileNum()==null || "".equalsIgnoreCase(getNewMobileNum())) ?"0":getNewMobileNum());
+        if (hasGenderChanged())
+            params.put("gender",rbmale.isChecked()?"M":"F");
+        if (hasNameChanged())
+            params.put("personname",etname.getText().toString());
+        params.put("instruction", "4");
+        as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,true,""){
+            public void receiveData(JSONObject json){
+                try {
+                    String TAG_SUCCESS = "success";
+                    int success = json.getInt(TAG_SUCCESS);
+                    if (success == 0) {
+                        setLoginDetailsData(json);
+                        Toast.makeText(getContext(),"Data Saved",Toast.LENGTH_SHORT).show();
+                    }
+                    else if (success == 1) {
+                        // Error
+                        Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        // Error
+                        Toast.makeText(getContext(),"Facing Error",Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        as.execute();
+    }
+
+    public void setLoginDetailsData(JSONObject json)
+    {
+        try{
+            CommonResources resources = new CommonResources(context);
+            //resources.saveToSharedPrefs("isLoggedIn", "true");
+            Map<String,String> mapUserDetails  = new HashMap<>();
+            String userId = json.getString("userid");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_UNIQUE_ID,userId);
+            String personName = json.getString("name");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_PERSON_NAME,personName);
+            String gender = json.getString("gender");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_GENDER,gender);
+            String email = json.getString("username");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_EMAIL, email);
+            String username = json.getString("username");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_USERNAME,username);
+            String mobileNum = json.getString("mobilenum");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_MOBILE,mobileNum);
+            String mobVerified = json.getString("mob_verified");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_IS_MOBILE_VERIFIED,mobVerified);
+            String loginMethod = json.getString("loginmode");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_LOGIN_MODE,loginMethod);
+            resources.setUserDetailsInSharedPref(mapUserDetails);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }
