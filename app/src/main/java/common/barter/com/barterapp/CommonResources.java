@@ -40,21 +40,12 @@ public class CommonResources {
         CommonResources(Context context){
                 this.context = context;
         }
-        public static ArrayList<String> list_of_Cities= new ArrayList<String>( Arrays.asList("Adilabad","Ahmedabad","Ahmedabad City","Alleppey","Alwaye","Amalapuram","Ambala","Amreli","Anakapalle","Anand","Anantapur","Aurangabad(Bihar)","Bagalkot","Banasanktha","Bangalore","Baramulla","Bardoli","Bastar","Begusarai","Belgaum","Bellary","Bhagalpur","Bharuch","Bhavnagar","Bhimavaram","Bhiwani","Bhojpur","Bidar","Bijapur","Bilaspur","Cachar","Calicut","Cannanore","Chamba","Champaran","Changanacherry","Channapatna","Chikmagalur","Chikodi","Chitradurga","Chittoor","Cuddapah","Darbhanga","Darrang","Dehra Gopipur","Delhi","Dhanbad","Dharamsala","Dharwad","Dibrugarh","Durg","East Champaran","Eluru","Ernakulam","Faridabad","Gadag","Gandhinagar","Gaya","Giridih","Goalpara","Gokak","Gondal","Gudivada","Gudur","Gulbarga","Guntur","Gurgaon","Guwahati","Hamirpur","Hanamkonda","Hassan","Haveri","Hazaribagh","Hindupur","Hissar","Hyderabad","Idukki","Irinjalakuda","Jammu","Jamnagar","Junagadh","Kakinada","Karimnagar","Karnal","Karwar","Kasaragod","Khammam","Kheda","Kodagu","Kolar","Kottayam","Kurnool","Kurukshetra","Kutch","Lakshadweep","Leh","Machilipatnam","Madhubani","Mahabubnagar","Mahesana","Mandi","Mandya","Mangalore","Manjeri","Medak","Monghyr","Muzaffarpur","Mysore","Nagaon","Nalanda","Nalbari","Nalgonda","Nandyal","Nanjangud","Narasaraopet","Navsari","Nawadha","Nellore","New Delhi","New Delhi Central","Nizamabad","Ottapalam","Palamau","Palghat","Panchmahals","Parvathipuram","Patan","Patna","Peddapalli","Porbandar","Prakasam","Proddatur","Purnea","Puttur","Raichur","Raigarh","Raipur","Rajahmundry","Rajkot","Rajouri","Rampur Bushahr","Ranchi","Rohtak","Rohtas","Sabarkantha","Saharsa","Samastipur","Sangareddy","Santhal Parganas","Saran","Secunderabad","Shimla","Shimoga","Sibsagar","Singhbhum","Sirsi","Sitamarhi","Siwan","Solan","Sonepat","Srikakulam","Srinagar","Surat","Surendranagar","Suryapet","Tadepalligudem","Tenali","Thalassery","Tinsukia","Tirupati","Tirur","Tumkur","Udhampur","Udupi","Una","Vadakara","Vadodara","Vaishali","Valsad","Vijayawada","Visakhapatnam","Vizianagaram","Wanaparthy","Warangal"));
+        public static ArrayList<String> list_of_Cities= new ArrayList<String>( Arrays.asList("Adilabad","Hanamkonda","Karimnagar","Mahabubnagar","Medak","Nalgonda","Nizamabad","Peddapalli","Sangareddy","Suryapet","Wanaparthy","Warangal","Hyderabad","Secunderabad","Anantapur","Chittoor","Cuddapah","Hindupur","Kurnool","Nandyal","Proddatur","Tirupati","Bhimavaram","Eluru","Gudivada","Gudur","Guntur","Khammam","Machilipatnam","Narasaraopet","Nellore","Prakasam","Tadepalligudem","Tenali","Vijayawada","Amalapuram","Anakapalle","Kakinada","Parvathipuram","Rajahmundry","Srikakulam","Visakhapatnam","Vizianagaram","Dibrugarh","Nagaon","Sibsagar","Tinsukia","Cachar","Darrang","Goalpara","Guwahati","Nalbari","Begusarai","Darbhanga","East Champaran","Madhubani","Muzaffarpur","Purnea","Saharsa","Samastipur","Saran","Sitamarhi","Siwan","West Champaran","Aurangabad(Bihar)","Bhagalpur","Bhojpur","Gaya","Monghyr","Nalanda","Nawadha","Patna","Rohtas","Vaishali","Bastar","Bilaspur","Durg","Raigarh","Raipur","Delhi","New Delhi Central","New Delhi","Ahmedabad","Banasanktha","Gandhinagar","Mahesana","Patan","Sabarkantha","Amreli","Bhavnagar","Gondal","Jamnagar","Junagadh","Kutch","Porbandar","Rajkot","Surendranagar","Anand","Bardoli","Bharuch","Kheda","Navsari","Panchmahals","Surat","Vadodara","Valsad","Ambala","Bhiwani","Faridabad","Gurgaon","Hissar","Karnal","Kurukshetra","Rohtak","Sonepat","Chamba","Dehra Gopipur","Dharamsala","Hamirpur","Mandi","Rampur Bushahr","Shimla","Solan","Una","Baramulla","Jammu","Leh","Rajouri","Srinagar","Udhampur","Dhanbad","Giridih","Hazaribagh","Palamau","Ranchi","Santhal Parganas","Singhbhum","Bengaluru","Channapatna","Bagalkot","Belgaum","Bellary","Bidar","Bijapur","Chikodi","Dharwad","Gadag","Gokak","Gulbarga","Haveri","Karwar","Raichur","Sirsi","Chikmagalur","Chitradurga","Hassan","Kodagu","Kolar","Mandya","Mangalore","Mysore","Nanjangud","Puttur","Shimoga","Tumkur","Udupi","Calicut","Cannanore","Kasaragod","Manjeri","Ottapalam","Palghat","Thalassery","Tirur","Vadakara","Alleppey","Alwaye","Changanacherry","Ernakulam","Idukki","Irinjalakuda","Kottayam","Lakshadweep","Mavelikara","Trichur","Pathanamthitta","Quilon","Tiruvalla","Trivandrum","Balaghat","Bhopal","Chhatarpur","Chhindwara","Hoshangabad","Rewa","Sagar","Shahdol","Vidisha","Guna","Gwalior","Morena","Indore City","Indore Moffusil","Jabalpur","Khandwa","Mandsaur","Ratlam","Sehore","Ujjain","Aurangabad(Maharashtra)","Beed","Bhusaval","Dhule","Jalgaon","Malegaon","Nanded","Nasik","Osmanabad","Pharbhani","Goa","Kolhapur","Ratnagiri","Sangli","Sindhudurg","Mumbai","New Mumbai","Raigad","Thane","Akola","Amaravati","Buldana","Chandrapur","Nagpur City","Nagpur Moffusil","Wardha","Yeotmal","Ahmednagar","Pandharpur","Pune City","Pune Moffusil","Satara","Shrirampur","Solapur","Manipur","Mizoram","Nagaland","Agartala","Arunachal Pradesh","Dharmanagar","Meghalaya","Aska","Berhampur","Kalahandi","Koraput","Phulbani","Balasore","Bhadrak","Bhubaneswar","Cuttack","Mayurbhanj","Puri","Balangir","Dhenkanal","Keonjhar","Sambalpur","Sundargarh","Chandigarh","Ludhiana City","Ludhiana Moffusil","Patiala","Sangrur","Amritsar","Bhatinda","Faridkot","Ferozpur","Gurdaspur","Hoshiarpur","Jalandhar","Kapurthala","Ajmer","Beawar","Bhilwara","Chittorgarh","Dungarpur","Kota","Tonk","Udaipur","Alwar","Bharatpur","Dholpur","Jaipur City","Jaipur Moffusil","Sawaimadhopur","Barmer","Bikaner","Churu","Jhunjhunu","Jodhpur","Nagaur","Pali","Sikar","Sirohi","Sriganganagar","Anna Road","Arakkonam","Chengalpattu","Chennai","Kanchipuram","Pondicherry","Tambaram","Tiruvannamalai","Vellore","Coimbatore","Dharmapuri","Erode","Krishnagiri","Namakkal","Nilgiris","Pollachi","Salem","Tirupattur","Tirupur","Dindigul","Kanniyakumari","Karaikudi","Kovilpatti","Madurai","Ramanathapuram","Sivaganga","Theni","Tirunelveli","Tuticorin","Virudhunagar","Cuddalore","Karur","Kumbakonam","Mayiladuthurai","Nagapattinam","Pattukottai","Pudukkottai","Srirangam","Thanjavur","Tiruchirapalli","Vriddhachalam","Agra","Aligarh","Bulandshahar","Etah","Etawah","Jhansi","Mainpuri","Mathura","Allahabad","Ghazipur","Jaunpur","Mirzapur","Pratapgarh","Varanasi","Bareilly","Bijnor","Budaun","Hardoi","Kheri","Meerut","Moradabad","Muzaffarnagar","Saharanpur","Shahjahanpur","Azamgarh","Bahraich","Ballia","Basti","Deoria","Gonda","Gorakhpur","Banda","Fatehgarh","Fatehpur","Kanpur City","Kanpur Moffusil","Barabanki","Faizabad","Ghaziabad","Lucknow","Lucknow GPO","Rae Bareilly","Sitapur","Sultanpur","Almora","Chamoli","Dehradun","Nainital","Pauri","Pithoragarh","Tehri","Alipore","Barabazaar","Barasat","Birbhum","Calcutta South","Kolkata Central","Kolkata East","Kolkata GPO","Kolkata North","Murshidabad","Nadia North","Nadia South","North Presidency","South Presidency","A - N Islands","Cooch Behar","Darjeeling","Jalpaiguri","Malda","Sikkim","West Dinajpur","Asansol","Bankura","Burdwan","Contai","Hooghly","Howrah","Midnapore","Purulia","Tamluk"));
         public static ArrayList<String> list_of_Localities;
 
         public static ArrayList<String> getListOfCities() {
-//                list_of_Cities = new ArrayList<String>();
-//                list_of_Cities.add("Hyderabad");
-//                list_of_Cities.add("Secunderabad");
-//                list_of_Cities.add("Mohali");
-//                list_of_Cities.add("Bangalore");
-//                list_of_Cities.add("Mumbai");
-//                list_of_Cities.add("Delhi");
-//                list_of_Cities.add("Bhubaneswar");
 //
-//                Collections.sort(list_of_Cities);
-
+                Collections.sort(list_of_Cities);
                 return list_of_Cities;
 
         }
@@ -116,55 +107,60 @@ public class CommonResources {
 
         }
 
+
+        public static void setListOfLocalities(ArrayList<String> localities){
+                CommonResources.list_of_Localities = localities;
+        }
+
         public static ArrayList<String> getListOfLocalities(String city) {
-                list_of_Localities = new ArrayList<String>();
-                if(city.equalsIgnoreCase("Hyderabad"))
-                {
-                        list_of_Localities.add("HyderabadA");
-                        list_of_Localities.add("HyderabadB");
-                        list_of_Localities.add("HyderabadC");
-                        list_of_Localities.add("HyderabadD");
-                }else if(city.equalsIgnoreCase("Secunderabad"))
-                {
-                        list_of_Localities.add("SecunderabadA");
-                        list_of_Localities.add("SecunderabadB");
-                        list_of_Localities.add("SecunderabadC");
-                        list_of_Localities.add("SecunderabadD");
-                }else if(city.equalsIgnoreCase("Mohali"))
-                {
-                        list_of_Localities.add("MohaliA");
-                        list_of_Localities.add("MohaliB");
-                        list_of_Localities.add("MohaliC");
-                        list_of_Localities.add("MohaliD");
-
-                }else if(city.equalsIgnoreCase("Bangalore"))
-                {
-                        list_of_Localities.add("BangaloreA");
-                        list_of_Localities.add("BangaloreB");
-                        list_of_Localities.add("BangaloreC");
-                        list_of_Localities.add("BangaloreD");
-                }else if(city.equalsIgnoreCase("Mumbai"))
-                {
-                        list_of_Localities.add("MumbaiA");
-                        list_of_Localities.add("MumbaiB");
-                        list_of_Localities.add("MumbaiC");
-                        list_of_Localities.add("MumbaiD");
-                }else if(city.equalsIgnoreCase("Bhubaneswar"))
-                {
-                        list_of_Localities.add("BhubaneswarA");
-                        list_of_Localities.add("BhubaneswarB");
-                        list_of_Localities.add("BhubaneswarC");
-                        list_of_Localities.add("BhubaneswarD");
-
-                }else if(city.equalsIgnoreCase("Delhi"))
-                {
-                        list_of_Localities.add("DelhiA");
-                        list_of_Localities.add("DelhiB");
-                        list_of_Localities.add("DelhiC");
-                        list_of_Localities.add("DelhiD");
-                }
-
-                Collections.sort(list_of_Localities);
+                //list_of_Localities = new ArrayList<String>();
+//                if(city.equalsIgnoreCase("Hyderabad"))
+//                {
+//                        list_of_Localities.add("HyderabadA");
+//                        list_of_Localities.add("HyderabadB");
+//                        list_of_Localities.add("HyderabadC");
+//                        list_of_Localities.add("HyderabadD");
+//                }else if(city.equalsIgnoreCase("Secunderabad"))
+//                {
+//                        list_of_Localities.add("SecunderabadA");
+//                        list_of_Localities.add("SecunderabadB");
+//                        list_of_Localities.add("SecunderabadC");
+//                        list_of_Localities.add("SecunderabadD");
+//                }else if(city.equalsIgnoreCase("Mohali"))
+//                {
+//                        list_of_Localities.add("MohaliA");
+//                        list_of_Localities.add("MohaliB");
+//                        list_of_Localities.add("MohaliC");
+//                        list_of_Localities.add("MohaliD");
+//
+//                }else if(city.equalsIgnoreCase("Bangalore"))
+//                {
+//                        list_of_Localities.add("BangaloreA");
+//                        list_of_Localities.add("BangaloreB");
+//                        list_of_Localities.add("BangaloreC");
+//                        list_of_Localities.add("BangaloreD");
+//                }else if(city.equalsIgnoreCase("Mumbai"))
+//                {
+//                        list_of_Localities.add("MumbaiA");
+//                        list_of_Localities.add("MumbaiB");
+//                        list_of_Localities.add("MumbaiC");
+//                        list_of_Localities.add("MumbaiD");
+//                }else if(city.equalsIgnoreCase("Bhubaneswar"))
+//                {
+//                        list_of_Localities.add("BhubaneswarA");
+//                        list_of_Localities.add("BhubaneswarB");
+//                        list_of_Localities.add("BhubaneswarC");
+//                        list_of_Localities.add("BhubaneswarD");
+//
+//                }else if(city.equalsIgnoreCase("Delhi"))
+//                {
+//                        list_of_Localities.add("DelhiA");
+//                        list_of_Localities.add("DelhiB");
+//                        list_of_Localities.add("DelhiC");
+//                        list_of_Localities.add("DelhiD");
+//                }
+//
+//                Collections.sort(list_of_Localities);
 
                 return list_of_Localities;
 
@@ -464,6 +460,17 @@ public class CommonResources {
                 Pattern pattern = Pattern.compile(MOBILE_PATTERN);
                 Matcher matcher = pattern.matcher(mobilenum);
                 return matcher.matches();
+        }
+
+        public static boolean isKeyBoardOn(Activity activity){
+                InputMethodManager imm = (InputMethodManager) activity
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                if (imm.isAcceptingText()) {
+                       return true;
+                } else {
+                        return false;
+                }
         }
 
 }
