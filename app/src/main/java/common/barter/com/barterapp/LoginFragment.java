@@ -68,7 +68,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
     TextView tvGoogleLoginTxt;
     TextView tvFBLoginTxt;
     EditText etFirstName;
-    EditText etLastName;
+
     EditText etMobileNum;
     ScrollView scrollViewLogin;
     TextView tvSignUpTermsAndConditions;
@@ -148,7 +148,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         tvGoogleLoginTxt = (TextView)rootView.findViewById(R.id.tvGoogleLoginTxt);
         tvFBLoginTxt = (TextView)rootView.findViewById(R.id.tvFBLoginTxt);
         etFirstName = (EditText)rootView.findViewById(R.id.etFirstName);
-        etLastName = (EditText) rootView.findViewById(R.id.etLastName);
+
         etMobileNum = (EditText) rootView.findViewById(R.id.etMobileNum);
         scrollViewLogin = (ScrollView)rootView.findViewById(R.id.scrollViewLogin);
         tvSignUpTermsAndConditions = (TextView)rootView.findViewById(R.id.tvSignUpTermsAndConditions);
@@ -160,8 +160,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
 //        scrollViewLogin.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 //            @Override
 //            public void onScrollChanged() {
-//                int scrollY = scrollViewLogin.getScrollY();
-//                ((GlobalHome)getActivity()).getSupportActionBar().hide();
+////                int scrollY = scrollViewLogin.getScrollY();
+////                ((GlobalHome)getActivity()).getSupportActionBar().hide();
+//
+//                    CommonResources.hideKeyboard(getActivity());
 //            }
 //        });
         //ckNewUser = (CheckBox)rootView.findViewById(R.id.ckNewUser);
@@ -215,6 +217,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
                 String email = etEmailID.getText().toString();
                 String pwd = etPassword.getText().toString();
 
+                if(tabSelected == 2){
+                    String name = etFirstName.getText().toString();
+                    etFirstName.setError("Please enter your name!");
+                    return;
+                }
+
+
                 if (tabSelected == 2 && !validateNewUserPassword()) {
                     etPasswordConf.setError("Password mismatch");
                     return;
@@ -229,7 +238,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
                         LoginDetails.getInstance().resetDetails();
                         LoginDetails.getInstance().setEmail(email);
                         LoginDetails.getInstance().setPassword(pwd);
-                        LoginDetails.getInstance().setPersonName(etFirstName.getText().toString().trim().concat(" " + etLastName.getText().toString().trim()));
+                        LoginDetails.getInstance().setPersonName(etFirstName.getText().toString().trim());
                         LoginDetails.getInstance().setMobilenum(etMobileNum.getText().toString().trim());
                         LoginDetails.getInstance().setGender(rbGenderMale.isChecked() ? "m" : "f");
 
@@ -284,7 +293,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         tvGoogleLoginTxt.setText("Log in via Google+");
         tvFBLoginTxt.setText("Log in via Facebook");
         etFirstName.setVisibility(View.GONE);
-        etLastName.setVisibility(View.GONE);
+
         etMobileNum.setVisibility(View.GONE);
         tvSignUpTermsAndConditions.setVisibility(View.GONE);
         rgGender.setVisibility(View.GONE);
@@ -295,7 +304,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         tvForgotPwd.setVisibility(View.GONE);
         //authButton.setText("Sign up via Facebook");
         etFirstName.setVisibility(View.VISIBLE);
-        etLastName.setVisibility(View.VISIBLE);
+
         etMobileNum.setVisibility(View.VISIBLE);
         btnLogin.setText("Sign Up");
         tvGoogleLoginTxt.setText("Sign up via Google+");
