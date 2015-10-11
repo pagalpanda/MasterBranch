@@ -91,14 +91,16 @@ public class GplusLoginAsync extends AsyncTask<String, String, String> implement
      * **/
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        pDialog.dismiss();
+
         if (mGoogleAPIConnected)
             addUser(1);
+        else
+            pDialog.dismiss();
     }
 
     public void addUser(int cond)
     {
-        new LoginAsync(context,0,fragmentManager ).execute();
+        new LoginAsync(context,0,fragmentManager,pDialog ).execute();
     }
 
     public  void flash(String message){

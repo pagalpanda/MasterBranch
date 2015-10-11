@@ -78,7 +78,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
     CommonResources resource;
     //CheckBox ckNewUser;
 
-
     String email;
     String pwd;
     private ProgressDialog pDialog;
@@ -180,6 +179,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         authButton.setReadPermissions(Arrays.asList("public_profile"));
         authButton.setReadPermissions(Arrays.asList("user_birthday"));
         authButton.setReadPermissions(Arrays.asList("email"));
+        //rootView.findViewById(R.id.com_facebook_login_activity_progress_bar).setVisibility(View.GONE);
+        //authButton.
 
         authButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
@@ -370,6 +371,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
 
     private void onSignInClicked() {
         flash("Signing in");
+
+        pDialog = new ProgressDialog(context);
+        pDialog.setMessage("Connecting to Google..");
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(true);
+        pDialog.show();
+
         buildGoogleApiClient();
         if (mGoogleApiClient !=null)
         {
@@ -377,6 +385,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         }
         else {
             flash("Please check Connectivity");
+            pDialog.dismiss();
         }
     }
 
@@ -432,7 +441,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
     }
     public void addUser(int cond)
     {
-        new LoginAsync(getContext(),login_mode,getFragmentManager() ).execute();
+        new LoginAsync(getContext(),login_mode,getFragmentManager(),null ).execute();
     }
 
 
@@ -447,7 +456,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         private static final int RC_SIGN_IN = 14;
         public void loginUser()
         {
-            new LoginAsync(context,0,getFragmentManager() ).execute();
+            new LoginAsync(context,0,getFragmentManager(),pDialog ).execute();
             showSignedOutUI();
         }
 

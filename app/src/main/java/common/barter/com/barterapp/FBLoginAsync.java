@@ -5,13 +5,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
@@ -63,7 +61,7 @@ protected String doInBackground(String... args) {
  * **/
 protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        pDialog.dismiss();
+
         FBLogout();
         if(isEmailIdReturned)
         {
@@ -72,6 +70,7 @@ protected void onPostExecute(String file_url) {
         else {
             // Email permission not set in FB
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+            pDialog.dismiss();
         }
     }
 
@@ -149,7 +148,7 @@ protected void onPostExecute(String file_url) {
 
     public void addUser(int cond)
     {
-        new LoginAsync(context,1,fragmentManager ).execute();
+        new LoginAsync(context,1,fragmentManager,pDialog ).execute();
     }
 
     public  void flash(String message){

@@ -30,22 +30,27 @@ class LoginAsync extends AsyncTask<String, String, String> {
     JSONParser jsonParser;
     FragmentManager fragmentmanager;
 
-    public LoginAsync (Context context,int login_mode,FragmentManager fragmentmanager)
+    public LoginAsync (Context context,int login_mode,FragmentManager fragmentmanager,ProgressDialog pDialog)
     {
         this.context=context;
         this.login_mode=login_mode;
         jsonParser = new JSONParser();
         this.fragmentmanager=fragmentmanager;
+        this.pDialog=pDialog;
     }
 
     @Override
 protected void onPreExecute() {
         super.onPreExecute();
-        pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Loggging in..");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(true);
-        pDialog.show();
+        if(pDialog==null){
+            pDialog = new ProgressDialog(context);
+            pDialog.setMessage("Loggging in..");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+        else
+            pDialog.setMessage("Loggging in..");
         }
 
 /**
