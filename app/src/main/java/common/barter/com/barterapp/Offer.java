@@ -94,6 +94,7 @@ public class Offer {
         this.dateOffered = dateOffered;
         this.lastUpdateDate=lastUpdateDate;
         this.status=status;
+
     }
 
 
