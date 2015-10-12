@@ -2,32 +2,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     >
+    <android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_marginTop="3dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:id="@+id/cvOfferItems"
+    android:background="?attr/colorPrimary"
+    android:layout_marginBottom="2dp"
+    card_view:cardElevation="3sp"
+    card_view:cardUseCompatPadding="true">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        >
 
     <TextView
         android:id="@+id/tvOfferTitle"
+        android:layout_marginTop="4dp"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="20px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="Offer From"
+        android:textSize="17sp"
         android:textStyle="bold"
+        android:text="Offer From"
+
 
         />
     <TextView
         android:id="@+id/tvOfferDateOffered"
         android:layout_below="@+id/tvOfferTitle"
-
+        android:layout_marginTop="1dp"
         android:layout_marginLeft="20px"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:textStyle="bold"
+        android:textSize="15sp"
+
         android:text="DateOffered"
         />
     <TextView
+        android:layout_marginTop="1dp"
         android:id="@+id/tvStatusOfOffer"
         android:layout_below="@+id/tvOfferTitle"
         android:layout_alignParentRight="true"
@@ -38,25 +59,35 @@
         android:textStyle="bold"
         android:text="Status"
         />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vikram's Posts"
+            android:id="@+id/tvHisPostsOffersList"
+            android:layout_below="@+id/tvOfferDateOffered"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="6dp"
+            />
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvOfferDateOffered"
+        android:layout_below="@+id/tvHisPostsOffersList"
         android:layout_centerHorizontal="true"
         android:gravity="center" android:id="@+id/layoutImageViewsHolder">
+
     <ImageView
         android:id="@+id/ivPrimaryImageOffer1"
 
-        android:layout_width="110dp"
-        android:layout_height="110dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/search"
         android:layout_centerVertical="true"
         android:background="@color/primary_dark_material_light"/>
     <ImageView
         android:id="@+id/ivPrimaryImageOffer2"
 
-        android:layout_width="110dp"
-        android:layout_height="110dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/search"
         android:layout_centerVertical="true"
         android:background="@color/primary_dark_material_light"
@@ -65,26 +96,126 @@
     <ImageView
         android:id="@+id/ivPrimaryImageOffer3"
 
-        android:layout_width="110dp"
-        android:layout_height="110dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:src="@drawable/search"
         android:layout_centerVertical="true"
         android:background="@color/primary_dark_material_light"
         android:layout_toRightOf="@+id/ivPrimaryImageOffer2"
         android:layout_marginLeft="2px"/>
+        <ImageView
+            android:id="@+id/ivPrimaryImageOffer4"
+
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/search"
+            android:layout_centerVertical="true"
+            android:background="@color/primary_dark_material_light"
+            android:layout_toRightOf="@+id/ivPrimaryImageOffer3"
+            android:layout_marginLeft="2px"/>
+        <ImageView
+            android:id="@+id/ivPrimaryImageOffer5"
+
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/search"
+            android:layout_centerVertical="true"
+            android:background="@color/primary_dark_material_light"
+            android:layout_toRightOf="@+id/ivPrimaryImageOffer4"
+            android:layout_marginLeft="2px"/>
         <TextView
             android:id="@+id/tvExtraPostsCount"
 
-            android:layout_toRightOf="@+id/ivPrimaryImageOffer3"
+            android:layout_toRightOf="@+id/ivPrimaryImageOffer5"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
-            android:textStyle="bold"
+            android:textSize="15dp"
+
             android:text="+3"
-            android:visibility="gone"
+            android:visibility="invisible"
             />
 </RelativeLayout>
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Posts"
+            android:id="@+id/tvMyPostsOffersList"
+            android:layout_below="@+id/layoutImageViewsHolder"
+            android:layout_centerHorizontal="true"
+            />
+        <RelativeLayout
+
+            android:layout_marginBottom="10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvMyPostsOffersList"
+            android:layout_centerHorizontal="true"
+            android:gravity="center" android:id="@+id/layoutImageViewsHolderMine">
+            <ImageView
+                android:id="@+id/ivPrimaryImageOffer6"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/search"
+                android:layout_centerVertical="true"
+                android:background="@color/primary_dark_material_light"/>
+            <ImageView
+                android:id="@+id/ivPrimaryImageOffer7"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/search"
+                android:layout_centerVertical="true"
+                android:background="@color/primary_dark_material_light"
+                android:layout_toRightOf="@+id/ivPrimaryImageOffer6"
+                android:layout_marginLeft="2px"/>
+            <ImageView
+                android:id="@+id/ivPrimaryImageOffer8"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/search"
+                android:layout_centerVertical="true"
+                android:background="@color/primary_dark_material_light"
+                android:layout_toRightOf="@+id/ivPrimaryImageOffer7"
+                android:layout_marginLeft="2px"/>
+            <ImageView
+                android:id="@+id/ivPrimaryImageOffer9"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/search"
+                android:layout_centerVertical="true"
+                android:background="@color/primary_dark_material_light"
+                android:layout_toRightOf="@+id/ivPrimaryImageOffer8"
+                android:layout_marginLeft="2px"/>
+            <ImageView
+                android:id="@+id/ivPrimaryImageOffer10"
+
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/search"
+                android:layout_centerVertical="true"
+                android:background="@color/primary_dark_material_light"
+                android:layout_toRightOf="@+id/ivPrimaryImageOffer9"
+                android:layout_marginLeft="2px"/>
+            <TextView
+                android:id="@+id/tvExtraPostsCountMine"
+
+                android:layout_toRightOf="@+id/ivPrimaryImageOffer10"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+
+                android:text="+3"
+                android:visibility="invisible"
+                />
+        </RelativeLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
 
 </RelativeLayout>
