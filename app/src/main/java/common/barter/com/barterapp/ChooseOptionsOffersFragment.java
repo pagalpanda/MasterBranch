@@ -246,6 +246,7 @@ public class ChooseOptionsOffersFragment extends Fragment {
                             int status = myOffer.getInt("status");
                             int isDeleted = myOffer.getInt("isdeleted");
                             String lastUpdateDate = myOffer.getString("lastupdatedate");
+                            String hisUserName = myOffer.getString("receivername");
                             JSONArray myPosts = myOffer.getJSONArray("myposts");
                             if(isDeleted == 0) {
                                 for (int k = 0; k < myPosts.length(); k++) {
@@ -258,7 +259,7 @@ public class ChooseOptionsOffersFragment extends Fragment {
                                     listOfHisPostsInOffer.add(hisPosts.getString(k));
                                 }
 
-                                listOfMyOffers.add(new Offer(offerID, listOfMyPostsInOffer, listOfHisPostsInOffer, receiverId, "", createdDate, lastUpdateDate, status));
+                                listOfMyOffers.add(new Offer(offerID, listOfMyPostsInOffer, listOfHisPostsInOffer, receiverId, hisUserName, createdDate, lastUpdateDate, status));
                                 listOfOffers = listOfMyOffers;
                             }
                         }
@@ -270,6 +271,7 @@ public class ChooseOptionsOffersFragment extends Fragment {
                             String senderId = hisOffer.getString("senderid");
                             int status = hisOffer.getInt("status");
                             String lastUpdateDate = hisOffer.getString("lastupdatedate");
+                            String hisUserName = hisOffer.getString("sendername");
                             JSONArray myPosts = hisOffer.getJSONArray("myposts");
                             ArrayList<String> listOfMyPostsInOffer = new ArrayList<String>();
                             ArrayList<String> listOfHisPostsInOffer = new ArrayList<String>();
@@ -283,7 +285,7 @@ public class ChooseOptionsOffersFragment extends Fragment {
                                 listOfHisPostsInOffer.add(hisPosts.getString(k));
                             }
 
-                            listOfHisOffers.add(new Offer(offerID,listOfMyPostsInOffer,listOfHisPostsInOffer,senderId,"",createdDate, lastUpdateDate,status));
+                            listOfHisOffers.add(new Offer(offerID,listOfMyPostsInOffer,listOfHisPostsInOffer,senderId,hisUserName,createdDate, lastUpdateDate,status));
                         }
 
                         System.out.print("xyz");
