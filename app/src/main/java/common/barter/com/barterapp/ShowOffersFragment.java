@@ -12,6 +12,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,7 +48,7 @@ public class ShowOffersFragment extends Fragment {
     ArrayList<Offer> listOfOffers = new ArrayList<Offer>();;
     private ProgressDialog pDialog;
     JSONParser jsonParser = new JSONParser();
-    ListView lvOffers;
+    RecyclerView lvOffers;
     CountDownLatch latch;
     JSONArray myposts = null;
     JSONArray hisposts = null;
@@ -83,33 +85,49 @@ public class ShowOffersFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_show_offers, container, false);
         ReviewFragment.cameFrom="offers";
-        lvOffers = (ListView)rootView.findViewById(R.id.listViewShowOffers);
+        lvOffers = (RecyclerView)rootView.findViewById(R.id.listViewShowOffers);
 //        MenuItem item = menu.findItem(R.id.my_item);
 //        item.setVisible(false);
+        lvOffers.setAdapter(null);
 
         setHasOptionsMenu(true);
 
             ((GlobalHome) getActivity()).setActionBarTitle("Offers");
-        adapter = new ShowOffersAdapter(getContext(), listOfOffers);
+        adapter = new ShowOffersAdapter(getContext(), listOfOffers, calledFor);
 
         lvOffers.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());                 // Creating a layout Manager
 
-        lvOffers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvOffers.setLayoutManager(mLayoutManager);
+
+//        lvOffers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                //TextView tvTitle = (TextView) view.findViewById(R.id.tvTitleNamePost);
+//                // Toast.makeText(context, "You Clicked " + "" + tvTitle.getText() + listOfOffers.get(position).getNumOfImages(), Toast.LENGTH_LONG).show();
+//                String hisId = listOfOffers.get(position).getUserIdHis();
+//                selectedPosition = position;
+//                status = listOfOffers.get(position).getStatus();
+//                dateUpdated = listOfOffers.get(position).getLastUpdateDate();
+//                currentOfferId = listOfOffers.get(position).getOfferId();
+//                new GetUserPosts().execute(hisId);
+//
+//
+//            }
+//        });
+
+        lvOffers.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TextView tvTitle = (TextView) view.findViewById(R.id.tvTitleNamePost);
-                // Toast.makeText(context, "You Clicked " + "" + tvTitle.getText() + listOfOffers.get(position).getNumOfImages(), Toast.LENGTH_LONG).show();
+            public void onItemClick(View view, int position) {
                 String hisId = listOfOffers.get(position).getUserIdHis();
                 selectedPosition = position;
                 status = listOfOffers.get(position).getStatus();
                 dateUpdated = listOfOffers.get(position).getLastUpdateDate();
                 currentOfferId = listOfOffers.get(position).getOfferId();
                 new GetUserPosts().execute(hisId);
-
-
             }
-        });
+        }));
 
        // new GetOffers().execute();
 
