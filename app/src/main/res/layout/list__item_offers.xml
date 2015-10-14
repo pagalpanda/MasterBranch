@@ -21,13 +21,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
+        android:layout_marginLeft="20px"
         >
 
     <TextView
         android:id="@+id/tvOfferTitle"
         android:layout_marginTop="4dp"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="20px"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="17sp"
@@ -40,7 +41,7 @@
         android:id="@+id/tvOfferDateOffered"
         android:layout_below="@+id/tvOfferTitle"
         android:layout_marginTop="1dp"
-        android:layout_marginLeft="20px"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
@@ -65,7 +66,7 @@
             android:text="Vikram's Posts"
             android:id="@+id/tvHisPostsOffersList"
             android:layout_below="@+id/tvOfferDateOffered"
-            android:layout_centerHorizontal="true"
+
             android:layout_marginTop="6dp"
             />
     <RelativeLayout
@@ -73,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvHisPostsOffersList"
         android:layout_centerHorizontal="true"
-        android:gravity="center" android:id="@+id/layoutImageViewsHolder">
+         android:id="@+id/layoutImageViewsHolder">
 
     <ImageView
         android:id="@+id/ivPrimaryImageOffer1"
@@ -143,7 +144,7 @@
             android:text="My Posts"
             android:id="@+id/tvMyPostsOffersList"
             android:layout_below="@+id/layoutImageViewsHolder"
-            android:layout_centerHorizontal="true"
+
             />
         <RelativeLayout
 
@@ -151,8 +152,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvMyPostsOffersList"
-            android:layout_centerHorizontal="true"
-            android:gravity="center" android:id="@+id/layoutImageViewsHolderMine">
+
+             android:id="@+id/layoutImageViewsHolderMine">
             <ImageView
                 android:id="@+id/ivPrimaryImageOffer6"
 
