@@ -24,11 +24,11 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <android.support.v4.view.ViewPager
-        android:layout_marginTop="@dimen/abc_action_bar_stacked_max_height"
+
         android:id="@+id/pager2"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/tab_layout"
+        android:layout_below="@id/tab_layout2"
 
         />
     <include layout="@layout/floating_make_offer"
