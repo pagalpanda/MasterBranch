@@ -10,8 +10,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,6 +55,9 @@ public class ChooseOptionsOffersFragment extends Fragment {
     JSONArray hisposts = null;
     JSONObject offers;
     Fragment fragment = null;
+    ChooseOffersAdapter adapter;
+
+    ViewPager viewPager;
 
 
 
@@ -92,7 +97,23 @@ public class ChooseOptionsOffersFragment extends Fragment {
         setHasOptionsMenu(true);
 
         ((GlobalHome) getActivity()).setActionBarTitle("Offers");
-        btnMyOffers = (Button)rootView.findViewById(R.id.buttonShowMyOffers);
+
+
+        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout_show_offers);
+//        tabLayout.addTab(tabLayout.newTab().setText("My Posts"));
+//        tabLayout.addTab(tabLayout.newTab().setText("His Posts"));
+
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        viewPager = (ViewPager) rootView.findViewById(R.id.pagerShowOffers);
+        adapter = new ChooseOffersAdapter(
+                getFragmentManager(), 2, listOfMyOffers, listOfHisOffers);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+
+
+     /*   btnMyOffers = (Button)rootView.findViewById(R.id.buttonShowMyOffers);
         btnHisOffers = (Button)rootView.findViewById(R.id.buttonShowHisOffers);
 
 
@@ -122,7 +143,7 @@ public class ChooseOptionsOffersFragment extends Fragment {
             }
         });
 
-
+        */
 
 
 
@@ -312,7 +333,12 @@ public class ChooseOptionsOffersFragment extends Fragment {
             // dismiss the dialog once done
             pDialog.dismiss();
 
+            viewPager.destroyDrawingCache();
+//            adapter = new MakeOfferAdapter(
+//                    getFragmentManager(), 2);
+//            viewPager.setAdapter(adapter);
 
+            adapter.notifyDataSetChanged();
 
 
 
