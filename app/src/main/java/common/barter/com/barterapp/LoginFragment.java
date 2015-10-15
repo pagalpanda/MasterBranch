@@ -6,10 +6,8 @@ package common.barter.com.barterapp;
 import android.app.Activity;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -49,7 +47,6 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
-import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -180,28 +177,35 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         authButton.setReadPermissions(Arrays.asList("user_birthday"));
         authButton.setReadPermissions(Arrays.asList("email"));
         //rootView.findViewById(R.id.com_facebook_login_activity_progress_bar).setVisibility(View.GONE);
-        //authButton.
+        authButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                createProcessDialog("Connecting to Facebook");
+            }
+        });
 
         authButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
                 CommonResources.hideKeyboard(getActivity());
-                flash("FB Success");
-                new FBLoginAsync(getContext(), getFragmentManager(), loginResult).execute();
+                //flash("FB Success");
+                new FBLoginAsync(getContext(), getFragmentManager(), loginResult,pDialog).execute();
+                authButton.clearPermissions();
             }
 
             @Override
             public void onCancel() {
-                flash("FB Cancel");
+                //flash("FB Cancel");
+                dismissProcessDialog();
                 CommonResources.hideKeyboard(getActivity());
             }
 
             @Override
             public void onError(FacebookException e) {
-                flash("FB Error");
+                flash("Error occured. Please try again later");
+                dismissProcessDialog();
                 CommonResources.hideKeyboard(getActivity());
-                flash(e.toString());
+                //flash(e.toString());
             }
         });
 
@@ -368,16 +372,26 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
 
     }
 
+    private void createProcessDialog(String msg) {
+        if(pDialog==null){
+            pDialog = ProgressDialog.show(context,"",msg,true,true);
+        } else {
+            pDialog.setMessage(msg);
+        }
+
+        if ( !(pDialog.isShowing()) )
+            pDialog.show();
+    }
+
+    private void dismissProcessDialog() {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
 
     private void onSignInClicked() {
-        flash("Signing in");
-
-        pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Connecting to Google..");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(true);
-        pDialog.show();
-
+        //flash("Signing in");
+        mIsResolving = false;
+        createProcessDialog("Connecting to Google..");
         buildGoogleApiClient();
         if (mGoogleApiClient !=null)
         {
@@ -385,7 +399,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         }
         else {
             flash("Please check Connectivity");
-            pDialog.dismiss();
+            dismissProcessDialog();
         }
     }
 
@@ -399,6 +413,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
             }
             else {
                 mShouldResolve = true;
+                createProcessDialog("Connecting to Google..");
             }
             mIsResolving = false;
             if(mShouldResolve) {
@@ -413,14 +428,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         }
         else
         {
-            flash("onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
+            //flash("onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
 
     }
 
     public void showSignedOutUI() {
-        flash("showSignedOutUI");
+        //flash("showSignedOutUI");
         // Clear the default account so that GoogleApiClient will not automatically
         // connect in the future.
         if (mGoogleApiClient.isConnected()) {
@@ -476,7 +491,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
 // onConnected indicates that an account was selected on the device, that the selected
             // account has granted any requested permissions to our app and that we were able to
             // establish a service connection to Google Play services.
-            flash("onConnected:" + bundle);
+            //flash("onConnected:" + bundle);
             mGoogleAPIConnected=true;
             getGoogleInfo();
 
@@ -487,8 +502,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
 
             if (mGoogleApiClient.isConnected()) {
                 if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                    flash("In getGoogleInfo: Information received");
-
+                    createProcessDialog("Receiving Data");
                     Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
                     LoginDetails.getInstance().resetDetails();
                     LoginDetails.getInstance().setPersonName(currentPerson.getDisplayName());
@@ -502,7 +516,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
                     LoginDetails.getInstance().setPassword(LoginDetails.getInstance().getEmail().concat("123"));
                     loginUser();
                 } else {
-                    flash("In getGoogleInfo: Information not received");
+                    flash("No information received. Please try again");
                 }
             } else
             {
@@ -522,18 +536,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
             // Could not connect to Google Play Services.  The user needs to select an account,
             // grant permissions or resolve an error in order to sign in. Refer to the javadoc for
             // ConnectionResult to see possible error codes.
-            flash("onConnectionFailed:" + connectionResult);
+            //flash("onConnectionFailed:" + connectionResult);
 
             if (!mIsResolving) {
 
                 if (connectionResult.hasResolution()) {
                     try {
-
+                        dismissProcessDialog();
                         connectionResult.startResolutionForResult(getActivity(), RC_SIGN_IN);
                         mIsResolving = true;
                        // mGoogleApiClient.connect();
                     } catch (IntentSender.SendIntentException e) {
-                        flash("Could not resolve ConnectionResult:" + e);
+                        //flash("Could not resolve ConnectionResult:" + e);
                         mIsResolving = false;
                         mGoogleApiClient.connect();
                     }
@@ -541,7 +555,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
                     // Could not resolve the connection result, show the user an
                     // error dialog.
                     //showErrorDialog(connectionResult);
-                    flash(new Integer(connectionResult.getErrorCode()).toString());
+                    dismissProcessDialog();
+                    //flash(new Integer(connectionResult.getErrorCode()).toString());
                 }
             } else {
                 // Show the signed-out UI
