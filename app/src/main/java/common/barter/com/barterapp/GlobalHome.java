@@ -461,6 +461,14 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
                 setActionBarTitle(navMenuTitles[1]);
             }
             getSupportFragmentManager().popBackStack();
+        }else if(f instanceof ForgotPassword){
+            getSupportFragmentManager().popBackStack();
+            getmDrawerToggle().setDrawerIndicatorEnabled(true);
+            setActionBarTitle(MessagesString.HEADER_MY_ACCOUNT);
+        }else if(f instanceof ChangePassword){
+            getSupportFragmentManager().popBackStack();
+            getmDrawerToggle().setDrawerIndicatorEnabled(true);
+                setActionBarTitle(MessagesString.HEADER_MY_ACCOUNT);
         }
     }
 
