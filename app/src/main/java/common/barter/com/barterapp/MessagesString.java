@@ -29,4 +29,8 @@ public class MessagesString {
     public final static String SHARED_PREFS_MOBILE = "mobilenum";
     public final static String SHARED_PREFS_IS_MOBILE_VERIFIED = "ismobileverified";
     public final static String SHARED_PREFS_LOGIN_MODE = "loginmode";
+
+    public final static String HEADER_MY_ACCOUNT = "My Acoount";
+    public final static String HEADER_FORGOT_PASSWORD = "Forgot Password";
+    public final static String HEADER_CHANGE_PASSWORD = "Change Password";
 }
