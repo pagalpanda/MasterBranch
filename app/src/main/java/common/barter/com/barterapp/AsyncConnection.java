@@ -70,14 +70,14 @@ public abstract class AsyncConnection extends AsyncTask<String, String, String> 
     @Override
     protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
-        if (showDialog){
+        if (showDialog) {
             pDialog.dismiss();
         }
 
-        if(json!=null)
-        {
-            receiveData(json);
-        }
+//        if(json!=null)
+//        {
+        receiveData(json);
+//    }
     }
 
 
