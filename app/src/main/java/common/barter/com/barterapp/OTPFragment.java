@@ -42,6 +42,7 @@ public class OTPFragment extends Fragment {
     private EditText etstatus;
     private ProgressBar pbstatus;
     private OTPVerificationDialog otpVerificationDialog;
+    GlobalHome activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +51,9 @@ public class OTPFragment extends Fragment {
         View dialogFragmentView = inflater.inflate(R.layout.otp_popup, container, false);
         //receiveWebOTP();
         setHasOptionsMenu(true);
+        activity = (GlobalHome) getActivity();
+        activity.getmDrawerToggle().setDrawerIndicatorEnabled(false);
+        activity.setActionBarTitle(MessagesString.HEADER_VERIFY_OTP);
         etotp = (EditText) dialogFragmentView.findViewById(R.id.etotp);
         tvmobilenum = (TextView) dialogFragmentView.findViewById(R.id.tvmobilenum);
         etstatus = (EditText) dialogFragmentView.findViewById(R.id.etstatus);
