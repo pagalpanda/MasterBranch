@@ -8,8 +8,10 @@ import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.facebook.FacebookRequestError;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
@@ -29,22 +31,29 @@ public class FBLoginAsync extends AsyncTask<String, String, String> {
         LoginResult loginResult;
         String error;
 
-        public FBLoginAsync (Context context,FragmentManager fragmentManager,LoginResult loginResult)
+        public FBLoginAsync (Context context,FragmentManager fragmentManager,LoginResult loginResult,ProgressDialog pDialog)
         {
             this.context=context;
             this.fragmentManager=fragmentManager;
             this.loginResult=loginResult;
+            this.pDialog=pDialog;
         }
 
 @Override
 protected void onPreExecute() {
         super.onPreExecute();
+
+    if(pDialog==null){
         pDialog = new ProgressDialog(context);
-        pDialog.setMessage("Connecting to Facebook ..");
+        pDialog.setMessage("Receiving Data ..");
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(true);
         pDialog.show();
-        }
+    }
+    else
+        pDialog.setMessage("Receiving Data ..");
+
+}
 
 /**
  * Creating product
@@ -62,6 +71,7 @@ protected String doInBackground(String... args) {
 protected void onPostExecute(String file_url) {
         // dismiss the dialog once done
 
+        FBClearData();
         FBLogout();
         if(isEmailIdReturned)
         {
@@ -156,10 +166,46 @@ protected void onPostExecute(String file_url) {
     }
     public void FBLogout()
     {
+
         if(loginResult.getAccessToken() != null){
             LoginManager.getInstance().logOut();
         }
     }
 
+    public void FBClearData() {
+
+        // Solution option1
+//        GraphRequest delPermRequest = new GraphRequest(AccessToken.getCurrentAccessToken(), "/{user-id}/permissions/", null, HttpMethod.DELETE, new GraphRequest.Callback() {
+//            @Override
+//            public void onCompleted(GraphResponse graphResponse) {
+//                if (graphResponse != null) {
+//                    FacebookRequestError error = graphResponse.getError();
+//                    if (error != null) {
+//                        flash(error.toString());
+//                    }
+//                    FBLogout();
+//                }
+//            }
+//        });
+//        flash("Executing revoke permissions with graph path");
+//        delPermRequest.executeAndWait();
+//
+//        // Solution option2
+//        GraphRequest delPermRequest1 = GraphRequest.newDeleteObjectRequest(AccessToken.getCurrentAccessToken(), "/{user-id}/permissions/", new GraphRequest.Callback() {
+//            @Override
+//            public void onCompleted(GraphResponse graphResponse) {
+//                if (graphResponse != null) {
+//                    FacebookRequestError error = graphResponse.getError();
+//                    if (error != null) {
+//                        flash(error.toString());
+//                    }
+//                    FBLogout();
+//                }
+//            }
+//        });
+//        delPermRequest1.executeAndWait();
+//        flash("Executing revoke permissions with graph path");
+
+        }
 }
 
