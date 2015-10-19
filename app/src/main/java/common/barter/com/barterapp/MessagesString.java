@@ -33,4 +33,5 @@ public class MessagesString {
     public final static String HEADER_MY_ACCOUNT = "My Acoount";
     public final static String HEADER_FORGOT_PASSWORD = "Forgot Password";
     public final static String HEADER_CHANGE_PASSWORD = "Change Password";
+    public final static String  HEADER_VERIFY_OTP = "Verify OTP";
 }
