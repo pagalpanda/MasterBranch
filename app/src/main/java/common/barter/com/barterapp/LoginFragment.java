@@ -224,8 +224,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
 
                 if(tabSelected == 2){
                     String name = etFirstName.getText().toString();
-                    etFirstName.setError("Please enter your name!");
-                    return;
+                    if(name == null || "".equalsIgnoreCase(name.trim())) {
+                        etFirstName.setError("Please enter your name!");
+                        return;
+                    }
                 }
 
 
