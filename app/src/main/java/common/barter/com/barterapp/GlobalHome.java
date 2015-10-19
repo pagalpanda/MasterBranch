@@ -469,6 +469,10 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
             getSupportFragmentManager().popBackStack();
             getmDrawerToggle().setDrawerIndicatorEnabled(true);
                 setActionBarTitle(MessagesString.HEADER_MY_ACCOUNT);
+        }else if(f instanceof OTPFragment){
+            getSupportFragmentManager().popBackStack();
+            getmDrawerToggle().setDrawerIndicatorEnabled(true);
+            setActionBarTitle(MessagesString.HEADER_MY_ACCOUNT);
         }
     }
 
