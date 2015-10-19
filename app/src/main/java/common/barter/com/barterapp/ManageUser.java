@@ -339,7 +339,7 @@ public class ManageUser extends Fragment {
         FragmentManager fragmentManager = ((GlobalHome)getActivity()).getSupportFragmentManager();
         FragmentTransaction ft  = fragmentManager.beginTransaction();
         ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
-        ft.replace(R.id.frame_container, fragment).commit();
+        ft.add(R.id.frame_container, fragment).addToBackStack("otp").commit();
 
 
     }
@@ -430,9 +430,6 @@ public class ManageUser extends Fragment {
                     as.cancel(true);
                 }
                 setDialogFragment();
-
-//                btverify.setText("VERIFY");
-//                btverify.setActivated(true);
             }
 
 
