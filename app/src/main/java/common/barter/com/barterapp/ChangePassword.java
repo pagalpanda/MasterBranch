@@ -40,12 +40,16 @@ public class ChangePassword extends Fragment {
         menu.clear();
     }
 
-
+    GlobalHome activity;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View ChangePasswordView = inflater.inflate(R.layout.change_password, container, false);
+        activity = (GlobalHome) getActivity();
+        activity.getmDrawerToggle().setDrawerIndicatorEnabled(false);
+        activity.setActionBarTitle(MessagesString.HEADER_CHANGE_PASSWORD);
+
         setHasOptionsMenu(true);
         etCurrentPwd = (EditText) ChangePasswordView.findViewById(R.id.etCurrentPwd);
         etNewPwd = (EditText) ChangePasswordView.findViewById(R.id.etNewPwd);
@@ -181,7 +185,9 @@ public class ChangePassword extends Fragment {
                     int success = json.getInt(TAG_SUCCESS);
                     if (success == 0) {
                         flash("Password updated");
-                        getActivity().getSupportFragmentManager().popBackStack();
+                        navigateToManageUser();
+
+
                         // TODO: move to Manage user
                     }
                     else if (success == 1) {
@@ -206,6 +212,13 @@ public class ChangePassword extends Fragment {
             }
         };
         as.execute();
+
+    }
+
+    private void navigateToManageUser() {
+        getActivity().getSupportFragmentManager().popBackStack();
+        activity.getmDrawerToggle().setDrawerIndicatorEnabled(true);
+        activity.setActionBarTitle(MessagesString.HEADER_MY_ACCOUNT);
 
     }
 
