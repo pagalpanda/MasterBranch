@@ -273,7 +273,7 @@ public class ManageUser extends Fragment {
     }
 
     public boolean validateInput() {
-        setNewGender(rbmale.isChecked()?"M":"F");
+        setNewGender(rbmale.isChecked() ? "M" : "F");
         setNewMobileNum(etphone.getText().toString());
         setNewName(etname.getText().toString());
         if (getNewMobileNum() !=null && !("".equalsIgnoreCase(getNewMobileNum())) && !(CommonResources.isValidMobile(getNewMobileNum()) ) )
@@ -359,6 +359,12 @@ public class ManageUser extends Fragment {
         as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
             public void receiveData(JSONObject json){
                 try {
+                    if(json == null){
+                        //Connectivity Issue.
+                        Toast.makeText(getContext(),"Connectivity Issue!",Toast.LENGTH_SHORT).show();
+                        otpVerificationDialog.dismiss();
+                        return;
+                    }
                     String TAG_SUCCESS = "success";
                     int success = json.getInt(TAG_SUCCESS);
                     if (success == 0) {
