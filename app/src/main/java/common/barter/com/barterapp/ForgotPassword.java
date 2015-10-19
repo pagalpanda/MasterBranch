@@ -25,12 +25,16 @@ public class ForgotPassword extends Fragment {
     Activity context;
     private Button btSendPwd;
     private EditText etEmailOrMob;
+    GlobalHome activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View ForgotPasswordView = inflater.inflate(R.layout.forgot_password, container, false);
+        activity = (GlobalHome) getActivity();
+        activity.getmDrawerToggle().setDrawerIndicatorEnabled(false);
+        activity.setActionBarTitle(MessagesString.HEADER_FORGOT_PASSWORD);
         etEmailOrMob = (EditText) ForgotPasswordView.findViewById(R.id.etCurrentPwd);
         btSendPwd = (Button) ForgotPasswordView.findViewById(R.id.btSendPwd);
 
@@ -134,6 +138,9 @@ public class ForgotPassword extends Fragment {
 
     private void navigateToLogin() {
         ((GlobalHome)getActivity()).getSupportFragmentManager().popBackStack();
+        activity.getmDrawerToggle().setDrawerIndicatorEnabled(true);
+        activity.setActionBarTitle(MessagesString.HEADER_MY_ACCOUNT);
+
     }
 
 
