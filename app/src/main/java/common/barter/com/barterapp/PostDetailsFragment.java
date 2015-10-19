@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -57,6 +58,9 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
     PhotosGridViewAdapter adaper;
     private ProgressDialog pDialog;
     String calledFor;
+    boolean toggle = false;
+
+
     public PostDetailsFragment(Post post, String calledFor) {
         this();
         this.post = post;
@@ -117,7 +121,7 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
 
         View rootView = inflater.inflate(R.layout.fragment_post_details, container, false);
 
-
+        final ImageButton ibAddToWishList = (ImageButton)rootView.findViewById(R.id.ibAddToWishList);
         Button btnMakeOffer = (Button)rootView.findViewById(R.id.btnMakeOffer);
 
         activity = (GlobalHome) getActivity();
@@ -127,16 +131,35 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
             setHasOptionsMenu(true);
             btnMakeOffer.setVisibility(View.INVISIBLE);
             ((GlobalHome) getActivity()).setActionBarTitle("Make an Offer");
+            ibAddToWishList.setVisibility(View.GONE);
 
         }else if("myposts".equalsIgnoreCase(calledFor)){
             setHasOptionsMenu(true);
             btnMakeOffer.setVisibility(View.INVISIBLE);
             ((GlobalHome) getActivity()).setActionBarTitle("My Posts");
+            ibAddToWishList.setVisibility(View.GONE);
         }else {
             setHasOptionsMenu(true);
             btnMakeOffer.setVisibility(View.VISIBLE);
-
+            if(LoginDetails.getInstance().getUserid() != null)
+                ibAddToWishList.setVisibility(View.VISIBLE);
+            else
+                ibAddToWishList.setVisibility(View.GONE);
         }
+
+        ibAddToWishList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!toggle) {
+                    toggle = true;
+                    ibAddToWishList.setBackground(getResources().getDrawable(R.drawable.hearton));
+                }else{
+                    toggle = false;
+                    ibAddToWishList.setBackground(getResources().getDrawable(R.drawable.heartoff));
+                }
+            }
+        });
+
         Log.d("Details: ", post.getTitle() + " " + post.getHasImage() + " " + post.getNumOfImages() + " " + post.getCreatedDate() + " " + post.getLocality() + " " + post.getDescription());
 
         tvTitle = (TextView) rootView.findViewById(R.id.tvTitlePostDetails);
