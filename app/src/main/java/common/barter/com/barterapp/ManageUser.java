@@ -138,8 +138,10 @@ public class ManageUser extends Fragment {
         rbfemale = (RadioButton)rootView.findViewById(R.id.rbFemale);
         btSave = (Button)rootView.findViewById(R.id.btSaveManageUser);
         ivVerified= (ImageView)rootView.findViewById(R.id.ivVerified);
-        otpVerificationDialog = new OTPVerificationDialog(getContext());
-        otpVerificationDialog.setCancelable(false);
+        // TEST for OTPAdapter
+//        otpVerificationDialog = new OTPVerificationDialog(getContext());
+//        otpVerificationDialog.setCancelable(false);
+
         getDetails();
         etphone.addTextChangedListener(new TextWatcher() {
             @Override
@@ -183,7 +185,10 @@ public class ManageUser extends Fragment {
                     LoginDetails.getInstance().setMob_verified("0");
                     LoginDetails.getInstance().setMobilenum(newPhoneEntered);
                     new CommonResources(context).saveToSharedPrefs(MessagesString.SHARED_PREFS_MOBILE, LoginDetails.getInstance().getMobilenum());
-                    receiveWebOTP();
+                    // TEST for OTPAdapter
+                    //receiveWebOTP();
+                    OTPVerificationAdapter otpVerificationAdapter = new OTPVerificationAdapter(getActivity(),getContext());
+                    otpVerificationAdapter.generateOTP();
                 }else {
                     etphone.setText(LoginDetails.getInstance().getMobilenum());
                 }
@@ -272,6 +277,12 @@ public class ManageUser extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDetails();
+    }
+
     public boolean validateInput() {
         setNewGender(rbmale.isChecked() ? "M" : "F");
         setNewMobileNum(etphone.getText().toString());
@@ -332,17 +343,19 @@ public class ManageUser extends Fragment {
 
     }
 
-    public void setDialogFragment()
-    {
-        Fragment fragment = new OTPFragment();
+    // TEST for OTPAdapter
+//    public void setDialogFragment()
+//    {
+//        Fragment fragment = new OTPFragment();
+//
+//        FragmentManager fragmentManager = ((GlobalHome)getActivity()).getSupportFragmentManager();
+//        FragmentTransaction ft  = fragmentManager.beginTransaction();
+//        ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
+//        ft.replace(R.id.frame_container, fragment).commit();
+//
+//
+//    }
 
-        FragmentManager fragmentManager = ((GlobalHome)getActivity()).getSupportFragmentManager();
-        FragmentTransaction ft  = fragmentManager.beginTransaction();
-        ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
-        ft.add(R.id.frame_container, fragment).addToBackStack("otp").commit();
-
-
-    }
 
 
     public void receiveWebOTP() {
@@ -359,12 +372,6 @@ public class ManageUser extends Fragment {
         as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
             public void receiveData(JSONObject json){
                 try {
-                    if(json == null){
-                        //Connectivity Issue.
-                        Toast.makeText(getContext(),"Connectivity Issue!",Toast.LENGTH_SHORT).show();
-                        otpVerificationDialog.dismiss();
-                        return;
-                    }
                     String TAG_SUCCESS = "success";
                     int success = json.getInt(TAG_SUCCESS);
                     if (success == 0) {
@@ -429,7 +436,10 @@ public class ManageUser extends Fragment {
                 if(as != null){
                     as.cancel(true);
                 }
-                setDialogFragment();
+                //setDialogFragment();
+
+//                btverify.setText("VERIFY");
+//                btverify.setActivated(true);
             }
 
 
