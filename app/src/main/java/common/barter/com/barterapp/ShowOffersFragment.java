@@ -244,16 +244,15 @@ public class ShowOffersFragment extends Fragment {
                     if(myposts.length() == 0) return "empty";
                     for (int i = 0; i < myposts.length(); i++) {
                         JSONObject c = myposts.getJSONObject(i);
-                        myListOfPostsInOffer.add(new Post(c.getString("uniqueid"), c.getString("title"), c.getString("createddate"), c.getString("locality"), c.getString("hasimage"), c.getString("postid"), c.getString("numofimages"), c.getString("description"), c.getString("subcategory"), c.getString("category"), c.getString("city")));
+                        myListOfPostsInOffer.add(new Post(c.getString("uniqueid"), c.getString("title"), c.getString("createddate"), c.getString("locality"), c.getString("hasimage"), c.getString("postid"), c.getString("numofimages"), c.getString("description"), c.getString("subcategory"), c.getString("category"), c.getString("city"), "null".equalsIgnoreCase(c.getString("isaddedtowishlist"))?false:true));
                     }
 
                     hisposts = json.getJSONArray("hisposts");
                     if(hisposts.length() == 0) return "empty";
                     for (int i = 0; i < hisposts.length(); i++) {
                         JSONObject c = hisposts.getJSONObject(i);
-                        hisListOfPostsInOffer.add(new Post(c.getString("uniqueid"), c.getString("title"), c.getString("createddate"), c.getString("locality"), c.getString("hasimage"), c.getString("postid"), c.getString("numofimages"), c.getString("description"), c.getString("subcategory"), c.getString("category"), c.getString("city")));
+                        hisListOfPostsInOffer.add(new Post(c.getString("uniqueid"), c.getString("title"), c.getString("createddate"), c.getString("locality"), c.getString("hasimage"), c.getString("postid"), c.getString("numofimages"), c.getString("description"), c.getString("subcategory"), c.getString("category"), c.getString("city"), "null".equalsIgnoreCase(c.getString("isaddedtowishlist"))?false:true));
                     }
-                String x;
                 } else if(success == 1){
                     // failed to create product
                 }else{
