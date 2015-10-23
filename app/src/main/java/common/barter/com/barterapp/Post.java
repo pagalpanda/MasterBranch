@@ -34,6 +34,16 @@ public class Post {
     private String category;
     private String city;
 
+    public boolean isAddedToWishList() {
+        return isAddedToWishList;
+    }
+
+    public void setIsAddedToWishList(boolean isAddedToWishList) {
+        this.isAddedToWishList = isAddedToWishList;
+    }
+
+    private boolean isAddedToWishList;
+
     public boolean isSelected() {
         return isSelected;
     }
@@ -102,7 +112,7 @@ public class Post {
         this.image = image;
     }
 
-    public Post(String uniqueId, String title, String createdDate, String locality, String hasImage, String postId, String numOfImages, String description, String subCategory, String category, String city) {
+    public Post(String uniqueId, String title, String createdDate, String locality, String hasImage, String postId, String numOfImages, String description, String subCategory, String category, String city, boolean isAddedToWishList) {
         this.title = title;
         this.createdDate = createdDate;
         this.locality = locality;
@@ -115,6 +125,7 @@ public class Post {
         this.subCategory=subCategory;
         this.city = city;
         this.uniqueId=uniqueId;
+        this.isAddedToWishList = isAddedToWishList;
     }
 
 
