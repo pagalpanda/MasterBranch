@@ -20,7 +20,7 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_sub_categories">SubCategoriesActivity</string>
-    <string name="otp_string">Hello! Welcome to BarterApp. Your OPT is</string>
+    <string name="otp_string">Hello! Welcome to BarterApp. Your OTP is</string>
     <color name="red">#ffff0000</color>
     <color name="green">#86C67C</color>
     <color name="gray">#a8a8a8</color>
