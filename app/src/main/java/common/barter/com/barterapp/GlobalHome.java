@@ -504,6 +504,10 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
                 fragment = new ChooseOptionsOffersFragment();
                 ft.setCustomAnimations(R.anim.enter_from_left,R.anim.abc_fade_out,R.anim.enter_from_left,R.anim.abc_fade_out);
                 break;
+            case 3:
+                fragment = new WishList();
+                ft.setCustomAnimations(R.anim.enter_from_left,R.anim.abc_fade_out,R.anim.enter_from_left,R.anim.abc_fade_out);
+                break;
             case 4:
                 if (isLoggedInFromClass())
                 {
