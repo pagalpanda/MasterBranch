@@ -98,15 +98,8 @@
 </RelativeLayout>
 
     </ScrollView>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Make Offer"
-        android:layout_gravity="center_horizontal"
-        android:textSize="40px"
-        android:id="@+id/btnMakeOffer"
-        android:layout_alignParentBottom="true"
 
+    <include layout="@layout/floating_post_ad"
 
         />
 </RelativeLayout>
