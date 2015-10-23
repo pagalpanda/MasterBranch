@@ -124,27 +124,26 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_post_details, container, false);
-
+        android.support.design.widget.FloatingActionButton floatingButton = (android.support.design.widget.FloatingActionButton)rootView.findViewById(R.id.fab);
         ibAddToWishList = (ImageButton)rootView.findViewById(R.id.ibAddToWishList);
-        Button btnMakeOffer = (Button)rootView.findViewById(R.id.btnMakeOffer);
 
         activity = (GlobalHome) getActivity();
         activity.getmDrawerToggle().setDrawerIndicatorEnabled(false);
 
         if("viewonly".equalsIgnoreCase(calledFor)) {
             setHasOptionsMenu(true);
-            btnMakeOffer.setVisibility(View.INVISIBLE);
+            floatingButton.setVisibility(View.INVISIBLE);
             ((GlobalHome) getActivity()).setActionBarTitle("Make an Offer");
             ibAddToWishList.setVisibility(View.GONE);
 
         }else if("myposts".equalsIgnoreCase(calledFor)){
             setHasOptionsMenu(true);
-            btnMakeOffer.setVisibility(View.INVISIBLE);
+            floatingButton.setVisibility(View.INVISIBLE);
             ((GlobalHome) getActivity()).setActionBarTitle("My Posts");
             ibAddToWishList.setVisibility(View.GONE);
         }else {
             setHasOptionsMenu(true);
-            btnMakeOffer.setVisibility(View.VISIBLE);
+            floatingButton.setVisibility(View.VISIBLE);
             if(LoginDetails.getInstance().getUserid() != null) {
                 ibAddToWishList.setVisibility(View.VISIBLE);
                 if(post.isAddedToWishList()) ibAddToWishList.setBackground(getResources().getDrawable(R.drawable.hearton));
@@ -193,9 +192,12 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
         if (dots.length > 0)
             dots[0].setTextColor(getResources().getColor(R.color.colorPrimary));
 
-        btnMakeOffer.setOnClickListener(new View.OnClickListener() {
+
+
+        floatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Fragment fragment = null;
                 fragment = new MakeOfferFragment(post.getUniqueId());
                 CommonResources.flowForOffers = "";
@@ -213,6 +215,7 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
                 }
             }
         });
+
         return rootView;
     }
 
