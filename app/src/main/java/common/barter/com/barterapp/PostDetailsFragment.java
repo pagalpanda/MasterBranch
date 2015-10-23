@@ -30,12 +30,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
 public class PostDetailsFragment extends Fragment implements ViewPager.OnPageChangeListener {
@@ -115,13 +118,14 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
     }
 
     GlobalHome activity;
+    ImageButton ibAddToWishList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_post_details, container, false);
 
-        final ImageButton ibAddToWishList = (ImageButton)rootView.findViewById(R.id.ibAddToWishList);
+        ibAddToWishList = (ImageButton)rootView.findViewById(R.id.ibAddToWishList);
         Button btnMakeOffer = (Button)rootView.findViewById(R.id.btnMakeOffer);
 
         activity = (GlobalHome) getActivity();
@@ -141,24 +145,24 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
         }else {
             setHasOptionsMenu(true);
             btnMakeOffer.setVisibility(View.VISIBLE);
-            if(LoginDetails.getInstance().getUserid() != null)
+            if(LoginDetails.getInstance().getUserid() != null) {
                 ibAddToWishList.setVisibility(View.VISIBLE);
-            else
+                if(post.isAddedToWishList()) ibAddToWishList.setBackground(getResources().getDrawable(R.drawable.hearton));
+                else ibAddToWishList.setBackground(getResources().getDrawable(R.drawable.heartoff));
+            }else {
                 ibAddToWishList.setVisibility(View.GONE);
+            }
         }
+
+
 
         ibAddToWishList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!toggle) {
-                    toggle = true;
-                    ibAddToWishList.setBackground(getResources().getDrawable(R.drawable.hearton));
-                }else{
-                    toggle = false;
-                    ibAddToWishList.setBackground(getResources().getDrawable(R.drawable.heartoff));
-                }
+                addOrRemoveWishList();
             }
         });
+
 
         Log.d("Details: ", post.getTitle() + " " + post.getHasImage() + " " + post.getNumOfImages() + " " + post.getCreatedDate() + " " + post.getLocality() + " " + post.getDescription());
 
@@ -212,6 +216,65 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
         return rootView;
     }
 
+
+    void addOrRemoveWishList(){
+        Toast.makeText(getContext(),"Post id:"+post.getPostId(),Toast.LENGTH_SHORT).show();
+        if(!CommonResources.isNetworkAvailable(getActivity())) {
+            Toast.makeText(getContext(),"Please check the connectivity",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        HashMap<String,String> params = new HashMap<String, String>();
+        String uniqueId = LoginDetails.getInstance().getUserid();
+        if(uniqueId == null || "".equalsIgnoreCase(uniqueId)){
+            //User not logged in
+            Toast.makeText(getContext(),"Please login to continue",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        params.put("uniqueid", LoginDetails.getInstance().getUserid());
+        params.put("postid", post.getPostId());
+        String urlToForCall = CommonResources.getURL("switcher_wishlist");
+        if(post.isAddedToWishList()) {// Remove from wishlist
+            params.put("instruction", "remove");
+        }else{//add to wishlist
+            params.put("instruction", "add");
+        }
+        AsyncConnection as = new AsyncConnection(context, urlToForCall, "POST", params, false, null){
+
+            @Override
+            public void receiveData(JSONObject json) {
+                //If successfull
+                if(json != null){
+                    String TAG_SUCCESS = "success";
+                    try {
+                        int success = json.getInt(TAG_SUCCESS);
+
+                        if (success == 0) {
+
+                            String actionTaken = json.getString("action");
+                            if("added".equalsIgnoreCase(actionTaken) ){
+                                post.setIsAddedToWishList(true);
+                                ibAddToWishList.setBackground(getResources().getDrawable(R.drawable.hearton));
+                            }else if("removed".equalsIgnoreCase(actionTaken)){
+                                post.setIsAddedToWishList(false);
+                                ibAddToWishList.setBackground(getResources().getDrawable(R.drawable.heartoff));
+                            }
+                        } else if (success == 1) {
+                            // failed to create product
+                        } else {
+                            //Invalid input
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        as.execute();
+
+    }
     private void setTextsInTextViews(Post post) {
         tvTitle.setText(post.getTitle());
         tvLocality.setText(post.getLocality());
