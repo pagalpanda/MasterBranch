@@ -126,15 +126,9 @@ public class PostsFragment extends Fragment{
                 (new CommonResources(getContext())).navigateToPostDetails(getFragmentManager(), listOfPosts.get(position), calledFor);
             }
         }));
-//        lvPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                TextView tvTitle = (TextView) view.findViewById(R.id.tvTitleNamePost);
-//
-//                (new CommonResources(getContext())).navigateToPostDetails(getFragmentManager(), listOfPosts.get(position), calledFor);
-//
-//            }
-//        });
+
+
+
 
         doInBackground();
     }
@@ -236,7 +230,7 @@ public class PostsFragment extends Fragment{
                             }
                             for (int i = 0; i < posts.length(); i++) {
                                 JSONObject c = posts.getJSONObject(i);
-                                listOfPosts.add(new Post(c.getString("uniqueid"), c.getString("title"), c.getString("createddate"), c.getString("locality"), c.getString("hasimage"), c.getString("postid"), c.getString("numofimages"), c.getString("description"), c.getString("subcategory"), c.getString("category"), c.getString("city")));
+                                listOfPosts.add(new Post(c.getString("uniqueid"), c.getString("title"), c.getString("createddate"), c.getString("locality"), c.getString("hasimage"), c.getString("postid"), c.getString("numofimages"), c.getString("description"), c.getString("subcategory"), c.getString("category"), c.getString("city"), "null".equalsIgnoreCase(c.getString("isaddedtowishlist"))?false:true));
                             }
                             adapter.notifyDataSetChanged();
                         } else if (success == 1) {
