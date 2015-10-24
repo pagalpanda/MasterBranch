@@ -167,7 +167,6 @@ public class OTPVerificationAdapter {
     public void setDialogFragment()
     {
         Fragment fragment = new OTPFragment();
-
         FragmentManager fragmentManager = ((GlobalHome)activity).getSupportFragmentManager();
         FragmentTransaction ft  = fragmentManager.beginTransaction();
         ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);

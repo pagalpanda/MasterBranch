@@ -41,6 +41,7 @@ public class OTPFragment extends Fragment {
     private EditText etotp;
     private EditText etstatus;
     private ProgressBar pbstatus;
+    private TextView tvResendCode;
     private OTPVerificationDialog otpVerificationDialog;
     GlobalHome activity;
 
@@ -59,6 +60,7 @@ public class OTPFragment extends Fragment {
         etstatus = (EditText) dialogFragmentView.findViewById(R.id.etstatus);
         pbstatus = (ProgressBar) dialogFragmentView.findViewById(R.id.pbstatus);
         btverify = (Button) dialogFragmentView.findViewById(R.id.btverify);
+        tvResendCode= (TextView) dialogFragmentView.findViewById(R.id.tvResendCode);
         tvmobilenum.setText(MessagesString.OTP_NUMBER_MESSAGE + LoginDetails.getInstance().getMobilenum());
         otpVerificationDialog = new OTPVerificationDialog(getContext());
         otpVerificationDialog.setCancelable(false);
@@ -68,6 +70,15 @@ public class OTPFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 verifyOTP();
+            }
+        });
+        tvResendCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginDetails.getInstance().setIsverifying(true);
+                LoginDetails.getInstance().setMob_verified("0");
+                OTPVerificationAdapter otpVerificationAdapter = new OTPVerificationAdapter(getActivity(),getContext());
+                otpVerificationAdapter.generateOTP();
             }
         });
 
@@ -306,10 +317,13 @@ public class OTPFragment extends Fragment {
                     }
                     else if (success == 1) {
 
-                        LoginDetails.getInstance().setIsverifying(false);
+                        //LoginDetails.getInstance().setIsverifying(false);
+                        flash("OTP not verified. Please try again");
+
                     }
                     else {
-                        LoginDetails.getInstance().setIsverifying(false);
+                        //LoginDetails.getInstance().setIsverifying(false);
+                        flash("OTP not verified. Please try again");
 
                     }
                     otpVerificationDialog.dismiss();
