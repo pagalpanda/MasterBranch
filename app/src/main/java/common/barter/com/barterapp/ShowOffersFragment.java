@@ -41,7 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-public class ShowOffersFragment extends Fragment {
+public class ShowOffersFragment extends Fragment implements AdapterOnClickListener{
 
     Activity context;
 
@@ -93,7 +93,7 @@ public class ShowOffersFragment extends Fragment {
         setHasOptionsMenu(true);
 
             ((GlobalHome) getActivity()).setActionBarTitle("Offers");
-        adapter = new ShowOffersAdapter(getContext(), listOfOffers, calledFor);
+        adapter = new ShowOffersAdapter(getContext(), listOfOffers, calledFor, this);
 
         lvOffers.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -101,33 +101,17 @@ public class ShowOffersFragment extends Fragment {
 
         lvOffers.setLayoutManager(mLayoutManager);
 
-//        lvOffers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//        lvOffers.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
 //            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                //TextView tvTitle = (TextView) view.findViewById(R.id.tvTitleNamePost);
-//                // Toast.makeText(context, "You Clicked " + "" + tvTitle.getText() + listOfOffers.get(position).getNumOfImages(), Toast.LENGTH_LONG).show();
+//            public void onItemClick(View view, int position) {
 //                String hisId = listOfOffers.get(position).getUserIdHis();
 //                selectedPosition = position;
 //                status = listOfOffers.get(position).getStatus();
 //                dateUpdated = listOfOffers.get(position).getLastUpdateDate();
 //                currentOfferId = listOfOffers.get(position).getOfferId();
 //                new GetUserPosts().execute(hisId);
-//
-//
 //            }
-//        });
-
-        lvOffers.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                String hisId = listOfOffers.get(position).getUserIdHis();
-                selectedPosition = position;
-                status = listOfOffers.get(position).getStatus();
-                dateUpdated = listOfOffers.get(position).getLastUpdateDate();
-                currentOfferId = listOfOffers.get(position).getOfferId();
-                new GetUserPosts().execute(hisId);
-            }
-        }));
+//        }));
 
        // new GetOffers().execute();
 
@@ -190,6 +174,18 @@ public class ShowOffersFragment extends Fragment {
 
     ArrayList<Post> myListOfPostsInOffer;
     ArrayList<Post> hisListOfPostsInOffer;
+
+    @Override
+    public void onClick(int position) {
+
+        String hisId = listOfOffers.get(position).getUserIdHis();
+        selectedPosition = position;
+        status = listOfOffers.get(position).getStatus();
+        dateUpdated = listOfOffers.get(position).getLastUpdateDate();
+        currentOfferId = listOfOffers.get(position).getOfferId();
+        new GetUserPosts().execute(hisId);
+    }
+
     class GetUserPosts extends AsyncTask<String, String, String> {
 
         /**
