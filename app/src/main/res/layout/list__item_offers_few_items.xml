@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    >
+    <android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:layout_marginTop="3dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:id="@+id/cvOfferItemsFew"
+    android:background="?attr/colorPrimary"
+    android:layout_marginBottom="2dp"
+    card_view:cardElevation="3sp"
+    card_view:cardUseCompatPadding="true">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:id="@+id/holder_all_offers_few"
+        >
+
+    <TextView
+        android:id="@+id/tvOfferTitleFew"
+        android:layout_marginTop="4dp"
+        android:layout_alignParentTop="true"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:text="Offer From"
+
+
+        />
+    <TextView
+        android:id="@+id/tvOfferDateOfferedFew"
+        android:layout_below="@+id/tvOfferTitleFew"
+        android:layout_marginTop="1dp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+
+        android:text="DateOffered"
+        />
+    <TextView
+        android:layout_marginTop="1dp"
+        android:id="@+id/tvStatusOfOfferFew"
+        android:layout_below="@+id/tvOfferTitleFew"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:text="Status"
+        />
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/tvStatusOfOfferFew"
+            android:weightSum="6"
+
+
+           >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@drawable/layout_bg_rounded_corner"
+                android:layout_marginRight="10px"
+                android:elevation="3sp"
+                android:layout_gravity="center_horizontal"
+                android:paddingBottom="10px"
+                >
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20px">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Vikram's Posts"
+                    android:id="@+id/tvHisPostsOffersListFew"
+
+                    android:textStyle="bold"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="6dp"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_below="@+id/tvHisPostsOffersListFew"
+                    >
+                <ImageButton
+                    android:id="@+id/ivPrimaryImageOfferFew1"
+                    android:background="@color/primary_dark_material_light"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/search"
+                    android:layout_centerVertical="true"
+                    />
+                <ImageButton
+                    android:id="@+id/ivPrimaryImageOfferFew2"
+                    android:background="@color/primary_dark_material_light"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="2px"
+                    android:src="@drawable/search"
+                    android:layout_centerVertical="true"
+
+                    android:layout_toRightOf="@+id/ivPrimaryImageOfferFew1"/>
+                <ImageButton
+                    android:id="@+id/ivPrimaryImageOfferFew3"
+
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="2px"
+                    android:src="@drawable/search"
+                    android:layout_centerVertical="true"
+                    android:background="@color/primary_dark_material_light"
+                    android:layout_toRightOf="@+id/ivPrimaryImageOfferFew2"/>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_marginLeft="10px"
+                android:elevation="3sp"
+                android:paddingBottom="10px"
+                android:background="@drawable/layout_bg_rounded_corner"
+                >
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20px"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="My Posts"
+                        android:id="@+id/tvMyPostsOffersListFew"
+
+
+                        android:textStyle="bold"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="3dp"
+                        />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_below="@+id/tvMyPostsOffersListFew"
+                    >
+                <ImageButton
+                    android:id="@+id/ivPrimaryImageOfferFew4"
+                    android:background="@color/primary_dark_material_light"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/search"
+                    android:layout_centerVertical="true"
+
+                    />
+                <ImageButton
+                    android:id="@+id/ivPrimaryImageOfferFew5"
+                    android:background="@color/primary_dark_material_light"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/search"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="2px"
+
+                    android:layout_toRightOf="@+id/ivPrimaryImageOfferFew4"/>
+                <ImageButton
+                    android:id="@+id/ivPrimaryImageOfferFew6"
+                    android:background="@color/primary_dark_material_light"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/search"
+                    android:layout_marginLeft="2px"
+                    android:layout_toRightOf="@+id/ivPrimaryImageOfferFew5"
+                    android:layout_centerVertical="true"
+                    />
+                </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+        </RelativeLayout>
+
+     </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>
