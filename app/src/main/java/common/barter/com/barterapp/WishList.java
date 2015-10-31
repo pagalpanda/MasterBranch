@@ -51,7 +51,7 @@ public class WishList extends Fragment{
 //    }
 
     public WishList(){
-
+        this.calledFor = "wishlist";
 
     }
 
