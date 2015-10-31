@@ -143,8 +143,13 @@ public class PostsOfferFragment extends Fragment {
             lvPosts.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
+                    System.out.print(calledFor);
                     Fragment fragment = null;
-                    fragment = new PostDetailsFragment(sListOfPostsMine.get(position), "viewonly");
+                    if(calledFor == null) {// coming from Select Posts in offer
+                        fragment = new PostDetailsFragment(sListOfPostsMine.get(position), "select_posts");
+                    }else {
+                        fragment = new PostDetailsFragment(sListOfPostsMine.get(position), "viewonly");
+                    }
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                     ft.setCustomAnimations(R.anim.zoomin,R.anim.zoomout,R.anim.zoomin,R.anim.zoomout);
                     if (fragment != null) {
@@ -155,22 +160,6 @@ public class PostsOfferFragment extends Fragment {
                 }
             }));
 
-//        lvPosts.addOnItemTouchListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Fragment fragment = null;
-//                fragment = new PostDetailsFragment(sListOfPostsMine.get(position), "viewonly");
-//                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//                ft.setCustomAnimations(R.anim.zoomin,R.anim.zoomout,R.anim.zoomin,R.anim.zoomout);
-//                if (fragment != null) {
-//                    ft.add(R.id.frame_container, fragment).addToBackStack("post_details").commit();
-//                } else {
-//                    Log.e("MainActivity", "Error in creating fragment");
-//                }
-//
-//            }
-//        });
-
         } else{
             test.setText("Tab 2");
             lvPosts.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
@@ -179,6 +168,11 @@ public class PostsOfferFragment extends Fragment {
                     Fragment fragment = null;
 
                     fragment = new PostDetailsFragment(sListOfPostsHis.get(position), "viewonly");
+                    if(calledFor == null) {// coming from Select Posts in offer
+                        fragment = new PostDetailsFragment(sListOfPostsHis.get(position), "select_posts");
+                    }else {
+                        fragment = new PostDetailsFragment(sListOfPostsHis.get(position), "viewonly");
+                    }
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                     ft.setCustomAnimations(R.anim.zoomin, R.anim.zoomout, R.anim.zoomin, R.anim.zoomout);
                     //Animation zoomin = AnimationUtils.loadAnimation(getContext(),R.anim.zoomin);
