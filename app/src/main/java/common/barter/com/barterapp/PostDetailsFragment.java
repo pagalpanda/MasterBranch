@@ -90,7 +90,7 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
             menu.findItem(R.id.action_proceed_make_offer).setVisible(false);
         }
         if (menu.findItem(R.id.action_edit_post) != null) {
-            if("userview".equalsIgnoreCase(calledFor) || "viewonly".equalsIgnoreCase(calledFor)) {
+            if("userview".equalsIgnoreCase(calledFor) || "select_posts".equalsIgnoreCase(calledFor)|| "viewonly".equalsIgnoreCase(calledFor) || "wishlist".equalsIgnoreCase(calledFor)) {
                 menu.findItem(R.id.action_edit_post).setVisible(false);
                 menu.removeItem(R.id.action_edit_post);
             }
@@ -136,12 +136,24 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
             ((GlobalHome) getActivity()).setActionBarTitle("Make an Offer");
             ibAddToWishList.setVisibility(View.GONE);
 
+        }else if("select_posts".equalsIgnoreCase(calledFor)){
+            setHasOptionsMenu(true);
+            floatingButton.setVisibility(View.INVISIBLE);
+            ((GlobalHome) getActivity()).setActionBarTitle(MessagesString.HEADER_SELECT_POSTS_FOR_OFFER);
+            ibAddToWishList.setVisibility(View.GONE);
+
         }else if("myposts".equalsIgnoreCase(calledFor)){
             setHasOptionsMenu(true);
             floatingButton.setVisibility(View.INVISIBLE);
             ((GlobalHome) getActivity()).setActionBarTitle("My Posts");
             ibAddToWishList.setVisibility(View.GONE);
-        }else {
+        }else if("wishlist".equalsIgnoreCase(calledFor)){
+            setHasOptionsMenu(true);
+            floatingButton.setVisibility(View.VISIBLE);
+            ((GlobalHome) getActivity()).setActionBarTitle("Wish List");
+            ibAddToWishList.setVisibility(View.GONE);
+        }
+        else {
             setHasOptionsMenu(true);
             floatingButton.setVisibility(View.VISIBLE);
             if(LoginDetails.getInstance().getUserid() != null) {
@@ -197,7 +209,8 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
         floatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String actionBarTitle = ((GlobalHome)getActivity()).getSupportActionBar().getTitle().toString();
+                CommonResources.headerStack.push(actionBarTitle);
                 Fragment fragment = null;
                 fragment = new MakeOfferFragment(post.getUniqueId());
                 CommonResources.flowForOffers = "";
@@ -219,7 +232,7 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
         return rootView;
     }
 
-
+    AsyncConnection as;
     void addOrRemoveWishList(){
         Toast.makeText(getContext(),"Post id:"+post.getPostId(),Toast.LENGTH_SHORT).show();
         if(!CommonResources.isNetworkAvailable(getActivity())) {
@@ -244,7 +257,7 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
         }else{//add to wishlist
             params.put("instruction", "add");
         }
-        AsyncConnection as = new AsyncConnection(context, urlToForCall, "POST", params, false, null){
+        as = new AsyncConnection(context, urlToForCall, "POST", params, false, null){
 
             @Override
             public void receiveData(JSONObject json) {
@@ -271,6 +284,10 @@ public class PostDetailsFragment extends Fragment implements ViewPager.OnPageCha
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }finally {
+                        as.cancel(true);
                     }
                 }
             }
