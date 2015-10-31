@@ -155,7 +155,7 @@ public class MakeOfferFragment extends Fragment{
 
         View rootView = inflater.inflate(R.layout.fragment_make_offer2, container, false);
         this.uniqueidMine=(String)new CommonResources(getContext()).loadFromSharedPrefs("uniqueid");
-
+        ((GlobalHome)getActivity()).getSupportActionBar().setTitle(MessagesString.HEADER_SELECT_POSTS_FOR_OFFER);
         if( null == calledFor || "".equalsIgnoreCase(calledFor))
             new GetPosts().execute();
         else if("view".equalsIgnoreCase(calledFor)){
