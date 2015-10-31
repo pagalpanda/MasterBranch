@@ -28,10 +28,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -150,31 +152,34 @@ public class ReviewFragment extends Fragment {
                 new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        int pos = position-1;
+                        if(position == 0) return;
+                        int pos = position - 1;
                         Fragment fragment = null;
                         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                         ft.setCustomAnimations(R.anim.zoomin, R.anim.zoomout, R.anim.zoomin, R.anim.zoomout);
 
-                        if(pos<listSelectedMine.size()) {
-                            fragment = new PostDetailsFragment(listSelectedMine.get(pos), "viewonly");
 
-                        }else{
-                            int numOfRowsMine = 0;
-                            if(listSelectedMine.size()%3 == 0){
-                                numOfRowsMine = listSelectedMine.size()/3;
-                            }else
-                                numOfRowsMine = (listSelectedMine.size()/3)+1;
+                            if (pos < listSelectedMine.size()) {
+                                fragment = new PostDetailsFragment(listSelectedMine.get(pos), "viewonly");
 
-                            int posHis = pos  - numOfRowsMine*3-1;
-                            fragment = new PostDetailsFragment(listSelectedHis.get(posHis), "viewonly");
+                            } else {
+                                int numOfRowsMine = 0;
+                                if (listSelectedMine.size() % 3 == 0) {
+                                    numOfRowsMine = listSelectedMine.size() / 3;
+                                } else
+                                    numOfRowsMine = (listSelectedMine.size() / 3) + 1;
+                                if(position == numOfRowsMine*3+1) return; // Nothing should happen when we click the text "His Posts"
+                                int posHis = pos - numOfRowsMine * 3 - 1;
+                                fragment = new PostDetailsFragment(listSelectedHis.get(posHis), "viewonly");
+                            }
+                            if (fragment != null) {
+                                ft.add(R.id.frame_container, fragment).addToBackStack("post_details").commit();
+                            } else {
+                                Log.e("MainActivity", "Error in creating fragment");
+                            }
+
                         }
-                        if (fragment != null) {
-                            ft.add(R.id.frame_container, fragment).addToBackStack("post_details").commit();
-                        } else {
-                            Log.e("MainActivity", "Error in creating fragment");
-                        }
 
-                    }
 
 
                 })
@@ -420,11 +425,6 @@ public class ReviewFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //setListOfPosts();
-//        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams)lvPostsHis.getLayoutParams();
-//        linearParams.width=100*listSelectedHis.size();
-//        lvPostsHis.setLayoutParams(linearParams);
-//        //lvPostsHis.setColumnWidth(100);
 
         mAdapter = new ReviewOfferGridAdapter(getContext(), listSelectedMine,listSelectedHis, "review");
         //mLayoutManager.
@@ -441,46 +441,6 @@ public class ReviewFragment extends Fragment {
         adapter = new PostListOfferAdapter(getContext(),listSelectedHis, "review");
         //lvPostsHis.setAdapter(adapter);
 
-
-
-
-
-/*
-        lvPostsMine.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Fragment fragment = null;
-                fragment = new PostDetailsFragment(listSelectedMine.get(position), "viewonly");
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.anim.zoomin,R.anim.zoomout,R.anim.zoomin,R.anim.zoomout);
-
-                if (fragment != null) {
-                    ft.add(R.id.frame_container, fragment).addToBackStack("post_details").commit();
-                } else {
-                    Log.e("MainActivity", "Error in creating fragment");
-                }
-
-            }
-        });
-
-        lvPostsHis.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Fragment fragment = null;
-                fragment = new PostDetailsFragment(listSelectedHis.get(position), "viewonly");
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.setCustomAnimations(R.anim.zoomin,R.anim.zoomout,R.anim.zoomin,R.anim.zoomout);
-
-                if (fragment != null) {
-                    ft.add(R.id.frame_container, fragment).addToBackStack("post_details").commit();
-                } else {
-                    Log.e("MainActivity", "Error in creating fragment");
-                }
-
-            }
-        });
-*/
-       // new GetPosts().execute();
     }
 
     @Override
@@ -544,7 +504,7 @@ public class ReviewFragment extends Fragment {
             HashMap <String,String> params = new HashMap <String,String>();
             JSONObject json = new JSONObject();
             if("create".equalsIgnoreCase(args[0])) {
-                String uniqueid = (String) new CommonResources(getContext()).loadFromSharedPrefs("uniqueid");
+                String uniqueid = LoginDetails.getInstance().getUserid();//(String) new CommonResources(getContext()).loadFromSharedPrefs("uniqueid");
 
                 if (uniqueid == null || "".equalsIgnoreCase(uniqueid)) {//user not logged in
                     return "NOT_LOGGED_IN";
