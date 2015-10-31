@@ -441,6 +441,12 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
             if(navMenuTitles[1].equalsIgnoreCase(actionBarTitle)){
                 //coming back from my posts details
                 this.getmDrawerToggle().setDrawerIndicatorEnabled(true);
+            }else if(navMenuTitles[3].equalsIgnoreCase(actionBarTitle)){
+                //coming back from WishList details
+                this.getmDrawerToggle().setDrawerIndicatorEnabled(true);
+            }else if(navMenuTitles[3].equalsIgnoreCase(actionBarTitle)){
+                //coming back to Select Posts for Offer
+                this.getmDrawerToggle().setDrawerIndicatorEnabled(false);
             }else {
                 //coming back from all posts details
                 this.getmDrawerToggle().setDrawerIndicatorEnabled(false);
@@ -473,6 +479,10 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
             getSupportFragmentManager().popBackStack();
             getmDrawerToggle().setDrawerIndicatorEnabled(true);
             setActionBarTitle(MessagesString.HEADER_MY_ACCOUNT);
+        }else if(f instanceof MakeOfferFragment){
+            getSupportFragmentManager().popBackStack();
+            getmDrawerToggle().setDrawerIndicatorEnabled(false);
+            setActionBarTitle(CommonResources.headerStack.pop());
         }
     }
 
