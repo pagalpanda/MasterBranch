@@ -88,7 +88,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
 
     /* Should we automatically resolve ConnectionResults when possible? */
     private boolean mShouldResolve = false;
-    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_SUCCESS = MessagesString.TAG_SUCCESS;
 
 
     private static int  login_mode =0; //0 - gmail, 1- fb, 2 - manual, 3 - newuser
@@ -182,7 +182,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         //rootView.findViewById(R.id.com_facebook_login_activity_progress_bar).setVisibility(View.GONE);
         authButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                createProcessDialog("Connecting to Facebook");
+                createProcessDialog(MessagesString.FB_CONNECT);
             }
         });
 
@@ -204,7 +204,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
 
             @Override
             public void onError(FacebookException e) {
-                flash("Error occured. Please try again later");
+                flash(MessagesString.FB_ERROR1);
                 dismissProcessDialog();
                 CommonResources.hideKeyboard(getActivity());
                 //flash(e.toString());
@@ -220,25 +220,25 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
             @Override
             public void onClick(View v) {
                 CommonResources.hideKeyboard(getActivity());
-                Toast.makeText(context, "Login Clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Login Clicked", Toast.LENGTH_SHORT).show();
                 String email = etEmailID.getText().toString();
                 String pwd = etPassword.getText().toString();
 
                 if(tabSelected == 2){
                     String name = etFirstName.getText().toString();
                     if(name == null || "".equalsIgnoreCase(name.trim())) {
-                        etFirstName.setError("Please enter your name!");
+                        flash(MessagesString.LOGIN_NAME_BLANK);
                         return;
                     }
                 }
 
 
                 if (tabSelected == 2 && !validateNewUserPassword()) {
-                    etPasswordConf.setError("Password mismatch");
+                    flash(MessagesString.LOGIN_PWD_MISMATCH);
                     return;
                 }
-                if (!isValidEmail(email)) {
-                    etEmailID.setError("Invalid Email");
+                if (!CommonResources.isValidEmail(email)) {
+                    flash(MessagesString.INVALID_EMAIL);
                 } else {
                     if (!isValidPassword(pwd)) {
                         // DO Nothing
@@ -270,12 +270,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
                 if(fragment!=null)
                 {
                     getFragmentManager().beginTransaction()
-                            .add(R.id.frame_container, fragment).addToBackStack("Forgot_Pass").commit();
+                            .add(R.id.frame_container, fragment).addToBackStack(MessagesString.FRAG_FORGOT_PWD).commit();
                 }
                 else
                 {
                     // error in creating fragment
-                    Log.e("MainActivity", "Error in creating fragment");
+                    Log.e("MainActivity", MessagesString.FRAG_CREATE_ERROR1);
                 }
             }
         });
@@ -298,9 +298,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         etPasswordConf.setVisibility(View.GONE);
 
         tvForgotPwd.setVisibility(View.VISIBLE);
-        btnLogin.setText("Login");
-        tvGoogleLoginTxt.setText("Log in via Google+");
-        tvFBLoginTxt.setText("Log in via Facebook");
+        btnLogin.setText(MessagesString.BT_LOGIN);
+        tvGoogleLoginTxt.setText(MessagesString.BT_GPLUS_LOGIN);
+        tvFBLoginTxt.setText(MessagesString.BT_FB_LOGIN);
         etFirstName.setVisibility(View.GONE);
 
         etMobileNum.setVisibility(View.GONE);
@@ -318,9 +318,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         etFirstName.setVisibility(View.VISIBLE);
 
         etMobileNum.setVisibility(View.VISIBLE);
-        btnLogin.setText("Sign Up");
-        tvGoogleLoginTxt.setText("Sign up via Google+");
-        tvFBLoginTxt.setText("Sign up via Facebook");
+        btnLogin.setText(MessagesString.BT_SIGNUP);
+        tvGoogleLoginTxt.setText(MessagesString.BT_GPLUS_SIGNUP);
+        tvFBLoginTxt.setText(MessagesString.BT_FB_SIGNUP);
         tvSignUpTermsAndConditions.setVisibility(View.VISIBLE);
         rgGender.setVisibility(View.VISIBLE);
     }
@@ -331,29 +331,22 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         context=activity;
 
     }
-    private boolean isValidEmail(String email) {
-        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
     private boolean isValidPassword(String pass) {
         if (pass != null && !pass.equals("") && pass.length() > 7) {
             return true;
         }
         if (pass.length() < 8)
         {
-            etPassword.setError("Password should be 8 characters long");
+            flash(MessagesString.PWD_ERROR1);
         }
         else if (pass == null || pass.equals(""))
         {
-            etPassword.setError("Password should not be blank");
+            flash(MessagesString.PWD_ERROR2);
         }
         else
         {
-            etPassword.setError("Invalid Password");
+            flash(MessagesString.PWD_ERROR3);
         }
         return false;
     }
@@ -364,7 +357,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         {
             return true;
         }
-        etPasswordConf.setError("Password Mismatch");
+        flash(MessagesString.PASSWORD_ERROR1);
         return false;
     }
 
@@ -398,14 +391,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
     private void onSignInClicked() {
         //flash("Signing in");
         mIsResolving = false;
-        createProcessDialog("Connecting to Google..");
+        createProcessDialog(MessagesString.GPLUS_CONNECT);
         buildGoogleApiClient();
         if (mGoogleApiClient !=null)
         {
             mGoogleApiClient.connect();
         }
         else {
-            flash("Please check Connectivity");
+            flash(MessagesString.GPLUS_ERROR1);
             dismissProcessDialog();
         }
     }
@@ -420,7 +413,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
             }
             else {
                 mShouldResolve = true;
-                createProcessDialog("Connecting to Google..");
+                createProcessDialog(MessagesString.GPLUS_CONNECT);
             }
             mIsResolving = false;
             if(mShouldResolve) {
@@ -509,7 +502,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
 
             if (mGoogleApiClient.isConnected()) {
                 if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                    createProcessDialog("Receiving Data");
+                    createProcessDialog(MessagesString.GPLUS_CONNECT1);
                     Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
                     LoginDetails.getInstance().resetDetails();
                     LoginDetails.getInstance().setPersonName(currentPerson.getDisplayName());
@@ -520,10 +513,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
                     LoginDetails.getInstance().setGender(currentPerson.getGender() == 0 ? "M" : "F");
                     LoginDetails.getInstance().setId(currentPerson.getId());
 
-                    LoginDetails.getInstance().setPassword(LoginDetails.getInstance().getEmail().concat("123"));
+                    LoginDetails.getInstance().setPassword(LoginDetails.getInstance().getEmail().concat(MessagesString.PWD_CONCAT_STRING));
                     loginUser();
                 } else {
-                    flash("No information received. Please try again");
+                    flash(MessagesString.GPLUS_ERROR2);
                 }
             } else
             {

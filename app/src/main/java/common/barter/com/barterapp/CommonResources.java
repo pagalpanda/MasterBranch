@@ -363,7 +363,7 @@ public class CommonResources {
         }
         public static String getStaticURL()
         {
-                String staticURL = "http://192.168.0.106:80/" ; //URL
+                String staticURL = "http://192.168.0.103:80/" ; //URL
                 //String staticURL = "http://49.205.72.242:80/" ;
 
                 return staticURL;
@@ -458,7 +458,8 @@ public class CommonResources {
 
         public static boolean isValidMobile(String mobilenum) {
 
-                String MOBILE_PATTERN = "^[1-9][0-9]{9}$";
+                //String MOBILE_PATTERN = "^[1-9][0-9]{9}$";
+                String MOBILE_PATTERN =MessagesString.VALID_MOBILE;
                 Pattern pattern = Pattern.compile(MOBILE_PATTERN);
                 Matcher matcher = pattern.matcher(mobilenum);
                 return matcher.matches();
@@ -473,6 +474,15 @@ public class CommonResources {
                 } else {
                         return false;
                 }
+        }
+        public static boolean isValidEmail(String email) {
+//                String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+//                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+//
+//                Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+//                Matcher matcher = pattern.matcher(email);
+//                return matcher.matches();
+                return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
         }
 
 

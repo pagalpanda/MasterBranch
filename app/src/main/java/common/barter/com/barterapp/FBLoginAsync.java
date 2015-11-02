@@ -103,7 +103,7 @@ protected void onPostExecute(String file_url) {
         if (!(accessToken.getPermissions().contains("email")))
         {
             isEmailPermissionGranted= false;
-            error ="Please grant email permission";
+            error =MessagesString.FB_EMAIL_PERM_ERROR1;
         }
         else {
             GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
@@ -162,7 +162,7 @@ protected void onPostExecute(String file_url) {
         else
         {
             isEmailIdReturned = false;
-            error ="Email ID is mandatory";
+            error =MessagesString.FB_EMAIL_PERM_ERROR2;
 
         }
 

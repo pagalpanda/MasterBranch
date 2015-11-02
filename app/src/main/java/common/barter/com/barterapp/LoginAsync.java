@@ -44,13 +44,13 @@ protected void onPreExecute() {
         super.onPreExecute();
         if(pDialog==null){
             pDialog = new ProgressDialog(context);
-            pDialog.setMessage("Loggging in..");
+            pDialog.setMessage(MessagesString.LOGGING_IN);
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
         }
         else
-            pDialog.setMessage("Loggging in..");
+            pDialog.setMessage(MessagesString.LOGGING_IN);
         }
 
 /**
@@ -102,10 +102,9 @@ protected String doInBackground(String... args) {
         Log.d("Create Response", json.toString());
 
         // check for success tag
-        String TAG_SUCCESS = "success";
         try {
 
-            int success = json.getInt(TAG_SUCCESS);
+            int success = json.getInt(MessagesString.TAG_SUCCESS);
 
         if (success == 0) {
         // successfully created product
