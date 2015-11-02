@@ -5,7 +5,9 @@ package common.barter.com.barterapp;
  */
 import android.app.Activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
@@ -37,6 +39,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
@@ -184,13 +187,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         });
 
         authButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-
-            @Override
+           @Override
             public void onSuccess(LoginResult loginResult) {
                 CommonResources.hideKeyboard(getActivity());
                 //flash("FB Success");
-                new FBLoginAsync(getContext(), getFragmentManager(), loginResult,pDialog).execute();
-                authButton.clearPermissions();
+                raiseFBLoginRequest(loginResult);
+                //authButton.clearPermissions();
             }
 
             @Override
@@ -305,6 +307,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
         tvSignUpTermsAndConditions.setVisibility(View.GONE);
         rgGender.setVisibility(View.GONE);
 
+    }
+    private void raiseFBLoginRequest(LoginResult loginResult) {
+        new FBLoginAsync(getContext(), getFragmentManager(), loginResult,pDialog).execute();
     }
     private void setLayoutForSignUpMode(){
         etPasswordConf.setVisibility(View.VISIBLE);
