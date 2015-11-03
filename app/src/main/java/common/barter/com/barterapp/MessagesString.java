@@ -4,6 +4,7 @@ package common.barter.com.barterapp;
  * Created by amitpa on 9/23/2015.
  */
 public class MessagesString {
+
     public final static String LOCATION_NOT_READ = "Could not Read Your Location!";
     public final static String LOCATION_SET_MANUALLY = "Choose Location";
     public final static String LOCATION_DIALOG_MESSAGE = "Enable GPS to see posts in your locality";
@@ -35,5 +36,49 @@ public class MessagesString {
     public final static String HEADER_CHANGE_PASSWORD = "Change Password";
     public final static String  HEADER_VERIFY_OTP = "Verify OTP";
     public final static String  HEADER_SELECT_POSTS_FOR_OFFER = "Select Posts";
+
+    //Following Strings are Fragment names while replacing
+    public final static String  FRAG_FORGOT_PWD = "Forgot_Pass";
+    public final static String  FRAG_CREATE_ERROR1 = "Error in creating fragment";
+
+    //Following Strings are common and used at multiple places
+    public final static String  TAG_SUCCESS = "success";
+    public final static String  VALID_MOBILE = "^[1-9][0-9]{9}$";
+    public final static String  SEND_EMAIL = "Sending Email";
+    public final static String  INVALID_EMAIL = "Please enter a valid email address";
+
+
+    //Following Strings are present on Login Fragment
+    public final static String  PASSWORD_ERROR1 = "Password Mismatch";
+    public final static String  GPLUS_ERROR1 = "Please check Connectivity";
+    public final static String  GPLUS_CONNECT = "Connecting to Google..";
+    public final static String  FB_CONNECT = "Connecting to Facebook..";
+    public final static String  GPLUS_ERROR2 = "No information received. Please try again";
+    public final static String  FB_EMAIL_PERM_ERROR1 = "Please grant email permission";
+    public final static String  FB_EMAIL_PERM_ERROR2 = "Email ID is mandatory";
+    public final static String  FB_ERROR1 = "Error occured. Please try again later";
+    public final static String  LOGIN_NAME_BLANK = "Please enter your name!";
+    public final static String  LOGIN_PWD_MISMATCH = "Password mismatch";
+    public final static String  BT_LOGIN = "Login";
+    public final static String  BT_GPLUS_LOGIN = "Log in via Google+";
+    public final static String  BT_FB_LOGIN = "Log in via Facebook";
+    public final static String  BT_SIGNUP = "Sign Up";
+    public final static String  BT_GPLUS_SIGNUP = "Sign up via Google+";
+    public final static String  BT_FB_SIGNUP = "Sign up via Facebook";
+    public final static String  PWD_ERROR1 = "Password should be 8 characters long";
+    public final static String  PWD_ERROR2 = "Password should not be blank";
+    public final static String  PWD_ERROR3 = "Invalid Password";
+    public final static String  GPLUS_CONNECT1 = "Receiving Data";
+    public final static String  PWD_CONCAT_STRING = "123";
+
+    //Following Strings are present on Forgot Pwd
+    public final static String  FGT_PWD1 = "A link to reset password has been sent to: ";
+    public final static String  FGT_PWD2 = "We are facing some issues. Please try again later.";
+    public final static String  FGT_PWD3 = "Email id not present.";
+
+    //Following Strings are present on Login Async
+    public final static String  LOGGING_IN = "Logging in..";
+
+
 
 }

@@ -45,7 +45,7 @@ public class ForgotPassword extends Fragment {
                 if (isValidInput()) {
                     sendPwd();
                 }else {
-                    flash("Please enter a valid email address");
+                    flash(MessagesString.INVALID_EMAIL);
                 }
 
             }
@@ -62,28 +62,13 @@ public class ForgotPassword extends Fragment {
 
     public Boolean isValidInput() {
 
-        if ( (!isValidEmail(etEmailOrMob.getText().toString())) )
+        if ( (!CommonResources.isValidEmail(etEmailOrMob.getText().toString())) )
         {
             return false;
         }
         return true;
     }
 
-    private boolean isValidEmail(String email) {
-        String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
-        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    private boolean isValidMobile(String mobilenum) {
-        String MOBILE_PATTERN = "^[1-9][0-9]{9}$";
-        Pattern pattern = Pattern.compile(MOBILE_PATTERN);
-        Matcher matcher = pattern.matcher(mobilenum);
-        return matcher.matches();
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -102,28 +87,26 @@ public class ForgotPassword extends Fragment {
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("sendTo",etEmailOrMob.getText().toString());
-        params.put("instruction", isValidEmail(etEmailOrMob.getText().toString()) ? "0" : "1");
+        params.put("instruction", "0");
 
-        AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("ForgotPwd"),"POST",params,true,"Sending Email"){
+        AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("ForgotPwd"),"POST",params,true,MessagesString.SEND_EMAIL){
             public void receiveData(JSONObject json){
                 try {
-                    String TAG_SUCCESS = "success";
-                    int success = json.getInt(TAG_SUCCESS);
+                    int success = json.getInt(MessagesString.TAG_SUCCESS);
                     if (success == 0) {
-                        flash("Your new Password has been sent to ".concat(etEmailOrMob.getText().toString()));
+                        flash(MessagesString.FGT_PWD1.concat(etEmailOrMob.getText().toString()));
 
                         navigateToLogin();
                     }
                     else if (success == 1) {
-                        flash("We are facing some issues. Please try again later.");
+                        flash(MessagesString.FGT_PWD2);
 
                     }
                     else if (success == 2) {
-                        etEmailOrMob.setError("Email id or Mobile not present.");
-                        flash("Email id or Mobile not present.");
+                        flash(MessagesString.FGT_PWD3);
                     }
                     else {
-                        flash("We are facing some issues. Please try again later.");
+                        flash(MessagesString.FGT_PWD2);
 
                     }
 
