@@ -161,10 +161,10 @@ public class PostsFragment extends Fragment{
 
     @Override
     public void onPause() {
-
-
         super.onPause();
-
+        if(as != null){
+            as.cancel(true);
+        }
     }
 
     public boolean validateInput() {
@@ -209,7 +209,7 @@ public class PostsFragment extends Fragment{
                 urlToForCall = CommonResources.getURL("get_my_posts");
 
             }
-            AsyncConnection as = new AsyncConnection(context, urlToForCall, "POST", params, false, null) {
+            as = new AsyncConnection(context, urlToForCall, "POST", params, false, null) {
                 @Override
                 public void receiveData(JSONObject json) {
                     if (json == null) {
@@ -247,4 +247,14 @@ public class PostsFragment extends Fragment{
             };
             as.execute();
         }
+    AsyncConnection as;
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if(as != null){
+            as.cancel(true);
+        }
+    }
+
+
 }
