@@ -170,16 +170,16 @@ public class CommonResources {
 
     public static final Categories categories[] = {
             new Categories("Books",R.drawable.search),
+            new Categories("Entertainment",R.drawable.search),
             new Categories("Electronics",R.drawable.search),
-            new Categories("Sports",R.drawable.search),
             new Categories("Gadgets",R.drawable.search),
-            new Categories("Pets",R.drawable.search),
-            new Categories("Fashion",R.drawable.search),
+            new Categories("Home & Lifestyle",R.drawable.search),
             new Categories("Child Care",R.drawable.search),
-            new Categories("School or Office",R.drawable.search),
-            new Categories("School or Office",R.drawable.search),
-            new Categories("School or Office",R.drawable.search),
-            new Categories("School or Office",R.drawable.search),
+            new Categories("Sports & Fitness",R.drawable.search),
+            new Categories("Fashion",R.drawable.search),
+            new Categories("Automobile",R.drawable.search),
+            new Categories("Coupons/Vouchers",R.drawable.search),
+            new Categories("Services",R.drawable.search),
             new Categories("Others",R.drawable.search)
     };
 
@@ -189,53 +189,85 @@ public class CommonResources {
                 if(categoryName.equals("Books")){
                         subCategories.add("All Posts in Books");
                         subCategories.add("Literature & Fiction");
-                        subCategories.add("Academic & Professional");
-                        subCategories.add("Children & Teens");
-                        subCategories.add("Business & Management");
-                        subCategories.add("Religion & Spirituality");
-                }else if(categoryName.equals("Electronics")){
+                        subCategories.add("Non-Fiction");
+                        subCategories.add("Others");
+                }else if("Entertainment".equals(categoryName)){
+                        subCategories.add("All Posts in Entertainment");
+                        subCategories.add("Gaming");
+                        subCategories.add("Movies & TV shows");
+                        subCategories.add("Music");
+                        subCategories.add("Posters");
+                }
+                else if(categoryName.equals("Electronics")){
                         subCategories.add("All Posts in Electronics");
                         subCategories.add("Computers & Accessories");
-                        subCategories.add("Storage");
-                        subCategories.add("Camera & Accessories");
-                        subCategories.add("Home Appliances");
-                        subCategories.add("Personal Grooming");
-                }else if(categoryName.equals("Sports")){
-                        subCategories.add("All Posts in Sports");
-                        subCategories.add("Fitness Equipment");
-                        subCategories.add("Outdoor Gear");
-                        subCategories.add("Health Devices");
-
+                        subCategories.add("Tools & Equipment");
+                        subCategories.add("Large Appliances");
+                        subCategories.add("Small Appliances");
                 }else if(categoryName.equals("Gadgets")){
                         subCategories.add("All Posts in Gadgets");
                         subCategories.add("Mobiles & Tablets");
-                        subCategories.add("Camera & Accessories");
-                        subCategories.add("Earphones & Headphones");
-
-                }else if(categoryName.equals("Pets")){
-                        subCategories.add("All Posts in Pets");
-                        subCategories.add("Dogs");
-                        subCategories.add("Cats");
-                        subCategories.add("Pet Food");
-                        subCategories.add("Others");
-                }else if(categoryName.equals("Fashion")){
-                        subCategories.add("All Posts in Fashion");
-                        subCategories.add("Hand Bags");
-                        subCategories.add("Watch");
-                        subCategories.add("Shoes");
-                        subCategories.add("Clothing");
-
+                        subCategories.add("Mobile Accessories");
+                        subCategories.add("Cameras");
+                        subCategories.add("Camera Accessories");
+                        subCategories.add("Speakers & Headsets");
+                        subCategories.add("Music Players");
+                        subCategories.add("Storage Devices");
+                }else if("Home & Lifestyle".equals(categoryName)){
+                        subCategories.add("All Posts in Home & Lifestyle");
+                        subCategories.add("Kitchen");
+                        subCategories.add("Kitchen Appliances");
+                        subCategories.add("Home Furnishing");
+                        subCategories.add("Furniture");
+                        subCategories.add("Home Décor");
+                        subCategories.add("Housekeeping");
+                        subCategories.add("Luggage & Travel");
                 }else if(categoryName.equals("Child Care")){
                         subCategories.add("All Posts in Child Care");
-                        subCategories.add("Toys and Games");
-                        subCategories.add("Prams, Strollers & Walkers");
+                        subCategories.add("Toys");
+                        subCategories.add("Childcare");
+                        subCategories.add("Scooter & Rideons");
+                        subCategories.add("Clothing & Footwear");
+                        subCategories.add("Kid Sports");
 
-                }else if(categoryName.equals("School or Office")){
-                        subCategories.add("All Posts in School or Office");
-                        subCategories.add("Office Stationary");
-                        subCategories.add("Tables & Chairs");
-                        subCategories.add("Bags");
+                }
+                else if(categoryName.equals("Sports & Fitness")){
+                        subCategories.add("All Posts in Sports & Fitness");
+                        subCategories.add("Cardio Equipments");
+                        subCategories.add("Circuit Training");
+                        subCategories.add("Sports");
+                        subCategories.add("Accessories");
 
+                }else if(categoryName.equals("Fashion")){
+                        subCategories.add("All Posts in Fashion");
+                        subCategories.add("Men");
+                        subCategories.add("Women");
+
+                }else if(categoryName.equals("Automobile")){
+                        subCategories.add("All Posts in Automobile");
+                        subCategories.add("Cars");
+                        subCategories.add("Car Accessories");
+                        subCategories.add("Two-Wheelers");
+                        subCategories.add("Accessories");
+
+                }else if("Coupons/Vouchers".equals(categoryName)){
+                        subCategories.add("All Posts in Coupons & Vouchers");
+                        subCategories.add("Movie Tickets");
+                        subCategories.add("Concert Tickets");
+                        subCategories.add("Discount Coupons");
+                        subCategories.add("Gift Vouchers");
+                        subCategories.add("Sports Entry Passes");
+
+                }
+                else if(categoryName.equals("Services")){
+                        subCategories.add("All Posts in Services");
+                        subCategories.add("Delivery");
+                        subCategories.add("Repair");
+                        subCategories.add("Cleaning");
+                        subCategories.add("Consulting");
+                        subCategories.add("Design");
+                        subCategories.add("Sale");
+                        subCategories.add("Miscellaneous");
                 }else if(categoryName.equals("Others")){
 
                 }
@@ -363,7 +395,7 @@ public class CommonResources {
         }
         public static String getStaticURL()
         {
-                String staticURL = "http://192.168.0.103:80/" ; //URL
+                String staticURL = "http://192.168.0.106:80/" ; //URL
                 //String staticURL = "http://49.205.72.242:80/" ;
 
                 return staticURL;
