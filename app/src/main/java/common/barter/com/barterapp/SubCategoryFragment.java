@@ -119,7 +119,7 @@ public class SubCategoryFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView tvSubCategory = (TextView)view.findViewById(R.id.tvSubCategoryName);
                 String subCategory = tvSubCategory.getText().toString();
-                Toast.makeText(context, "You Clicked " + ""+tvSubCategory.getText(), Toast.LENGTH_LONG).show();
+
                 navigateToViewPosts(subCategory);
             }
         });
