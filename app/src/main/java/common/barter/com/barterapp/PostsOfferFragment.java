@@ -184,24 +184,6 @@ public class PostsOfferFragment extends Fragment {
                     }
                 }
             }));
-//            lvPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    Fragment fragment = null;
-//
-//                    fragment = new PostDetailsFragment(sListOfPostsHis.get(position), "viewonly");
-//                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//                    ft.setCustomAnimations(R.anim.zoomin,R.anim.zoomout,R.anim.zoomin,R.anim.zoomout);
-//                    //Animation zoomin = AnimationUtils.loadAnimation(getContext(),R.anim.zoomin);
-//
-//                    if (fragment != null) {
-//                        ft.add(R.id.frame_container, fragment).addToBackStack("post_details").commit();
-//                    } else {
-//                        Log.e("MainActivity", "Error in creating fragment");
-//                    }
-//
-//                }
-//            });
 
 
         }
