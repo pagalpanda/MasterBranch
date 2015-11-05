@@ -3,15 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:background="@android:color/white">
-
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:background="#FEF1E8">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
     <TextView
         android:id="@+id/txtLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:textSize="16dp"
-        android:text="Home View"/>
+        android:layout_above="@+id/gvHome"
+        android:visibility="gone"
+        android:textSize="16dp"/>
 
     <GridView
         android:layout_width="wrap_content"
@@ -20,14 +26,12 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:numColumns="3"
-        android:layout_marginRight="3pt"
-        android:layout_marginLeft="3pt"
         android:verticalSpacing="1pt"
         android:horizontalSpacing="1pt"
         />
     <include layout="@layout/floating_post_ad"
 
         />
-
+    </RelativeLayout>
 
 </RelativeLayout>
