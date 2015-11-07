@@ -206,18 +206,18 @@ public class LoginDetails {
         this.isverifying = isverifying;
     }
 
-    public String getOtp_received_from_web() {
+    public String getOtpReceivedFromWeb() {
         return otp_received_from_web;
     }
 
-    public void setOtp_received_from_web(String otp_received_from_web) {
+    public void setOtpReceivedFromWeb(String otp_received_from_web) {
         this.otp_received_from_web = otp_received_from_web;
     }
-    public String getOtp_received_from_device() {
+    public String getOtpReceivedFromDevice() {
         return otp_received_from_device;
     }
 
-    public void setOtp_received_from_device(String otp_received_from_device) {
+    public void setOtpReceivedFromDevice(String otp_received_from_device) {
         this.otp_received_from_device = otp_received_from_device;
     }
 
