@@ -59,7 +59,7 @@ public class OTPFragment extends Fragment {
         tvmobilenum = (TextView) dialogFragmentView.findViewById(R.id.tvmobilenum);
         etstatus = (EditText) dialogFragmentView.findViewById(R.id.etstatus);
         pbstatus = (ProgressBar) dialogFragmentView.findViewById(R.id.pbstatus);
-        btverify = (Button) dialogFragmentView.findViewById(R.id.btverify);
+        btverify = (Button) dialogFragmentView.findViewById(R.id.btContinue);
         tvResendCode= (TextView) dialogFragmentView.findViewById(R.id.tvResendCode);
         tvmobilenum.setText(MessagesString.OTP_NUMBER_MESSAGE + LoginDetails.getInstance().getMobilenum());
         otpVerificationDialog = new OTPVerificationDialog(getContext());
@@ -77,7 +77,7 @@ public class OTPFragment extends Fragment {
             public void onClick(View view) {
                 LoginDetails.getInstance().setIsverifying(true);
                 LoginDetails.getInstance().setMob_verified("0");
-                OTPVerificationAdapter otpVerificationAdapter = new OTPVerificationAdapter(getActivity(),getContext());
+                OTPVerificationAdapter otpVerificationAdapter = new OTPVerificationAdapter(getActivity(),OTPFragment.this);
                 otpVerificationAdapter.generateOTP();
             }
         });
@@ -179,7 +179,7 @@ public class OTPFragment extends Fragment {
                     String TAG_SUCCESS = "success";
                     int success = json.getInt(TAG_SUCCESS);
                     if (success == 0) {
-                        LoginDetails.getInstance().setOtp_received_from_web(json.getString("otp"));
+                        LoginDetails.getInstance().setOtpReceivedFromWeb(json.getString("otp"));
                         LoginDetails.getInstance().setIsverifying(true);
                     }
                     else if (success == 1) {
@@ -273,7 +273,7 @@ public class OTPFragment extends Fragment {
                 otpVerificationDialog.show();
                 String otpManual = etotp.getText().toString();
                 if(otpManual!=null && otpManual.length() == 5) {
-                    LoginDetails.getInstance().setOtp_received_from_device(otpManual);
+                    LoginDetails.getInstance().setOtpReceivedFromDevice(otpManual);
                     doOTPVerification();
                 }
                 else {
@@ -301,7 +301,7 @@ public class OTPFragment extends Fragment {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("userid",LoginDetails.getInstance().getUserid());
         params.put("mobilenum",LoginDetails.getInstance().getMobilenum());
-        params.put("otp",LoginDetails.getInstance().getOtp_received_from_device());
+        params.put("otp",LoginDetails.getInstance().getOtpReceivedFromDevice());
         params.put("instruction", "1");
         AsyncConnection as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
             public void receiveData(JSONObject json){
@@ -339,7 +339,8 @@ public class OTPFragment extends Fragment {
     }
 
     private void navigateToManageUser() {
-
+        activity.getmDrawerToggle().setDrawerIndicatorEnabled(true);
+        activity.setActionBarTitle(MessagesString.HEADER_MY_ACCOUNT);
             Fragment fragment = new ManageUser();
             FragmentManager fragmentManager = ((GlobalHome)getActivity()).getSupportFragmentManager();
             FragmentTransaction ft  = fragmentManager.beginTransaction();

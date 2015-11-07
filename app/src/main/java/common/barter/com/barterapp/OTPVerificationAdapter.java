@@ -18,16 +18,18 @@ import java.util.HashMap;
 public class OTPVerificationAdapter {
 
     private Activity activity;
+    private Fragment fragment;
     private Context context;
     private OTPVerificationDialog otpVerificationDialog;
     int i = 1;
     private Boolean result = false;
     CountDownTimer countDownTimer;
 
-    public OTPVerificationAdapter(Activity activity,Context context)
+    public OTPVerificationAdapter(Activity activity,Fragment fragment)
     {
         this.activity=activity;
-        this.context=context;
+        this.fragment=fragment;
+        this.context = fragment.getContext();
         otpVerificationDialog = new OTPVerificationDialog(this.context);
         otpVerificationDialog.setCancelable(false);
 
@@ -56,20 +58,21 @@ public class OTPVerificationAdapter {
         //test data
         //LoginDetails.getInstance().testData();
         LoginDetails.getInstance().setIsverifying(true);
-        LoginDetails.getInstance().setOtp_received_from_web(null);
-        LoginDetails.getInstance().setOtp_received_from_device(null);
+        LoginDetails.getInstance().setOtpReceivedFromWeb(null);
+        LoginDetails.getInstance().setOtpReceivedFromDevice(null);
 
         HashMap<String, String> params = new HashMap<String, String>();
-        params.put("userid",LoginDetails.getInstance().getUserid());
+        params.put("userid", LoginDetails.getInstance().getUserid());
         params.put("mobilenum",LoginDetails.getInstance().getMobilenum());
         params.put("instruction", "0");
+
         as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
             public void receiveData(JSONObject json){
                 try {
                     String TAG_SUCCESS = "success";
                     int success = json.getInt(TAG_SUCCESS);
                     if (success == 0) {
-                        LoginDetails.getInstance().setOtp_received_from_web(json.getString("otp"));
+                        LoginDetails.getInstance().setOtpReceivedFromWeb(json.getString("otp"));
                         LoginDetails.getInstance().setIsverifying(true);
                         countDownTimer = new MyCountDownTimer(startTime, interval);
                         countDownTimer.start();
@@ -102,7 +105,7 @@ public class OTPVerificationAdapter {
     {
         if (LoginDetails.getInstance().getIsverifying())
         {
-            if( (LoginDetails.getInstance().getOtp_received_from_device()!=null) && (LoginDetails.getInstance().getOtp_received_from_web()!=null))
+            if( (LoginDetails.getInstance().getOtpReceivedFromDevice()!=null) && (LoginDetails.getInstance().getOtpReceivedFromWeb()!=null))
             {
 
                 if(!isExecuted){
@@ -130,7 +133,7 @@ public class OTPVerificationAdapter {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("userid",LoginDetails.getInstance().getUserid());
         params.put("mobilenum",LoginDetails.getInstance().getMobilenum());
-        params.put("otp",LoginDetails.getInstance().getOtp_received_from_device());
+        params.put("otp",LoginDetails.getInstance().getOtpReceivedFromDevice());
         params.put("instruction", "1");
         as = new AsyncConnection(context,CommonResources.getURL("UserHandler"),"POST",params,false,null){
             public void receiveData(JSONObject json){
@@ -142,8 +145,12 @@ public class OTPVerificationAdapter {
                         new CommonResources(context).saveToSharedPrefs(MessagesString.SHARED_PREFS_IS_MOBILE_VERIFIED, LoginDetails.getInstance().getMob_verified());
                         LoginDetails.getInstance().setIsverifying(false);
                         otpVerificationDialog.dismiss();
-                       // btverify.setImageResource(R.drawable.home);
-                        //getFragmentManager().popBackStack();
+
+                        //The following code checks whether the current fragment is Manage User and changes the image of mobile verification
+                        if(fragment instanceof ManageUser) {
+                            ((ManageUser)fragment).setVerifyImage(true);
+                            //getFragmentManager().popBackStack();
+                        }
                     }
                     else if (success == 1) {
                         otpVerificationDialog.dismiss();
@@ -169,8 +176,9 @@ public class OTPVerificationAdapter {
         Fragment fragment = new OTPFragment();
         FragmentManager fragmentManager = ((GlobalHome)activity).getSupportFragmentManager();
         FragmentTransaction ft  = fragmentManager.beginTransaction();
-        ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
-        ft.replace(R.id.frame_container, fragment).commit();
+        ft.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_fade_out, R.anim.abc_slide_in_bottom, R.anim.abc_fade_out);
+
+        ft.add(R.id.frame_container, fragment).addToBackStack("otp_verify").commit();
     }
 
     public class MyCountDownTimer extends CountDownTimer {
@@ -197,7 +205,10 @@ public class OTPVerificationAdapter {
                 if(as != null){
                     as.cancel(true);
                 }
-                setDialogFragment();
+
+                //If we are currently on OTPFragment then we should not be adding the same fragment again
+                if(!(fragment instanceof OTPFragment))
+                    setDialogFragment();
 
 //                btverify.setText("VERIFY");
 //                btverify.setActivated(true);
