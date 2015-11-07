@@ -42,10 +42,10 @@ public class IncomingSms extends BroadcastReceiver {
                     if ((LoginDetails.getInstance().getIsverifying()) && (message.contains(context.getString(R.string.otp_string))))
                     {
                         // Show Alert
-                        LoginDetails.getInstance().setOtp_received_from_device(message.substring(message.lastIndexOf(":")+1));
+                        LoginDetails.getInstance().setOtpReceivedFromDevice(message.substring(message.lastIndexOf(":")+1));
                         int duration = Toast.LENGTH_LONG;
                         Toast toast = Toast.makeText(context,
-                                "senderNum: "+ senderNum + ", otp: " + LoginDetails.getInstance().getOtp_received_from_device(), duration);
+                                "senderNum: "+ senderNum + ", otp: " + LoginDetails.getInstance().getOtpReceivedFromDevice(), duration);
                         toast.show();
 
                     }
