@@ -100,7 +100,7 @@ public class LocationAddress extends AsyncTask<String, String, String> implement
 
     public interface LocationCallback {
 
-        void UpdateMyLocation();
+        void UpdateMyLocation(SharedPreferences prefs);
     }
 
     public void setLocation() {
@@ -214,7 +214,7 @@ public class LocationAddress extends AsyncTask<String, String, String> implement
 
 
                         GlobalHome.location = address.getLocality().toString();
-                        callerActivity.UpdateMyLocation();
+                        callerActivity.UpdateMyLocation(PreferenceManager.getDefaultSharedPreferences(context));
 
                     }
                 } catch (IOException e) {
@@ -273,7 +273,7 @@ public class LocationAddress extends AsyncTask<String, String, String> implement
                 setCountryCode(locationAddress[3]);
                 saveToSharedPrefs("location", locationAddress[1]);
                 GlobalHome.location = location_city;
-                callerActivity.UpdateMyLocation();
+                callerActivity.UpdateMyLocation(PreferenceManager.getDefaultSharedPreferences(context));
 
             }else{
 
@@ -298,7 +298,7 @@ public class LocationAddress extends AsyncTask<String, String, String> implement
             flash(MessagesString.LOCATION_NOT_READ);
             if("".equalsIgnoreCase(GlobalHome.location) || null == GlobalHome.location)
             GlobalHome.location = MessagesString.LOCATION_SET_MANUALLY;
-            callerActivity.UpdateMyLocation();
+            callerActivity.UpdateMyLocation(PreferenceManager.getDefaultSharedPreferences(context));
         }
         isLocationErrorShown = true;
 

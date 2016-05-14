@@ -631,7 +631,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
 
 
     @Override
-    public void UpdateMyLocation() {
+    public void UpdateMyLocation(SharedPreferences prefs) {
         isExecuting = false;
         if(dialog != null && dialog.isShowing()){
             dialog.dismiss();
