@@ -3,6 +3,7 @@ package common.barter.com.barterapp;
 
 
 import android.content.SharedPreferences;
+import android.view.WindowManager;
 
 
 public class SplashPresenter implements OnAnimationFinishedListener{
@@ -23,17 +24,27 @@ public class SplashPresenter implements OnAnimationFinishedListener{
 
     private void publish() {
         splashView.setLogoAnimation();
-        splashView.positionActivityBelowStatusBar();
+        positionActivityBelowStatusBar();
         prefs  = splashView.getDefaultSharedPreferences();
 
     }
 
     public void onStartView() {
-        splashView.overrideAnimation();
-        splashModel.startThreadForLocationSetting(this,prefs);
+        overrideAnimation();
+        splashModel.startThreadForLocationSetting(this, prefs);
         splashModel.setUserDateDetailsData(prefs);
     }
 
+    public void overrideAnimation() {
+        splashView.overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+    }
+
+
+    public void positionActivityBelowStatusBar() {
+        //Following lines set the activity to be aligned below the status bar
+        splashView.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        splashView.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
 
     @Override
     public void onSuccess() {
@@ -48,5 +59,10 @@ public class SplashPresenter implements OnAnimationFinishedListener{
         }else {
             new LocationAddress(splashView.getApplicationContext(), splashView).execute();
         }
+    }
+
+    void onLocationRead(SharedPreferences prefs){
+        splashView.navigateToGlobalHome();
+        splashModel.updateLocationInSharedPrefs(prefs);
     }
 }
