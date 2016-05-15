@@ -57,6 +57,14 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     protected DrawerLayout mDrawerLayout;
     //private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    RecyclerView mRecyclerView;                           // Declaring RecyclerView
+    RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
+    RecyclerView.LayoutManager mLayoutManager;
+    AutoCompleteTextView actv;
+    TextView tvLocationDialogText;
+    Button btnSetCurrentLocation;
+    LocationsDialog dialog;
+
 
     static String location;
 
@@ -65,7 +73,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     //ArrayList<String> list_of_Cities;
     Spinner spinner_location;
     SharedPreferences prefs; //  = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-    RecyclerView mRecyclerView;                           // Declaring RecyclerView
+
 
     public RecyclerView.Adapter getmAdapter() {
         return mAdapter;
@@ -73,9 +81,8 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
 
 
 
-    RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
-    RecyclerView.LayoutManager mLayoutManager;
-    static Toolbar toolbar;
+
+    Toolbar toolbar;
     // nav drawer title
     private CharSequence mDrawerTitle;
 
@@ -93,11 +100,9 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     public static String navBarSelectedItem;
 
 
-    AutoCompleteTextView actv;
-    TextView tvLocationDialogText;
-    Button btnSetCurrentLocation;
+
     private boolean readLocationForce;
-    LocationsDialog dialog;
+    private GlobalHomePresenter presenter;
 
 
 
@@ -108,119 +113,20 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
 
 
         setContentView(R.layout.activity_global_home);
+        presenter = new GlobalHomePresenter(this);
+        presenter.onCreateView();
         prefs  = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.globalHome = this;
-        toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
-        new CommonResources(getApplicationContext()).setToolBarHeight(toolbar.getHeight());
-        mTitle = mDrawerTitle = getTitle();
-
-        // load slide menu items
-        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
-
-        // nav drawer icons from resources
-        navMenuIcons = getResources()
-                .obtainTypedArray(R.array.nav_drawer_items);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView); // Assigning the RecyclerView Object to the xml View
-
-        mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
-
-              // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
-        // And passing the titles,icons,header view name, header view email,
-        // and header view profile picture
-
-        mRecyclerView.setAdapter(mAdapter);
-
-        navDrawerItems = new ArrayList<NavDrawerItem>();
-
-        // adding nav drawer items to array
-        // Home
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
-        // Find People
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
-        // Photos
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1), true, "7"));
-        // Communities, Will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
-        // Pages
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-        // What's hot, We  will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
 
 
-        // Recycle the typed array
-        navMenuIcons.recycle();
-
-        //Setting default title for actionbar
-        navBarSelectedItem = navMenuTitles[0];
-
-        mAdapter = new NavDrawerListAdapter(this,navDrawerItems,location);
-        mRecyclerView.setAdapter(mAdapter);
-        mLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        if (position != 0) {
-                            displayView(position - 1);
-                            setActionBarTitleForNavBar(view);
-                        } else {
-                            dialog = new LocationsDialog(GlobalHome.this,globalHome, mRecyclerView, CommonResources.getListOfCities(), false);
-                            dialog.show();
-                            actv = dialog.getAutoCompleteTextView();
-                            tvLocationDialogText = dialog.getTvLocationDialogText();
-                            btnSetCurrentLocation = dialog.getBtnSetCurrentLocation();
-                            actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    new CommonResources(getApplicationContext()).hideKeyBoard(globalHome,view);
-                                    String cityName = (String)parent.getItemAtPosition(position);//(String) CommonResources.getListOfCities().get(position);
-                                    //actv.getListSelection();
-                                    saveToSharedPrefs("location", cityName);
-                                    GlobalHome.location = cityName;
-                                    if (mRecyclerView != null)
-                                        mRecyclerView.getAdapter().notifyDataSetChanged();
-                                    dialog.cancel();
-                                }
-                            });
-                            actv.setHint(MessagesString.HINT_CITY);
-
-//                            actv.setOnDismissListener(new AutoCompleteTextView.OnDismissListener() {
-//                                @Override
-//                                public void onDismiss() {
-//                                    readLocationForce = false; // Setting the forceful location change flag to false if the user clicks on the change loc button but doesn't enable location service and dismisses the actv
-//                                }
-//                            });
-                            btnSetCurrentLocation.setVisibility(View.VISIBLE);
-                            btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
-                            btnSetCurrentLocation.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if(CommonResources.isNetworkAvailable(GlobalHome.this)){
-                                        readLocationForce = true;
-                                        if(checkGPS()){
-                                            isExecuting = true;
-                                            new LocationAddress(getApplicationContext(),GlobalHome.this).execute();
-
-                                        }
-                                    }else {
-                                        Toast.makeText(getApplicationContext(),MessagesString.CONNECT_TO_INTERNET,Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            });
-                            tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_CITY);
-
-                        }
-
+                        presenter.onLeftNavClicked(view, position);
                     }
-
-
                 })
+
         );
 
 
@@ -275,9 +181,109 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     }
 
 
-    public Toolbar getToolbar() {
-        return toolbar;
+    public void showLocationDialog() {
+        dialog = new LocationsDialog(GlobalHome.this,globalHome, mRecyclerView, CommonResources.getListOfCities(), false);
+        dialog.show();
+        actv = dialog.getAutoCompleteTextView();
+        tvLocationDialogText = dialog.getTvLocationDialogText();
+        btnSetCurrentLocation = dialog.getBtnSetCurrentLocation();
+        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                new CommonResources(getApplicationContext()).hideKeyBoard(globalHome, view);
+                String cityName = (String) parent.getItemAtPosition(position);//(String) CommonResources.getListOfCities().get(position);
+                //actv.getListSelection();
+                DeviceStoreUtil.saveToSharedPrefs(prefs, "location", cityName);
+                GlobalHome.location = cityName;
+                if (mRecyclerView != null)
+                    mRecyclerView.getAdapter().notifyDataSetChanged();
+                dialog.cancel();
+            }
+        });
+        actv.setHint(MessagesString.HINT_CITY);
+        btnSetCurrentLocation.setVisibility(View.VISIBLE);
+        btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
+        btnSetCurrentLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (CommonResources.isNetworkAvailable(GlobalHome.this)) {
+                    readLocationForce = true;
+                    if (checkGPS()) {
+                        isExecuting = true;
+                        new LocationAddress(getApplicationContext(), GlobalHome.this).execute();
+
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), MessagesString.CONNECT_TO_INTERNET, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_CITY);
+
     }
+
+    public void createLeftNavigationBar() {
+        mTitle = mDrawerTitle = getTitle();
+
+        // load slide menu items
+        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
+
+        // nav drawer icons from resources
+        navMenuIcons = getResources()
+                .obtainTypedArray(R.array.nav_drawer_items);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView); // Assigning the RecyclerView Object to the xml View
+
+        mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
+
+        // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
+        // And passing the titles,icons,header view name, header view email,
+        // and header view profile picture
+
+        mRecyclerView.setAdapter(mAdapter);
+
+        navDrawerItems = new ArrayList<NavDrawerItem>();
+
+        // adding nav drawer items to array
+        // Home
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
+        // Find People
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+        // Photos
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1), true, "7"));
+        // Communities, Will add a counter here
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
+        // Pages
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
+        // What's hot, We  will add a counter here
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
+
+
+        // Recycle the typed array
+        navMenuIcons.recycle();
+
+        //Setting default title for actionbar
+        navBarSelectedItem = navMenuTitles[0];
+
+        mAdapter = new NavDrawerListAdapter(this,navDrawerItems,location);
+        mRecyclerView.setAdapter(mAdapter);
+        mLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    public void initializeToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        new CommonResources(getApplicationContext()).setToolBarHeight(toolbar.getHeight());
+    }
+
+
+//    public Toolbar getToolbar() {
+//        return toolbar;
+//    }
 
     public boolean checkGPS() {
         locationManager = (LocationManager) GlobalHome.this.getSystemService(Context.LOCATION_SERVICE);
@@ -500,62 +506,31 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     }
 
 
-    private void displayView(int position) {
-        new CommonResources(getApplicationContext()).clearBackStack(getSupportFragmentManager());
+    public void displayView(int position) {
         Fragment fragment = null;
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction ft  = fragmentManager.beginTransaction();
-        switch (position) {
-            case 0:
-                fragment = new HomeFragment();
-                ft.setCustomAnimations(R.anim.enter_from_left,R.anim.abc_fade_out,R.anim.enter_from_left,R.anim.abc_fade_out);
-                break;
-            case 1:
-                fragment = new PostsFragment("myposts", "");
-                ft.setCustomAnimations(R.anim.enter_from_left,R.anim.abc_fade_out,R.anim.enter_from_left,R.anim.abc_fade_out);
-                break;
-            case 2:
-                fragment = new ChooseOptionsOffersFragment();
-                ft.setCustomAnimations(R.anim.enter_from_left,R.anim.abc_fade_out,R.anim.enter_from_left,R.anim.abc_fade_out);
-                break;
-            case 3:
-                fragment = new WishList();
-                ft.setCustomAnimations(R.anim.enter_from_left,R.anim.abc_fade_out,R.anim.enter_from_left,R.anim.abc_fade_out);
-                break;
-            case 4:
-                if (isLoggedInFromClass())
-                {
-                    fragment = new ManageUser();
-                    ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
+        FragmentFactoryForGlobalHome factory = new FragmentFactoryForGlobalHome(fragmentManager);
+        new CommonResources(getApplicationContext()).clearBackStack(fragmentManager);
+                if(position == 4) {
+                    if (isLoggedInFromClass()) {
+                        fragment = factory.getFragment(41);
+                    } else {
+                        fragment = factory.getFragment(42);
+                    }
+                }else{
+
+                    fragment = factory.getFragment(position);
+
                 }
-                else
-                {
-                    fragment = new LoginParentFragment();
-                    ft.setCustomAnimations(R.anim.abc_slide_in_bottom,R.anim.abc_fade_out,R.anim.abc_slide_in_bottom,R.anim.abc_fade_out);
-                }
-                break;
-            default:
-                break;
-        }
 
         if (fragment != null) {
-
-
-            switch (position) {
-                case 0:
-
-                    ft.replace(R.id.frame_container, fragment).commit();
-                    break;
-                default:
-                    ft.replace(R.id.frame_container, fragment).commit();
-                    break;
-            }
-            setTitle(navMenuTitles[position]);
-            mDrawerLayout.closeDrawer(mRecyclerView);
-            getmDrawerToggle().setDrawerIndicatorEnabled(true);
-        } else {
-            Log.e("MainActivity", "Error in creating fragment");
+            FragmentTransaction ft  = fragmentManager.beginTransaction();
+            ft.replace(R.id.frame_container, fragment).commit();
         }
+        setTitle(navMenuTitles[position]);
+        mDrawerLayout.closeDrawer(mRecyclerView);
+        getmDrawerToggle().setDrawerIndicatorEnabled(true);
+
     }
 
     @Override
@@ -589,49 +564,15 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     }
 
     public boolean isLoggedInFromClass(){
-
-// COMMENTED FOR TESTING
-
         if(LoginDetails.getInstance().getUserid() == null){
-            //logic for reading current location should go here
             return false;
         }
         return true;
 
     }
-    public Boolean isLoggedInFromPrefs(){
-        Object LoggedInFromPrefs = loadFromSharedPrefs("uniqueid");
-        if(LoggedInFromPrefs == null){
-            //logic for reading current location should go here
-            return false;
-        }else{
-            return true;
-        }
-    }
-
-
-    Object obj;
-    public  Object loadFromSharedPrefs(String key){
-        Gson gson = new Gson();
-        obj = null;
-        if(prefs != null) {
-            String json = prefs.getString(key, "");
-            obj = gson.fromJson(json, String.class);
-        }
-        return obj;
-    }
-
-    public void saveToSharedPrefs(String key, Object objToSave){
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(objToSave,String.class);
-        editor.putString(key, json);
-        editor.commit();
-    }
-
 
     @Override
-    public void UpdateMyLocation(SharedPreferences prefs) {
+    public void UpdateMyLocation(final SharedPreferences prefs) {
         isExecuting = false;
         if(dialog != null && dialog.isShowing()){
             dialog.dismiss();
@@ -642,7 +583,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    saveToSharedPrefs("location", GlobalHome.location);
+                    DeviceStoreUtil.saveToSharedPrefs(prefs, "location", GlobalHome.location);
                 }
             });
             t.start();
@@ -665,6 +606,21 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
                 }
             }
         }
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
 
     }
 
@@ -695,22 +651,6 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
 
     }
 
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
     LocationManager locationManager;
     boolean isExecuting;
 }
