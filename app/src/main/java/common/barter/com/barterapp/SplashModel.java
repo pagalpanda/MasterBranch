@@ -2,7 +2,6 @@ package common.barter.com.barterapp;
 
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson;
 
 /**
  * Created by Panda on 15-05-2016.

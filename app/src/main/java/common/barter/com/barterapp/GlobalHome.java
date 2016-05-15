@@ -1,8 +1,7 @@
 package common.barter.com.barterapp;
 
 
-import android.app.Activity;
-import android.content.Context;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,50 +11,40 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.app.AlertDialog;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.v7.widget.RecyclerView;
-
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class GlobalHome extends ActionBarActivity implements LocationAddress.LocationCallback, LocationListener{
+
+
     protected DrawerLayout mDrawerLayout;
-    //private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
@@ -64,82 +53,47 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     TextView tvLocationDialogText;
     Button btnSetCurrentLocation;
     LocationsDialog dialog;
-
-
     static String location;
-
     private GlobalHome globalHome;
-    private ArrayAdapter<String> citiesAdapter;
-    //ArrayList<String> list_of_Cities;
-    Spinner spinner_location;
-    SharedPreferences prefs; //  = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-
-    public RecyclerView.Adapter getmAdapter() {
-        return mAdapter;
-    }
-
-
-
-
+    SharedPreferences prefs;
     Toolbar toolbar;
-    // nav drawer title
     private CharSequence mDrawerTitle;
-
-    // used to store app title
     private CharSequence mTitle;
-
-    // slide menu items
     private String[] navMenuTitles;
     private TypedArray navMenuIcons;
-
     private ArrayList<NavDrawerItem> navDrawerItems;
-    private NavDrawerListAdapter adapter;
-
-
     public static String navBarSelectedItem;
-
-
-
     private boolean readLocationForce;
     private GlobalHomePresenter presenter;
-
+    private boolean isExecuting;
+    private Bundle savedInstanceState;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         setContentView(R.layout.activity_global_home);
-        presenter = new GlobalHomePresenter(this);
-        presenter.onCreateView();
+        this.savedInstanceState = savedInstanceState;
         prefs  = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         this.globalHome = this;
+        presenter = new GlobalHomePresenter(this);
+        presenter.onCreateView();
+
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                presenter.onLeftNavClicked(view, position);
+            }
+        }));
 
 
-        mRecyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        presenter.onLeftNavClicked(view, position);
-                    }
-                })
+    }
 
-        );
+    public void setDrawerListener() {
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
 
-
-        // enabling action bar app icon and behaving it as toggle button
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f68b23")));
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-
-
-
-
-
+    public void setActionBarToggler() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, //nav menu toggle icon
                 R.string.app_name, // nav drawer open - description for accessibility
                 R.string.app_name // nav drawer close - description for accessibility
@@ -160,67 +114,63 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
                 super.onDrawerSlide(drawerView, 0); // this disables the animation
             }
         };
+    }
 
+    public void setActionBarBehavior() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#f68b23")));
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+    }
 
-
-
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-
-        if(MessagesString.LOCATION_SET_MANUALLY.equalsIgnoreCase(GlobalHome.location)){
-                checkGPS();
-
-        }
+    public void displayHomeFragmentByDefault() {
         if (savedInstanceState == null) {
             // on first time display view for first nav item
             displayView(0);
         }
-
-
-
     }
 
 
     public void showLocationDialog() {
-        dialog = new LocationsDialog(GlobalHome.this,globalHome, mRecyclerView, CommonResources.getListOfCities(), false);
+        dialog = new LocationsDialog(GlobalHome.this, globalHome, mRecyclerView, CommonResources.getListOfCities(), false);
         dialog.show();
+
         actv = dialog.getAutoCompleteTextView();
         tvLocationDialogText = dialog.getTvLocationDialogText();
         btnSetCurrentLocation = dialog.getBtnSetCurrentLocation();
-        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                new CommonResources(getApplicationContext()).hideKeyBoard(globalHome, view);
-                String cityName = (String) parent.getItemAtPosition(position);//(String) CommonResources.getListOfCities().get(position);
-                //actv.getListSelection();
-                DeviceStoreUtil.saveToSharedPrefs(prefs, "location", cityName);
-                GlobalHome.location = cityName;
-                if (mRecyclerView != null)
-                    mRecyclerView.getAdapter().notifyDataSetChanged();
-                dialog.cancel();
-            }
-        });
+
+        actv.setOnItemClickListener(onLocationSelectListener);
         actv.setHint(MessagesString.HINT_CITY);
         btnSetCurrentLocation.setVisibility(View.VISIBLE);
         btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
-        btnSetCurrentLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (CommonResources.isNetworkAvailable(GlobalHome.this)) {
-                    readLocationForce = true;
-                    if (checkGPS()) {
-                        isExecuting = true;
-                        new LocationAddress(getApplicationContext(), GlobalHome.this).execute();
 
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), MessagesString.CONNECT_TO_INTERNET, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        btnSetCurrentLocation.setOnClickListener(currentLocationClickListener);
         tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_CITY);
 
     }
+
+    View.OnClickListener currentLocationClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            presenter.onCurrentLocationClick();
+
+
+        }
+    };
+
+
+
+    AdapterView.OnItemClickListener onLocationSelectListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            presenter.onLocationSelect(parent,view,position, prefs);
+
+            new CommonResources(getApplicationContext()).hideKeyBoard(globalHome, view);
+            if (mRecyclerView != null)
+                mRecyclerView.getAdapter().notifyDataSetChanged();
+            dialog.cancel();
+        }
+    };
 
     public void createLeftNavigationBar() {
         mTitle = mDrawerTitle = getTitle();
@@ -284,64 +234,6 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
 //    public Toolbar getToolbar() {
 //        return toolbar;
 //    }
-
-    public boolean checkGPS() {
-        locationManager = (LocationManager) GlobalHome.this.getSystemService(Context.LOCATION_SERVICE);
-        boolean gps_enabled = false;
-        boolean network_enabled = false;
-
-        try {
-            gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        } catch (Exception ex) {
-        }
-
-        try {
-            network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        } catch (Exception ex) {
-        }
-
-
-            this.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000L, 100.0F, this);
-
-
-
-
-            this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000L, 100.0F, this);
-
-
-
-        if (!gps_enabled && !network_enabled && (CommonResources.isNetworkAvailable(GlobalHome.this)) ) {
-            // notify user
-            final AlertDialog.Builder dialog = new AlertDialog.Builder(GlobalHome.this);
-            dialog.setMessage(MessagesString.LOCATION_DIALOG_MESSAGE);
-            dialog.setPositiveButton(MessagesString.LOCATION_DIALOG_POSTIVE_TEXT, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    // TODO Auto-generated method stub
-                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-
-                    GlobalHome.this.startActivity(myIntent);
-                    //get gps
-                }
-            });
-            dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    // TODO Auto-generated method stub
-                    paramDialogInterface.dismiss();
-
-
-                }
-            });
-
-            dialog.show();
-            return false;
-        }else
-            return true;
-
-    }
-
 
     public void setActionBarTitleForNavBar( View view){
         TextView tv = (TextView)view.findViewById(R.id.title);
@@ -509,17 +401,17 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     public void displayView(int position) {
         Fragment fragment = null;
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentFactoryForGlobalHome factory = new FragmentFactoryForGlobalHome(fragmentManager);
+        FragmentFactoryForGlobalHome fragmentFactory = new FragmentFactoryForGlobalHome(fragmentManager);
         new CommonResources(getApplicationContext()).clearBackStack(fragmentManager);
                 if(position == 4) {
                     if (isLoggedInFromClass()) {
-                        fragment = factory.getFragment(41);
+                        fragment = fragmentFactory.getFragment(41);
                     } else {
-                        fragment = factory.getFragment(42);
+                        fragment = fragmentFactory.getFragment(42);
                     }
                 }else{
 
-                    fragment = factory.getFragment(position);
+                    fragment = fragmentFactory.getFragment(position);
 
                 }
 
@@ -552,7 +444,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
+        getmDrawerToggle().syncState();
     }
 
 
@@ -573,7 +465,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
 
     @Override
     public void UpdateMyLocation(final SharedPreferences prefs) {
-        isExecuting = false;
+        setIsExecuting(false);
         if(dialog != null && dialog.isShowing()){
             dialog.dismiss();
         }
@@ -593,14 +485,14 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     @Override
     public void onLocationChanged(Location location) {
 
-        if(CommonResources.isNetworkAvailable(GlobalHome.this) && !isExecuting){ // If internet is available and location change service is not executing now
+        if(CommonResources.isNetworkAvailable(GlobalHome.this) && !isExecuting()){ // If internet is available and location change service is not executing now
             if(MessagesString.LOCATION_SET_MANUALLY.equalsIgnoreCase(this.location)){ // is location has already been set
                 new LocationAddress(getApplicationContext(),this).execute();
-                isExecuting = true;
-            }else if(readLocationForce) {// If the location is already set, but the user wants to read from device by clicking the "Current Location" button
-                readLocationForce = false;
+                setIsExecuting(true);
+            }else if(isReadLocationForce()) {// If the location is already set, but the user wants to read from device by clicking the "Current Location" button
+                setReadLocationForce(false);
                 new LocationAddress(getApplicationContext(),this).execute();
-                isExecuting = true;
+                setIsExecuting(true);
                 if(dialog != null && dialog.isShowing()){
                     dialog.dismiss();
                 }
@@ -646,11 +538,57 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
                 }
             }
 
-            //mGoogleApiClient.connect();
+
         }
 
     }
+    public void showDialogForEnablingGPS() {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setMessage(MessagesString.LOCATION_DIALOG_MESSAGE);
+        dialog.setPositiveButton(MessagesString.LOCATION_DIALOG_POSTIVE_TEXT, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                // TODO Auto-generated method stub
+                Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 
-    LocationManager locationManager;
-    boolean isExecuting;
+                GlobalHome.this.startActivity(myIntent);
+                //get gps
+            }
+        });
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                // TODO Auto-generated method stub
+                paramDialogInterface.dismiss();
+
+
+            }
+        });
+
+        dialog.show();
+    }
+
+
+
+    public boolean isExecuting() {
+        return isExecuting;
+    }
+
+    public void setIsExecuting(boolean isExecuting) {
+        this.isExecuting = isExecuting;
+    }
+
+    public boolean isReadLocationForce() {
+        return readLocationForce;
+    }
+
+    public void setReadLocationForce(boolean readLocationForce) {
+        this.readLocationForce = readLocationForce;
+    }
+
+    public RecyclerView.Adapter getmAdapter() {
+        return mAdapter;
+    }
+
 }

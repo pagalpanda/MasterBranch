@@ -43,6 +43,9 @@ public class FragmentFactoryForGlobalHome {
             case 42:
                 fragment = new LoginParentFragment();
                 ft.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_fade_out, R.anim.abc_slide_in_bottom, R.anim.abc_fade_out);
+                break;
+            default:
+                break;
 
         }
 
