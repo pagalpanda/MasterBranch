@@ -395,8 +395,8 @@ public class CommonResources {
         }
         public static String getStaticURL()
         {
-                String staticURL = "http://192.168.0.106:80/" ; //URL
-                //String staticURL = "http://49.205.72.242:80/" ;
+                String staticURL = "http://192.168.0.105:80/" ; //URL
+                //String staticURL = "http://49.205.67.62:80/" ;
 
                 return staticURL;
         }

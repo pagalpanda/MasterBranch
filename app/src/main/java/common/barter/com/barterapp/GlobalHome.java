@@ -14,7 +14,6 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -31,7 +30,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
@@ -39,6 +37,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import common.barter.com.barterapp.forgotpassword.ForgotPassword;
 
 
 public class GlobalHome extends ActionBarActivity implements LocationAddress.LocationCallback, LocationListener{
@@ -401,7 +401,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     public void displayView(int position) {
         Fragment fragment = null;
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentFactoryForGlobalHome fragmentFactory = new FragmentFactoryForGlobalHome(fragmentManager);
+        GlobalHomeFragmentFactory fragmentFactory = new GlobalHomeFragmentFactory(fragmentManager);
         new CommonResources(getApplicationContext()).clearBackStack(fragmentManager);
                 if(position == 4) {
                     if (isLoggedInFromClass()) {

@@ -7,11 +7,11 @@ import android.support.v4.app.FragmentTransaction;
 /**
  * Created by Panda on 15-05-2016.
  */
-public class FragmentFactoryForGlobalHome {
+public class GlobalHomeFragmentFactory {
 
     FragmentManager fragmentManager;
 
-    public FragmentFactoryForGlobalHome(FragmentManager fragmentManager) {
+    public GlobalHomeFragmentFactory(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 

@@ -72,9 +72,9 @@ public class MessagesString {
     public final static String  PWD_CONCAT_STRING = "123";
 
     //Following Strings are present on Forgot Pwd
-    public final static String  FGT_PWD1 = "A link to reset password has been sent to: ";
-    public final static String  FGT_PWD2 = "We are facing some issues. Please try again later.";
-    public final static String  FGT_PWD3 = "Email id not present.";
+    public final static String RESET_LINK_SENT_MESSAGE = "A link to reset password has been sent to: ";
+    public final static String TRY_AGAIN_LATER_MESSAGE = "We are facing some issues. Please try again later.";
+    public final static String EMAIL_ID_NOT_REGISTERED_MESSAGE = "Email id not resgistered.";
 
     //Following Strings are present on Login Async
     public final static String  LOGGING_IN = "Logging in..";
