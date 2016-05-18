@@ -26,10 +26,8 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class JSONParser {
 
-
     private JSONObject jObj = null;
 
-    // constructor
     public JSONParser() {
 
     }
@@ -65,6 +63,7 @@ public class JSONParser {
         try {
 
             String response = "";
+            StringBuilder responseBuilder = new StringBuilder();
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
@@ -79,8 +78,9 @@ public class JSONParser {
                 String line;
                 BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 while ((line=br.readLine()) != null) {
-                    response+=line;
+                    responseBuilder.append(line);
                 }
+                response = responseBuilder.toString();
             }
             else {
                 response="";

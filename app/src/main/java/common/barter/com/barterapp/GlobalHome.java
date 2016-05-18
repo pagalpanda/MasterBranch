@@ -33,7 +33,6 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -284,10 +283,8 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
         }
         switch (item.getItemId()) {
             case R.id.action_search:
-                Toast.makeText(getApplicationContext(),"Search",Toast.LENGTH_LONG).show();
-
+                CommonUtil.flash(getApplicationContext(),"Search");
                 return true;
-
             case R.id.action_edit_post:
                 return super.onOptionsItemSelected(item);
             case R.id.action_proceed_make_offer:
@@ -298,7 +295,6 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
                 return false;
             default:
                 if(mDrawerToggle.isDrawerIndicatorEnabled()) {
-                    Toast.makeText(getApplicationContext(), "In Global Home loading location2", Toast.LENGTH_LONG).show();
                     mRecyclerView.getAdapter().notifyDataSetChanged();
                     return super.onOptionsItemSelected(item);
                 }else{
