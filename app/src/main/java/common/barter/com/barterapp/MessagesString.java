@@ -50,7 +50,7 @@ public class MessagesString {
 
     //Following Strings are present on Login Fragment
     public final static String  PASSWORD_ERROR1 = "Password Mismatch";
-    public final static String  GPLUS_ERROR1 = "Please check Connectivity";
+    public final static String CHECK_NETWORK_CONNECTIVITY = "Please check Connectivity";
     public final static String  GPLUS_CONNECT = "Connecting to Google..";
     public final static String  FB_CONNECT = "Connecting to Facebook..";
     public final static String  GPLUS_ERROR2 = "No information received. Please try again";
