@@ -9,7 +9,6 @@ import org.json.JSONTokener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -27,9 +26,8 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class JSONParser {
 
-    private InputStream is = null;
+
     private JSONObject jObj = null;
-    private String json;
 
     // constructor
     public JSONParser() {
@@ -86,7 +84,7 @@ public class JSONParser {
             }
             else {
                 response="";
-                json = null;
+                jObj = null;
                 throw new HttpException(responseCode+"");
             }
             try {
