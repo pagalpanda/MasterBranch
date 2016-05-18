@@ -386,7 +386,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Goog
             mGoogleApiClient.connect();
         }
         else {
-            flash(MessagesString.GPLUS_ERROR1);
+            flash(MessagesString.CHECK_NETWORK_CONNECTIVITY);
             dismissProcessDialog();
         }
     }

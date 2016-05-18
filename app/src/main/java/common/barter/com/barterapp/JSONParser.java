@@ -48,10 +48,10 @@ public class JSONParser {
         return conn;
     }
 
-    public JSONObject makeHttpRequest(String url,
+    public JSONObject makeHttpRequest(String url, String method,
                                       HashMap<String, String> params) {
         try {
-            return makeHttpRequest(getHttpConnectionFromUrl(url,"POST"),params);
+            return makeHttpRequest(getHttpConnectionFromUrl(url,method),params);
         } catch (IOException e) {
             e.printStackTrace();
         }
