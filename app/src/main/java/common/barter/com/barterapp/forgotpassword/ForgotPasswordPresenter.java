@@ -25,7 +25,7 @@ public class ForgotPasswordPresenter implements NetworkCallListener{
         if (isValidInput(emailId)) {
             sendPwd(emailId);
         } else {
-            view.flash(MessagesString.INVALID_EMAIL);
+            CommonUtil.flash(view.getContext(),MessagesString.INVALID_EMAIL);
         }
     }
 
