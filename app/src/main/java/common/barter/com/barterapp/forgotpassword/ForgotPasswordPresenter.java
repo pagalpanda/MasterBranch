@@ -3,6 +3,7 @@ package common.barter.com.barterapp.forgotpassword;
 import java.util.HashMap;
 
 import common.barter.com.barterapp.CommonResources;
+import common.barter.com.barterapp.CommonUtil;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.NetworkCallListener;
 
@@ -47,19 +48,19 @@ public class ForgotPasswordPresenter implements NetworkCallListener{
     @Override
     public void onNetworkCallSuccess(int returnCode) {
         if (returnCode == 0) {
-            view.flash(MessagesString.RESET_LINK_SENT_MESSAGE.concat(emailId));
+            CommonUtil.flash(view.getContext(),MessagesString.RESET_LINK_SENT_MESSAGE.concat(emailId));
 
             view.navigateToLogin();
         }
         else if (returnCode == 1) {
-            view.flash(MessagesString.TRY_AGAIN_LATER_MESSAGE);
+            CommonUtil.flash(view.getContext(),MessagesString.TRY_AGAIN_LATER_MESSAGE);
 
         }
         else if (returnCode == 2) {
-            view.flash(MessagesString.EMAIL_ID_NOT_REGISTERED_MESSAGE);
+            CommonUtil.flash(view.getContext(),MessagesString.EMAIL_ID_NOT_REGISTERED_MESSAGE);
         }
         else {
-            view.flash(MessagesString.TRY_AGAIN_LATER_MESSAGE);
+            CommonUtil.flash(view.getContext(),MessagesString.TRY_AGAIN_LATER_MESSAGE);
 
         }
 

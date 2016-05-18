@@ -72,12 +72,6 @@ public class ForgotPassword extends Fragment {
     }
 
 
-    public  void flash(String message){
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

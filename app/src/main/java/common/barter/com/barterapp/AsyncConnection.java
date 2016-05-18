@@ -25,7 +25,7 @@ public abstract class AsyncConnection extends AsyncTask<String, String, String> 
     private Boolean showDialog;
     private String  showMessage;
 
-    HttpURLConnection conn;
+    private HttpURLConnection conn;
     private JSONObject json;
     private ProgressDialog pDialog;
     private JSONParser jsonParser;
@@ -83,10 +83,11 @@ public abstract class AsyncConnection extends AsyncTask<String, String, String> 
             pDialog.dismiss();
         }
 
-        if(conn==null){
+        if(conn==null || json == null){
             CommonUtil.flash(context, MessagesString.CHECK_NETWORK_CONNECTIVITY);
             return;
         }
+
         receiveData(json);
 //    }
     }
