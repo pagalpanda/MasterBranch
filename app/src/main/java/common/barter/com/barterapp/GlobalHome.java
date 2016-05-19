@@ -37,6 +37,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.barter.com.barterapp.changepassword.ChangePassword;
 import common.barter.com.barterapp.forgotpassword.ForgotPassword;
 
 
@@ -52,8 +53,8 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     TextView tvLocationDialogText;
     Button btnSetCurrentLocation;
     LocationsDialog dialog;
-    static String location;
-    private GlobalHome globalHome;
+    public static String location;
+    GlobalHome globalHome;
     SharedPreferences prefs;
     Toolbar toolbar;
     private CharSequence mDrawerTitle;

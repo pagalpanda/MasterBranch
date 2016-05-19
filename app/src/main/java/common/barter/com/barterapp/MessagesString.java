@@ -80,5 +80,12 @@ public class MessagesString {
     public final static String  LOGGING_IN = "Logging in..";
 
 
+    public static final String PLEASE_ENTER_CORRECT_PASSWORD = "Please enter correct password";
+    public static final String PASSWORD_UPDATED = "Password updated";
+    public static final String NEW_PASSWORDS_DONT_MATCH = "New Passwords don't match";
+    public static final String INVALID_PASSWORD = "Invalid Password";
+    public static final String PASSWORD_SHOULD_NOT_BE_BLANK = "Password should not be blank";
+    public static final String PASSWORD_SHOULD_BE_8_CHARACTERS_LONG = "Password should be 8 characters long";
+    public static final String NEW_PASSWORD_CAN_T_BE_SAME_AS_THE_OLD_ONE = "New Password can't be same as the old one!";
 
 }

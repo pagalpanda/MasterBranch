@@ -1,6 +1,12 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.splash;
 
 import android.content.SharedPreferences;
+
+import common.barter.com.barterapp.DeviceStoreUtil;
+import common.barter.com.barterapp.GlobalHome;
+import common.barter.com.barterapp.LoginDetails;
+import common.barter.com.barterapp.MessagesString;
+import common.barter.com.barterapp.OnAnimationFinishedListener;
 
 
 /**
@@ -14,7 +20,7 @@ public class SplashModel {
         try{
 
             LoginDetails.getInstance().resetDetails();
-            String userId = (String)DeviceStoreUtil.loadFromSharedPrefs(prefs, MessagesString.SHARED_PREFS_UNIQUE_ID);
+            String userId = (String) DeviceStoreUtil.loadFromSharedPrefs(prefs, MessagesString.SHARED_PREFS_UNIQUE_ID);
 
             if(null == userId || "null".equalsIgnoreCase(userId) || "".equalsIgnoreCase(userId)){
                 //User not logged in

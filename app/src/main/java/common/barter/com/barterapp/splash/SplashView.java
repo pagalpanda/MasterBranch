@@ -1,4 +1,4 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.splash;
 
 
 import android.content.Intent;
@@ -14,11 +14,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import common.barter.com.barterapp.GlobalHome;
+import common.barter.com.barterapp.LocationAddress;
+import common.barter.com.barterapp.R;
+
 public class SplashView extends AppCompatActivity implements LocationAddress.LocationCallback {
 
-    ImageView imgLogo;
+    private ImageView imgLogo;
 
-    SplashPresenter splashPresenter;
+    private SplashPresenter splashPresenter;
 
 
     @Override
@@ -33,11 +37,11 @@ public class SplashView extends AppCompatActivity implements LocationAddress.Loc
 
 
 
-    public SharedPreferences getDefaultSharedPreferences() {
+    SharedPreferences getDefaultSharedPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
-    public void setLogoAnimation() {
+    void setLogoAnimation() {
         Animation blink =AnimationUtils.loadAnimation(this,R.anim.blink);
         imgLogo = (ImageView)findViewById(R.id.imgLogo);
         imgLogo.startAnimation(blink);
@@ -53,7 +57,7 @@ public class SplashView extends AppCompatActivity implements LocationAddress.Loc
 
    }
 
-    public void navigateToGlobalHome() {
+    void navigateToGlobalHome() {
         Intent iNew = new Intent(SplashView.this,
                 GlobalHome.class);
         startActivity(iNew);
