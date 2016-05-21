@@ -21,7 +21,7 @@
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
         <activity
-            android:name=".GlobalHome"
+            android:name=".globalhome.GlobalHome"
             android:label="@string/app_name"
             >
             <intent-filter>
@@ -30,7 +30,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".SplashView" >
+        <activity android:name=".splash.SplashView" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

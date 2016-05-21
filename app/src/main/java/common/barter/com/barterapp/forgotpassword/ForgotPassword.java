@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import common.barter.com.barterapp.AbstractFragment;
-import common.barter.com.barterapp.GlobalHome;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.R;
 

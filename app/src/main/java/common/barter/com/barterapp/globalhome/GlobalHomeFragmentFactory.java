@@ -1,8 +1,16 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.globalhome;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
+import common.barter.com.barterapp.ChooseOptionsOffersFragment;
+import common.barter.com.barterapp.HomeFragment;
+import common.barter.com.barterapp.LoginParentFragment;
+import common.barter.com.barterapp.ManageUser;
+import common.barter.com.barterapp.PostsFragment;
+import common.barter.com.barterapp.R;
+import common.barter.com.barterapp.WishList;
 
 /**
  * Created by Panda on 15-05-2016.

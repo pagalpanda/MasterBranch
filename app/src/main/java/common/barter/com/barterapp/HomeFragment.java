@@ -6,8 +6,6 @@ package common.barter.com.barterapp;
 import android.app.Activity;
 
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,11 +17,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 
 public class HomeFragment extends Fragment {
     GridView homeGrid;

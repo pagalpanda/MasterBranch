@@ -2,6 +2,8 @@ package common.barter.com.barterapp;
 
 import android.support.v4.app.Fragment;
 
+import common.barter.com.barterapp.globalhome.GlobalHome;
+
 /**
  * Created by Panda on 19-05-2016.
  */

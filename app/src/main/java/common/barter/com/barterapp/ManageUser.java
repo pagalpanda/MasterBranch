@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import common.barter.com.barterapp.changepassword.ChangePassword;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 
 public class ManageUser extends Fragment {
 

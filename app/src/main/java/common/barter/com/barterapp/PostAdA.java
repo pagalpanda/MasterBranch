@@ -1,81 +1,58 @@
 package common.barter.com.barterapp;
 
 
+import android.app.ProgressDialog;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.squareup.picasso.Picasso;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 
-        import android.app.ProgressDialog;
-        import android.content.Context;
-        import android.database.Cursor;
-        import android.graphics.BitmapFactory;
-        import android.net.Uri;
-        import android.os.AsyncTask;
-        import android.os.Build;
-        import android.provider.MediaStore;
-        import android.support.v4.app.Fragment;
-        import android.support.v7.app.AppCompatActivity;
-        import android.os.Bundle;
-        import android.util.Base64;
-        import android.util.Log;
-        import android.view.LayoutInflater;
-        import android.view.Menu;
-        import android.view.MenuInflater;
-        import android.view.MenuItem;
 
-        import android.app.Activity;
-        import android.content.Intent;
-        import android.graphics.Bitmap;
-        import android.os.Bundle;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.view.inputmethod.InputMethodManager;
-        import android.widget.AdapterView;
-        import android.widget.AutoCompleteTextView;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.GridView;
-        import android.widget.ImageButton;
-        import android.widget.ImageView;
-        import android.widget.ProgressBar;
-        import android.widget.TextView;
-        import android.widget.Toast;
+public class PostAdA extends AbstractFragment {
 
-        import com.squareup.picasso.Picasso;
-
-        import org.apache.http.NameValuePair;
-        import org.apache.http.message.BasicNameValuePair;
-        import org.json.JSONArray;
-        import org.json.JSONException;
-        import org.json.JSONObject;
-
-        import java.io.ByteArrayOutputStream;
-        import java.io.IOException;
-        import java.util.ArrayList;
-        import java.util.HashMap;
-        import java.util.List;
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SubCategoryFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SubCategoryFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class PostAdA extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private static final int CAMERA_REQUEST = 0;
     private static final int GALLERY_REQUEST = 1;
+    private static final int MAX_NUM_OF_IMAGES = 6;
     private ImageView imageView;
     GridView photosGrid;
     ArrayList<Bitmap> photos;
     static int counterNumberOfPhotos;
-
+    GlobalHome activity;
     public PhotosGridViewAdapter getAdapter() {
         return adapter;
     }
@@ -92,7 +69,7 @@ public class PostAdA extends Fragment {
     static boolean isEdited;
     Button btnPostAd;
     ProgressBar spinner;
-
+    private PhotosGalleryDialog addPhotosDialog;
     private ProgressDialog pDialog;
 
     JSONParser jsonParser = new JSONParser();
@@ -107,6 +84,9 @@ public class PostAdA extends Fragment {
     private String subCategory;
     private String city;
     private String locality;
+    private ImageButton photoButton;
+
+    private PostAdAPresenter presenter;
 
 
     public String getCategory() {
@@ -123,13 +103,9 @@ public class PostAdA extends Fragment {
     Post post;
     String postId;
     String mode;
-    static String sMode;// created to handle the back action in the activity
+    public static String sMode;// created to handle the back action in the activity
 
-    // JSON Node names
     private static final String TAG_SUCCESS = "success";
-
-
-    private String uniqueUserId;
 
     public String getTitle() {
         return title;
@@ -176,30 +152,13 @@ public class PostAdA extends Fragment {
         return (String)(new CommonResources(context).loadFromSharedPrefs("uniqueid"));
     }
 
-
-
-
-    public Button getBtnSelectCity() {
-        return btnSelectCity;
-    }
-
-
-
     private OnFragmentInteractionListener mListener;
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SubCategoryFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static SubCategoryFragment newInstance(String param1, String param2) {
         SubCategoryFragment fragment = new SubCategoryFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString("param1", param1);
+        args.putString("param2", param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -228,28 +187,16 @@ public class PostAdA extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-//        if("edit".equalsIgnoreCase(mode) && isRemoving()){
-//            ((GlobalHome) getActivity()).setActionBarTitle("My Posts");
-//        }
     }
 
-    public Button getBtnSelectLocality() {
-        return btnSelectLocality;
-    }
-
-
-
-    public void setBtnSelectLocality(Button btnSelectLocality) {
-        this.btnSelectLocality = btnSelectLocality;
-    }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -262,20 +209,10 @@ public class PostAdA extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        if("subcategories".equalsIgnoreCase(mode)){
-//            activity.getmDrawerToggle().setDrawerIndicatorEnabled(false);
-//            activity.setActionBarTitle(SubCategoryFragment.selectedCategory);
-//        }else if("home".equalsIgnoreCase(mode)){
-//            activity.getmDrawerToggle().setDrawerIndicatorEnabled(true);
-//            activity.setActionBarTitle("Home");
-//        }else if("edit".equalsIgnoreCase(mode)){
-//            activity.getmDrawerToggle().setDrawerIndicatorEnabled(false);
-//        }
-
         return false;
     }
 
-    GlobalHome activity;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -283,281 +220,262 @@ public class PostAdA extends Fragment {
         View rootView = inflater.inflate(R.layout.activity_post_ad, container, false);
         activity = ((GlobalHome)getActivity());
         setHasOptionsMenu(true);
-        //Set the title bar text
-        activity.getmDrawerToggle().setDrawerIndicatorEnabled(false);
-        activity.setActionBarTitle("Post Ad");
+        initializeWidgets(rootView);
+        if(presenter == null) {
+            presenter = new PostAdAPresenter();
+        }
+        presenter.onLoadView(this);
+        presenter.fillDetailsBasedOnMode(mode);
+        presenter.getLocalitiesBasedOnLocation(btnSelectCity.getText().toString());
+
+        setActionListeners();
+        return rootView;
+    }
+
+    private void setActionListeners() {
+        photoButton.setOnClickListener(photoButtonOnClickListener);
+        photosGrid.setOnItemClickListener(removePhotoListener);
+        btnSelectCity.setOnClickListener(selectCityOnClickListener);
+        btnSelectLocality.setOnClickListener(onLocalitySelectListener);
+        btnSelectCategory.setOnClickListener(onCategorySelectListener);
+        btnSelectSubCategory.setOnClickListener(onSubCategorySelectListener);
+        btnPostAd.setOnClickListener(onPostAdClickListener);
+    }
+
+
+
+
+    void setDetailsForPostMode() {
+        setActionBarTitle("Post Ad");
+    }
+
+    void setDetailsForEditMode() {
+        etTitlePost.setText(post.getTitle());
+        etDescriptionPost.setText(post.getDescription());
+        btnSelectCity.setText(post.getCity());
+        btnSelectLocality.setText(post.getLocality());
+        btnSelectCategory.setText(post.getCategory());
+        btnSelectSubCategory.setVisibility(View.VISIBLE);
+        btnSelectSubCategory.setText(post.getSubCategory());
+        btnPostAd.setText("Save");
+        if(photos !=null && photos.size()>0){
+            tvRemovePhoto.setVisibility(View.VISIBLE);
+        }
+
+        ((GlobalHome) getActivity()).setActionBarTitle("Edit Post");
+    }
+
+    private boolean isInEditMode() {
+        return "edit".equalsIgnoreCase(mode);
+    }
+
+
+    private void initializeWidgets(View rootView) {
         tvRemovePhoto = (TextView)rootView.findViewById(R.id.tvRemovePhoto);
         tvRemovePhoto.setVisibility(View.INVISIBLE);
-       // this.imageView = (ImageView)rootView.findViewById(R.id.ivPhoto1);
-        ImageButton photoButton = (ImageButton) rootView.findViewById(R.id.buttonClickImage);
-        //activity = (GlobalHome)getActivity();
-        if(!"edit".equalsIgnoreCase(mode))
+        photoButton = (ImageButton) rootView.findViewById(R.id.buttonClickImage);
+
+
+        if(!isInEditMode()) {
             photos = new ArrayList<Bitmap>();
+        }
         photosGrid = (GridView)rootView.findViewById(R.id.gvPhotos);
         adapter = new PhotosGridViewAdapter((GlobalHome)getActivity(), photos);
         photosGrid.setAdapter(adapter);
 
         etTitlePost = (EditText)rootView.findViewById(R.id.etItemNamePost);
         etDescriptionPost = (EditText)rootView.findViewById(R.id.etItemDescriptionPost);
-
-        photoButton.setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-                final PhotosGalleryDialog dialog = new PhotosGalleryDialog((GlobalHome) getActivity());
-                dialog.show();
-
-                dialog.getClickPhoto().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        selectOrClickPhoto(0);
-                        dialog.cancel();
-                    }
-                });
-
-                dialog.getPickFromGallery().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        selectOrClickPhoto(1);
-                        dialog.cancel();
-                    }
-                });
-            }
-        });
-
-
-        photosGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                removePhoto(position);
-            }
-        });
-
-
         btnSelectCity = (Button)rootView.findViewById(R.id.btnCityDropDown);
         btnSelectCity.setText(new CommonResources(getContext()).readLocation());
-        btnSelectCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ld = new LocationsDialog(getActivity(), getContext(), null, CommonResources.getListOfCities(), false);
-                ld.show();
-                AutoCompleteTextView actv = ld.getAutoCompleteTextView();
-                TextView tvLocationDialogText = ld.getTvLocationDialogText();
-                Button btnSetCurrentLocation = ld.getBtnSetCurrentLocation();
-                actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        CommonResources cr = new CommonResources(context);
-                        String cityName = (String) parent.getItemAtPosition(position);//String cityName = CommonResources.getListOfCities().get(position);
-                        cr.saveToSharedPrefs("location", cityName);
-                        GlobalHome.location = cityName;
-                        btnSelectCity.setText(cityName);
-                        btnSelectLocality.setVisibility(View.VISIBLE);
-                        HashMap param = new HashMap();
-                        param.put("", "");
-                        new AsyncConnection(getContext(), CommonResources.getURL("city_jsons/" + cityName.replace(" ", "%20") + ".json").replace(".php", ""), "POST", param, true, "Fetching Localities") {
-                            @Override
-                            public void receiveData(JSONObject json) {
-                                ArrayList<String> list = new ArrayList<String>();
-                                try {
-                                    JSONArray array = json.getJSONArray("locality");
-
-                                    for (int i = 0; i < array.length(); i++) {
-                                        list.add(array.getString(i));
-                                    }
-                                } catch (Exception e) {
-                                    Log.d("Exception in locality", e.getMessage());
-                                }
-                                CommonResources.setListOfLocalities(list);
-                            }
-                        }.execute();
-                        ld.cancel();
-                        ((GlobalHome) getActivity()).getmAdapter().notifyDataSetChanged();
-
-                    }
-                });
-
-                actv.setHint(MessagesString.HINT_CITY);
-                btnSetCurrentLocation.setVisibility(View.VISIBLE);
-                btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
-                tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_CITY);
-            }
-        });
-
-
-
         btnSelectLocality = (Button)rootView.findViewById(R.id.btnlocalityDropDown);
         btnSelectLocality.setText(MessagesString.HINT_LOCALITY);
-        if(MessagesString.LOCATION_SET_MANUALLY.equalsIgnoreCase(btnSelectCity.getText().toString())){
-            btnSelectLocality.setVisibility(View.INVISIBLE);
-        }else {
-            HashMap param = new HashMap();
-            param.put("","");
-            new AsyncConnection(getContext(), CommonResources.getURL("city_jsons/" + btnSelectCity.getText().toString().replace(" ", "%20") + ".json").replace(".php",""), "POST", param, true, "Fetching Localities") {
-                @Override
-                public void receiveData(JSONObject json) {
-                    ArrayList<String> list = new ArrayList<String>();
-                    try {
-                        JSONArray array = json.getJSONArray("locality");
-
-                        for(int i = 0; i<array.length();i++){
-                            list.add(array.getString(i));
-                        }
-                    }catch (Exception e){
-                        Log.d("Exception in locality",e.getMessage());
-                    }
-                    CommonResources.setListOfLocalities(list);
-                }
-            }.execute();
-            btnSelectLocality.setVisibility(View.VISIBLE);
-        }
-
-
-
-        btnSelectLocality.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<String> listOfLocalities = new ArrayList<String>();
-                listOfLocalities = CommonResources.getListOfLocalities(new CommonResources(context).readLocation());
-                ld = new LocationsDialog(getActivity(), getContext(), null, listOfLocalities, true);
-                ld.show();
-                AutoCompleteTextView actv = ld.getAutoCompleteTextView();
-                TextView tvLocationDialogText = ld.getTvLocationDialogText();
-                Button btnSetCurrentLocation = ld.getBtnSetCurrentLocation();
-                actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        btnSelectLocality.setText((String) parent.getItemAtPosition(position));
-                        ld.cancel();
-                    }
-
-                });
-
-                actv.setHint(MessagesString.HINT_LOCALITY);
-                btnSetCurrentLocation.setVisibility(View.INVISIBLE);
-                //btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
-                tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_LOCALITY);
-
-
-            }
-        });
-
         btnSelectCategory = (Button)rootView.findViewById(R.id.btnCategotyDropDown);
         btnSelectCategory.setText(MessagesString.HINT_CATEGORY);
-
-        btnSelectCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final ArrayList<String> listOfcategories = new ArrayList<String>();
-                for (Categories c : CommonResources.categories) {
-                    listOfcategories.add(c.getName());
-                }
-                ld = new LocationsDialog(getActivity(), getContext(), null, listOfcategories, true);
-                ld.show();
-                AutoCompleteTextView actv = ld.getAutoCompleteTextView();
-                TextView tvLocationDialogText = ld.getTvLocationDialogText();
-                Button btnSetCurrentLocation = ld.getBtnSetCurrentLocation();
-                actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        btnSelectCategory.setText((String) parent.getItemAtPosition(position));
-                        btnSelectSubCategory.setText(MessagesString.HINT_SUBCATEGORY);
-                        ld.cancel();
-                        btnSelectSubCategory.setVisibility(View.VISIBLE);
-                    }
-
-                });
-                //actv.setHint("Category");
-                actv.setHint(MessagesString.HINT_CATEGORY);
-                btnSetCurrentLocation.setVisibility(View.INVISIBLE);
-                //btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
-                tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_CATEGORY);
-
-            }
-        });
-
-
-
         btnSelectSubCategory = (Button)rootView.findViewById(R.id.btnSubCategoryDropDown);
         btnSelectSubCategory.setText(MessagesString.HINT_SUBCATEGORY);
         btnSelectSubCategory.setVisibility(View.INVISIBLE);
-
-        btnSelectSubCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listOfSubCategories = new ArrayList<String>();
-                listOfSubCategories = CommonResources.getSubCategories((btnSelectCategory.getText()).toString());
-                ld = new LocationsDialog(getActivity(),getContext(), null, listOfSubCategories, false);
-                ld.show();
-                AutoCompleteTextView actv = ld.getAutoCompleteTextView();
-                TextView tvLocationDialogText = ld.getTvLocationDialogText();
-                Button btnSetCurrentLocation = ld.getBtnSetCurrentLocation();
-                actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        btnSelectSubCategory.setText((String)parent.getItemAtPosition(position));
-                        ld.cancel();
-                    }
-
-                });
-                //actv.setHint("SubCategory");
-                actv.setHint(MessagesString.HINT_SUBCATEGORY);
-                btnSetCurrentLocation.setVisibility(View.INVISIBLE);
-                //btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
-                tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_SUBCATEGORY);
-
-            }
-        });
-
         btnPostAd = (Button)rootView.findViewById(R.id.btnPostAd);
 
         spinner = (ProgressBar)rootView.findViewById(R.id.progressBarPostAd);
         spinner.setVisibility(View.GONE);
-        btnPostAd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CommonResources resources = new CommonResources(getContext());
-                CommonResources.hideKeyboard(getActivity());
-                if( "true".equals ((String)resources.loadFromSharedPrefs("isLoggedIn") ) ) {
-                    if (validateInput()) {
-                        new CreateNewPost().execute();
+
+    }
+
+    void setTextToLocationButton(String text){
+        btnSelectCity.setText(text);
+    }
+
+    View.OnClickListener onPostAdClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CommonResources resources = new CommonResources(getContext());
+            CommonResources.hideKeyboard(getActivity());
+            if( "true".equals ((String)resources.loadFromSharedPrefs("isLoggedIn") ) ) {
+                if (validateInput()) {
+                    new CreateNewPost().execute();
 
 
-                    } else {
+                } else {
 
-                    }
-
-                }else {
-                    Toast.makeText(getContext(),"Please Log in to Continue",Toast.LENGTH_LONG).show();
                 }
 
-
-
-//                getFragmentManager().popBackStackImmediate();
-            }
-        });
-        if("edit".equalsIgnoreCase(mode)){
-            etTitlePost.setText(post.getTitle());
-            etDescriptionPost.setText(post.getDescription());
-            btnSelectCity.setText(post.getCity());
-            btnSelectLocality.setText(post.getLocality());
-            btnSelectCategory.setText(post.getCategory());
-            btnSelectSubCategory.setVisibility(View.VISIBLE);
-            btnSelectSubCategory.setText(post.getSubCategory());
-            btnPostAd.setText("Save");
-            if(photos !=null && photos.size()>0){
-                tvRemovePhoto.setVisibility(View.VISIBLE);
+            }else {
+                Toast.makeText(getContext(),"Please Log in to Continue",Toast.LENGTH_LONG).show();
             }
 
-            ((GlobalHome) getActivity()).setActionBarTitle("Edit Post");
-
-
-        }else {
-            ((GlobalHome) getActivity()).setActionBarTitle("Post Ad");
         }
-        return rootView;
+    };
+
+    View.OnClickListener onSubCategorySelectListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            listOfSubCategories = new ArrayList<String>();
+            listOfSubCategories = CommonResources.getSubCategories((btnSelectCategory.getText()).toString());
+            ld = new LocationsDialog(getActivity(),getContext(), null, listOfSubCategories, false);
+            ld.show();
+            AutoCompleteTextView actv = ld.getAutoCompleteTextView();
+            TextView tvLocationDialogText = ld.getTvLocationDialogText();
+            Button btnSetCurrentLocation = ld.getBtnSetCurrentLocation();
+            actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    btnSelectSubCategory.setText((String) parent.getItemAtPosition(position));
+                    ld.cancel();
+                }
+
+            });
+            //actv.setHint("SubCategory");
+            actv.setHint(MessagesString.HINT_SUBCATEGORY);
+            btnSetCurrentLocation.setVisibility(View.INVISIBLE);
+            //btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
+            tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_SUBCATEGORY);
+
+        }
+    };
+    View.OnClickListener onCategorySelectListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            final ArrayList<String> listOfcategories = new ArrayList<String>();
+            for (Categories c : CommonResources.categories) {
+                listOfcategories.add(c.getName());
+            }
+            ld = new LocationsDialog(getActivity(), getContext(), null, listOfcategories, true);
+            ld.show();
+            AutoCompleteTextView actv = ld.getAutoCompleteTextView();
+            TextView tvLocationDialogText = ld.getTvLocationDialogText();
+            Button btnSetCurrentLocation = ld.getBtnSetCurrentLocation();
+            actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    btnSelectCategory.setText((String) parent.getItemAtPosition(position));
+                    btnSelectSubCategory.setText(MessagesString.HINT_SUBCATEGORY);
+                    ld.cancel();
+                    btnSelectSubCategory.setVisibility(View.VISIBLE);
+                }
+
+            });
+            //actv.setHint("Category");
+            actv.setHint(MessagesString.HINT_CATEGORY);
+            btnSetCurrentLocation.setVisibility(View.INVISIBLE);
+            //btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
+            tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_CATEGORY);
+
+        }
+    };
+
+
+    View.OnClickListener photoButtonOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            presenter.onCameraIconClick();
+
+        }
+    };
+
+    void showPhotoSelectionOptions() {
+        addPhotosDialog = new PhotosGalleryDialog((GlobalHome) getActivity());
+        addPhotosDialog.show();
+        addPhotosDialog.getClickPhoto().setOnClickListener(onClickPhotoListener);
+        addPhotosDialog.getPickFromGallery().setOnClickListener(onClickPickFromGalleryListener);
     }
+
+    View.OnClickListener onClickPhotoListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            selectOrClickPhoto(CAMERA_REQUEST);
+
+        }
+    };
+
+    View.OnClickListener onClickPickFromGalleryListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            selectOrClickPhoto(GALLERY_REQUEST);
+
+        }
+    };
+    View.OnClickListener selectCityOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ld = new LocationsDialog(getActivity(), getContext(), null, CommonResources.getListOfCities(), false);
+            ld.show();
+            AutoCompleteTextView actv = ld.getAutoCompleteTextView();
+            TextView tvLocationDialogText = ld.getTvLocationDialogText();
+            Button btnSetCurrentLocation = ld.getBtnSetCurrentLocation();
+            actv.setOnItemClickListener(onLocationSelectListener);
+            actv.setHint(MessagesString.HINT_CITY);
+            //// TODO: 21-05-2016 make the current location button visible and implement functionality
+            btnSetCurrentLocation.setVisibility(View.INVISIBLE);
+            btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
+            tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_CITY);
+        }
+    };
+
+    AdapterView.OnItemClickListener onLocationSelectListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            String cityName = (String) parent.getItemAtPosition(position);
+            presenter.onLocationSelect(cityName);
+            ld.cancel();
+            ((GlobalHome) getActivity()).getmAdapter().notifyDataSetChanged();
+        }
+    };
+
+    AdapterView.OnItemClickListener removePhotoListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            presenter.onRemovePhotoClick(position, photos.size());
+
+        }
+    };
+
+    View.OnClickListener onLocalitySelectListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ArrayList<String> listOfLocalities = new ArrayList<String>();
+            listOfLocalities = CommonResources.getListOfLocalities(new CommonResources(context).readLocation());
+            ld = new LocationsDialog(getActivity(), getContext(), null, listOfLocalities, true);
+            ld.show();
+            AutoCompleteTextView actv = ld.getAutoCompleteTextView();
+            TextView tvLocationDialogText = ld.getTvLocationDialogText();
+            Button btnSetCurrentLocation = ld.getBtnSetCurrentLocation();
+            actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    btnSelectLocality.setText((String) parent.getItemAtPosition(position));
+                    ld.cancel();
+                }
+
+            });
+
+            actv.setHint(MessagesString.HINT_LOCALITY);
+            btnSetCurrentLocation.setVisibility(View.INVISIBLE);
+            //btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
+            tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_LOCALITY);
+
+
+        }
+    };
 
     public boolean validateInput(){
 
@@ -587,35 +505,33 @@ public class PostAdA extends Fragment {
         return true;
     }
 
-    private void removePhoto(int position) {
+    void removePhoto(int position) {
 
         photos.remove(position);
         adapter.notifyDataSetChanged();
-        if(photos.size() == 0){
-            tvRemovePhoto.setVisibility(View.INVISIBLE);
-        }
+
+    }
+
+    void setVisibilityOfRemovePhotosText(boolean visible) {
+        tvRemovePhoto.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void selectOrClickPhoto(int selection){
-
-        if(photos.size() < 6) {
-            if(selection == 0){
-                //code for camera action
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        if(photos.size() < MAX_NUM_OF_IMAGES) {
+            Intent intent;
+            if(selection == CAMERA_REQUEST){
+                intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             }else{
-                //code for selection from gallery
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(pickPhoto,GALLERY_REQUEST);
+                intent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             }
+            startActivityForResult(intent,selection);
         }else {
-            Toast.makeText(getContext(),"You Can Only upload 6 images.",Toast.LENGTH_SHORT).show();
+            CommonUtil.flash(getContext(), MessagesString.MAXIMUM_LIMIT_OF_IMAGE_UPLOAD);
         }
 
 
-
+        addPhotosDialog.cancel();
 
     }
 
@@ -645,18 +561,10 @@ public class PostAdA extends Fragment {
             photo = BitmapFactory.decodeFile(filePath);
         }
         if(photo != null) {
-
-
-
-
-
             Bitmap compressedPhoto = getResizedBitmap(photo);
-
             photos.add(compressedPhoto);
             counterNumberOfPhotos++;
             adapter.notifyDataSetChanged();
-
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 Toast.makeText(getContext(), "Before" + photo.getAllocationByteCount() + " After" + compressedPhoto.getAllocationByteCount(), Toast.LENGTH_LONG).show();
                 //return bitmap.getAllocationByteCount();
@@ -666,9 +574,6 @@ public class PostAdA extends Fragment {
             }
             //primaryImage = photos.get(0);
         }
-
-
-
     }
 
     public Bitmap getResizedBitmap(Bitmap image) {
@@ -705,6 +610,19 @@ public class PostAdA extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void navigate() {
+
+    }
+
+    public void hideLocalityButton() {
+        btnSelectLocality.setVisibility(View.INVISIBLE);
+    }
+
+    public void showLocalityButton() {
+        btnSelectLocality.setVisibility(View.VISIBLE);
     }
 
     public interface OnFragmentInteractionListener {
@@ -773,7 +691,7 @@ public class PostAdA extends Fragment {
             // getting JSON Object
             // Note that create product url accepts POST method
             JSONObject json;
-            if ("edit".equalsIgnoreCase(mode)) {
+            if (isInEditMode()) {
 
                 params.put("postid",postId);
                 json = jsonParser.makeHttpRequest(CommonResources.getURL("edit_my_post"),
@@ -848,5 +766,6 @@ public class PostAdA extends Fragment {
     }
 
     }
+
 
 }

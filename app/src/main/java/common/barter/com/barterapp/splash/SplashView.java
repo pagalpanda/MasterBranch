@@ -14,7 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import common.barter.com.barterapp.GlobalHome;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 import common.barter.com.barterapp.LocationAddress;
 import common.barter.com.barterapp.R;
 

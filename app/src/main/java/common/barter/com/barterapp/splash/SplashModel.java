@@ -3,7 +3,7 @@ package common.barter.com.barterapp.splash;
 import android.content.SharedPreferences;
 
 import common.barter.com.barterapp.DeviceStoreUtil;
-import common.barter.com.barterapp.GlobalHome;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 import common.barter.com.barterapp.LoginDetails;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.OnAnimationFinishedListener;

@@ -1,4 +1,4 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.globalhome;
 
 
 import android.app.AlertDialog;
@@ -37,6 +37,24 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.barter.com.barterapp.CommonResources;
+import common.barter.com.barterapp.CommonUtil;
+import common.barter.com.barterapp.DeviceStoreUtil;
+import common.barter.com.barterapp.GoogleplusListener;
+import common.barter.com.barterapp.LocationAddress;
+import common.barter.com.barterapp.LocationsDialog;
+import common.barter.com.barterapp.LoginDetails;
+import common.barter.com.barterapp.MakeOfferFragment;
+import common.barter.com.barterapp.MessagesString;
+import common.barter.com.barterapp.NavDrawerItem;
+import common.barter.com.barterapp.NavDrawerListAdapter;
+import common.barter.com.barterapp.OTPFragment;
+import common.barter.com.barterapp.PostAdA;
+import common.barter.com.barterapp.PostDetailsFragment;
+import common.barter.com.barterapp.PostsFragment;
+import common.barter.com.barterapp.R;
+import common.barter.com.barterapp.RecyclerItemClickListener;
+import common.barter.com.barterapp.SubCategoryFragment;
 import common.barter.com.barterapp.changepassword.ChangePassword;
 import common.barter.com.barterapp.forgotpassword.ForgotPassword;
 
@@ -284,7 +302,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
         }
         switch (item.getItemId()) {
             case R.id.action_search:
-                CommonUtil.flash(getApplicationContext(),"Search");
+                CommonUtil.flash(getApplicationContext(), "Search");
                 return true;
             case R.id.action_edit_post:
                 return super.onOptionsItemSelected(item);

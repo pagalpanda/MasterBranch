@@ -87,5 +87,6 @@ public class MessagesString {
     public static final String PASSWORD_SHOULD_NOT_BE_BLANK = "Password should not be blank";
     public static final String PASSWORD_SHOULD_BE_8_CHARACTERS_LONG = "Password should be 8 characters long";
     public static final String NEW_PASSWORD_CAN_T_BE_SAME_AS_THE_OLD_ONE = "New Password can't be same as the old one!";
+    public static final String MAXIMUM_LIMIT_OF_IMAGE_UPLOAD = "You Can Only upload 6 images.";
 
 }

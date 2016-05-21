@@ -1,7 +1,6 @@
 package common.barter.com.barterapp;
 
 import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,18 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.List;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 
 
 /**
@@ -43,7 +38,7 @@ public class SubCategoryFragment extends Fragment {
     Activity context;
     private OnFragmentInteractionListener mListener;
 
-    static String selectedCategory;
+    public static String selectedCategory;
     ListView lvSubCategoris;
     TextView tvTitleOfFragment;
     GlobalHome activity;

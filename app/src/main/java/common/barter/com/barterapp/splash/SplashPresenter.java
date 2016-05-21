@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.view.WindowManager;
 
 import common.barter.com.barterapp.CommonResources;
-import common.barter.com.barterapp.GlobalHome;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 import common.barter.com.barterapp.LocationAddress;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.OnAnimationFinishedListener;
