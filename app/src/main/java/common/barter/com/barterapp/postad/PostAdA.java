@@ -1,25 +1,21 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.postad;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.preference.PreferenceManager;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,14 +28,20 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.squareup.picasso.Picasso;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import common.barter.com.barterapp.AbstractFragment;
+import common.barter.com.barterapp.CommonResources;
+import common.barter.com.barterapp.CommonUtil;
+import common.barter.com.barterapp.HomeFragment;
+import common.barter.com.barterapp.JSONParser;
+import common.barter.com.barterapp.LocationsDialog;
+import common.barter.com.barterapp.MessagesString;
+import common.barter.com.barterapp.PhotosGridViewAdapter;
+import common.barter.com.barterapp.Post;
+import common.barter.com.barterapp.R;
+import common.barter.com.barterapp.SubCategoryFragment;
 import common.barter.com.barterapp.globalhome.GlobalHome;
 
 
@@ -89,9 +91,7 @@ public class PostAdA extends AbstractFragment {
     private PostAdAPresenter presenter;
 
 
-    public String getCategory() {
-        return category;
-    }
+
 
     public void setCategory(String category) {
         this.category = category;
@@ -105,54 +105,6 @@ public class PostAdA extends AbstractFragment {
     String mode;
     public static String sMode;// created to handle the back action in the activity
 
-    private static final String TAG_SUCCESS = "success";
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getSubCategory() {
-        return subCategory;
-    }
-
-    public void setSubCategory(String subCategory) {
-        this.subCategory = subCategory;
-    }
-
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getLocality() {
-        return locality;
-    }
-
-    public void setLocality(String locality) {
-        this.locality = locality;
-    }
-
-    public String getUniqueUserId() {
-        return (String)(new CommonResources(context).loadFromSharedPrefs("uniqueid"));
-    }
-
-    private OnFragmentInteractionListener mListener;
 
     public static SubCategoryFragment newInstance(String param1, String param2) {
         SubCategoryFragment fragment = new SubCategoryFragment();
@@ -308,81 +260,74 @@ public class PostAdA extends AbstractFragment {
     View.OnClickListener onPostAdClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            CommonResources resources = new CommonResources(getContext());
-            CommonResources.hideKeyboard(getActivity());
-            if( "true".equals ((String)resources.loadFromSharedPrefs("isLoggedIn") ) ) {
-                if (validateInput()) {
-                    new CreateNewPost().execute();
-
-
-                } else {
-
-                }
-
-            }else {
-                Toast.makeText(getContext(),"Please Log in to Continue",Toast.LENGTH_LONG).show();
-            }
+            hideKeybaord();
+            title = etTitlePost.getText().toString();
+            description = etDescriptionPost.getText().toString();
+            subCategory = btnSelectSubCategory.getText().toString();
+            city = btnSelectCity.getText().toString();
+            locality = btnSelectLocality.getText().toString();
+            category = btnSelectCategory.getText().toString();
+            presenter.onPostAdClick(title, description,category, subCategory, city,locality, photos, postId, mode);
 
         }
     };
+
+
 
     View.OnClickListener onSubCategorySelectListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             listOfSubCategories = new ArrayList<String>();
-            listOfSubCategories = CommonResources.getSubCategories((btnSelectCategory.getText()).toString());
+            String selectedCategory = (btnSelectCategory.getText()).toString();
+            listOfSubCategories = presenter.getSubCategories(selectedCategory);
             ld = new LocationsDialog(getActivity(),getContext(), null, listOfSubCategories, false);
             ld.show();
             AutoCompleteTextView actv = ld.getAutoCompleteTextView();
             TextView tvLocationDialogText = ld.getTvLocationDialogText();
             Button btnSetCurrentLocation = ld.getBtnSetCurrentLocation();
-            actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    btnSelectSubCategory.setText((String) parent.getItemAtPosition(position));
-                    ld.cancel();
-                }
-
-            });
-            //actv.setHint("SubCategory");
+            actv.setOnItemClickListener(subCategorySelectionListener);
             actv.setHint(MessagesString.HINT_SUBCATEGORY);
             btnSetCurrentLocation.setVisibility(View.INVISIBLE);
-            //btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
             tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_SUBCATEGORY);
 
         }
     };
+
+    AdapterView.OnItemClickListener subCategorySelectionListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            btnSelectSubCategory.setText((String) parent.getItemAtPosition(position));
+            ld.cancel();
+        }
+
+    };
     View.OnClickListener onCategorySelectListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            final ArrayList<String> listOfcategories = new ArrayList<String>();
-            for (Categories c : CommonResources.categories) {
-                listOfcategories.add(c.getName());
-            }
-            ld = new LocationsDialog(getActivity(), getContext(), null, listOfcategories, true);
+            final ArrayList listOfCategories = presenter.getListOfCategories();
+            ld = new LocationsDialog(getActivity(), getContext(), null, listOfCategories, true);
             ld.show();
             AutoCompleteTextView actv = ld.getAutoCompleteTextView();
             TextView tvLocationDialogText = ld.getTvLocationDialogText();
             Button btnSetCurrentLocation = ld.getBtnSetCurrentLocation();
-            actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    btnSelectCategory.setText((String) parent.getItemAtPosition(position));
-                    btnSelectSubCategory.setText(MessagesString.HINT_SUBCATEGORY);
-                    ld.cancel();
-                    btnSelectSubCategory.setVisibility(View.VISIBLE);
-                }
 
-            });
-            //actv.setHint("Category");
+            actv.setOnItemClickListener(categorySelectionListener);
             actv.setHint(MessagesString.HINT_CATEGORY);
             btnSetCurrentLocation.setVisibility(View.INVISIBLE);
-            //btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
             tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_CATEGORY);
 
         }
     };
+    AdapterView.OnItemClickListener categorySelectionListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            btnSelectCategory.setText((String) parent.getItemAtPosition(position));
+            btnSelectSubCategory.setText(MessagesString.HINT_SUBCATEGORY);
+            ld.cancel();
+            btnSelectSubCategory.setVisibility(View.VISIBLE);
+        }
 
+    };
 
     View.OnClickListener photoButtonOnClickListener = new View.OnClickListener() {
         @Override
@@ -452,29 +397,27 @@ public class PostAdA extends AbstractFragment {
     View.OnClickListener onLocalitySelectListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ArrayList<String> listOfLocalities = new ArrayList<String>();
-            listOfLocalities = CommonResources.getListOfLocalities(new CommonResources(context).readLocation());
+            ArrayList<String> listOfLocalities = CommonResources.getListOfLocalities();
             ld = new LocationsDialog(getActivity(), getContext(), null, listOfLocalities, true);
             ld.show();
             AutoCompleteTextView actv = ld.getAutoCompleteTextView();
             TextView tvLocationDialogText = ld.getTvLocationDialogText();
             Button btnSetCurrentLocation = ld.getBtnSetCurrentLocation();
-            actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    btnSelectLocality.setText((String) parent.getItemAtPosition(position));
-                    ld.cancel();
-                }
-
-            });
-
+            actv.setOnItemClickListener(onLocalitySelection);
             actv.setHint(MessagesString.HINT_LOCALITY);
             btnSetCurrentLocation.setVisibility(View.INVISIBLE);
-            //btnSetCurrentLocation.setText(MessagesString.LOCATION_DIALOG_BUTTON_TEXT);
             tvLocationDialogText.setText(MessagesString.DIALOG_TITLE_TEXT_LOCALITY);
 
 
         }
+    };
+    AdapterView.OnItemClickListener onLocalitySelection = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            btnSelectLocality.setText((String) parent.getItemAtPosition(position));
+            ld.cancel();
+        }
+
     };
 
     public boolean validateInput(){
@@ -485,21 +428,12 @@ public class PostAdA extends AbstractFragment {
         city = btnSelectCity.getText().toString();
         locality = btnSelectLocality.getText().toString();
         category = btnSelectCategory.getText().toString();
-
-
-
-
-        if( "".equals(title) || "".equals(description) || MessagesString.HINT_SUBCATEGORY.equalsIgnoreCase(subCategory) || MessagesString.HINT_SUBCATEGORY.equalsIgnoreCase(subCategory) || MessagesString.HINT_CITY.equalsIgnoreCase(city) || MessagesString.HINT_LOCALITY.equalsIgnoreCase(locality)){
+         if( "".equals(title) || "".equals(description) || MessagesString.HINT_SUBCATEGORY.equalsIgnoreCase(subCategory) || MessagesString.HINT_SUBCATEGORY.equalsIgnoreCase(subCategory) || MessagesString.HINT_CITY.equalsIgnoreCase(city) || MessagesString.HINT_LOCALITY.equalsIgnoreCase(locality)){
             Toast.makeText(getContext(),"All fields are mandatory",Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        setTitle(title);
-        setDescription(description);
-        setSubCategory(subCategory);
-        setCity(city);
-        setLocality(locality);
-        setCategory(category);
+
 
 
         return true;
@@ -540,24 +474,15 @@ public class PostAdA extends AbstractFragment {
         Bitmap photo = null;
         if (requestCode == CAMERA_REQUEST && resultCode == getActivity().RESULT_OK) {
             photo = (Bitmap) data.getExtras().get("data");
-            // imageView.setImageBitmap(photo);
-
-
-
         }else if(requestCode == GALLERY_REQUEST && resultCode == getActivity().RESULT_OK) {
-
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
             Cursor cursor = getActivity().getContentResolver().query(
                     selectedImage, filePathColumn, null, null, null);
             cursor.moveToFirst();
-
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String filePath = cursor.getString(columnIndex);
             cursor.close();
-
-
             photo = BitmapFactory.decodeFile(filePath);
         }
         if(photo != null) {
@@ -565,14 +490,10 @@ public class PostAdA extends AbstractFragment {
             photos.add(compressedPhoto);
             counterNumberOfPhotos++;
             adapter.notifyDataSetChanged();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Toast.makeText(getContext(), "Before" + photo.getAllocationByteCount() + " After" + compressedPhoto.getAllocationByteCount(), Toast.LENGTH_LONG).show();
-                //return bitmap.getAllocationByteCount();
-            }
+
             if(photos.size() > 0){
                 tvRemovePhoto.setVisibility(View.VISIBLE);
             }
-            //primaryImage = photos.get(0);
         }
     }
 
@@ -586,7 +507,6 @@ public class PostAdA extends AbstractFragment {
         if(height > 300){
             height =300;//image.getHeight();
         }
-        Toast.makeText(getContext(),"Width of Image" + image.getWidth()+" Height Of Image"+ image.getHeight(),Toast.LENGTH_LONG).show();
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
@@ -597,24 +517,27 @@ public class PostAdA extends AbstractFragment {
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
 
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override
     public void navigate() {
-
+        Fragment fragment = null;
+        fragment=new HomeFragment();
+        if(fragment!=null)
+        {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.frame_container, fragment).commit();
+        }
+        else
+        {
+            // error in creating fragment
+            Log.e("MainActivity", "Error in creating fragment");
+        }
     }
 
     public void hideLocalityButton() {
@@ -625,147 +548,8 @@ public class PostAdA extends AbstractFragment {
         btnSelectLocality.setVisibility(View.VISIBLE);
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 
 
-    class CreateNewPost extends AsyncTask<String, String, String> {
-
-        /**
-         * Before starting background thread Show Progress Dialog
-         */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(getContext());
-            pDialog.setMessage("Creating Product..");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
-            pDialog.show();
-        }
-
-        /**
-         * Creating product
-         */
-
-        protected String doInBackground(String... args) {
-
-
-            // Building Parameters
-            HashMap <String,String> params = new HashMap <String,String>();
-
-            params.put("title", getTitle());
-            params.put("description", getDescription());
-            params.put("subcategory", getSubCategory());
-            params.put("city", getCity());
-            params.put("locality", getLocality());
-            params.put("uniqueid", getUniqueUserId());
-
-
-            params.put("numofimages", photos.size() + "");
-            params.put("category", getCategory());
-
-            ByteArrayOutputStream byteArrayBitmapStream;
-            int i = 0;
-            for (Bitmap image : photos) {
-                byteArrayBitmapStream = new ByteArrayOutputStream();
-                image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
-                byte[] b = byteArrayBitmapStream.toByteArray();
-                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-                params.put("image_" + i, encodedImage);
-                i++;
-                try {
-                    byteArrayBitmapStream.close();
-                    byteArrayBitmapStream = null;
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-
-
-                }
-            }
-
-
-            // getting JSON Object
-            // Note that create product url accepts POST method
-            JSONObject json;
-            if (isInEditMode()) {
-
-                params.put("postid",postId);
-                json = jsonParser.makeHttpRequest(CommonResources.getURL("edit_my_post"),
-                        "POST", params);
-            } else{
-                json = jsonParser.makeHttpRequest(CommonResources.getURL("create_post"),
-                        "POST", params);
-            }
-            // check log cat fro response
-            if (json == null)
-                return null;
-            Log.d("Create Response", json.toString());
-            //Toast.makeText(getContext(),"JSON: "+json.toString(), Toast.LENGTH_LONG).show();
-            // check for success tag
-            int success = -1;
-            try {
-                success = json.getInt(TAG_SUCCESS);
-
-                if (success == 0) {
-                    // successfully created product
-//                    Toast.makeText(getApplicationContext(),"Created",Toast.LENGTH_LONG).show();
-                    //finish();
-                } else if (success == 1) {
-                    // failed to create product
-                } else if (success == 2) {
-                    //Invalid input
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return success + "";
-        }
-
-        /**
-         * After completing background task Dismiss the progress dialog
-         **/
-        protected void onPostExecute(String success) {
-            // dismiss the dialog once done
-            pDialog.dismiss();
-            if ("0".equalsIgnoreCase(success)) {
-                isEdited = true;
-
-                for(int i=0; i<photos.size();i++){
-                    String url = CommonResources.getStaticURL()+"uploadedimages/"+postId+"_"+(i+1);
-                    Picasso.with(getContext()).invalidate(url);
-                }
-
-                Toast.makeText(getContext(), "Ad was successfully posted.", Toast.LENGTH_LONG).show();
-                //getFragmentManager().popBackStackImmediate();
-                navigateToHome();
-            } else if ("1".equalsIgnoreCase(success)) {
-                Toast.makeText(getContext(), "Please try again", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getContext(), "Please try again later", Toast.LENGTH_LONG).show();
-            }
-        }
-
-        public void navigateToHome() {
-            Fragment fragment = null;
-            fragment=new HomeFragment();
-            if(fragment!=null)
-            {
-                getFragmentManager().beginTransaction()
-                    .replace(R.id.frame_container, fragment).commit();
-            }
-            else
-            {
-                // error in creating fragment
-                Log.e("MainActivity", "Error in creating fragment");
-            }
-    }
-
-    }
 
 
 }

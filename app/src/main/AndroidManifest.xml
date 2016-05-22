@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PostAdA"
+            android:name=".postad.PostAdA"
             android:label="@string/title_activity_post_ad" >
         </activity>
         <activity

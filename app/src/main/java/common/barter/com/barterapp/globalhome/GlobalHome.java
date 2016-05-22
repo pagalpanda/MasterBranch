@@ -49,7 +49,7 @@ import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.NavDrawerItem;
 import common.barter.com.barterapp.NavDrawerListAdapter;
 import common.barter.com.barterapp.OTPFragment;
-import common.barter.com.barterapp.PostAdA;
+import common.barter.com.barterapp.postad.PostAdA;
 import common.barter.com.barterapp.PostDetailsFragment;
 import common.barter.com.barterapp.PostsFragment;
 import common.barter.com.barterapp.R;

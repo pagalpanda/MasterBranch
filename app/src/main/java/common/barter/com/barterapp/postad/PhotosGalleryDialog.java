@@ -1,4 +1,4 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.postad;
 
 /**
  * Created by amitpa on 8/23/2015.
@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 
+import common.barter.com.barterapp.R;
 import common.barter.com.barterapp.globalhome.GlobalHome;
 
 

@@ -19,6 +19,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import common.barter.com.barterapp.globalhome.GlobalHome;
+import common.barter.com.barterapp.postad.PostAdA;
 
 public class HomeFragment extends Fragment {
     GridView homeGrid;

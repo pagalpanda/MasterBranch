@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import common.barter.com.barterapp.globalhome.GlobalHome;
+import common.barter.com.barterapp.postad.PostAdA;
 
 /**
  * Created by amitpa on 8/20/2015.
@@ -115,56 +116,7 @@ public class CommonResources {
                 CommonResources.list_of_Localities = localities;
         }
 
-        public static ArrayList<String> getListOfLocalities(String city) {
-                //list_of_Localities = new ArrayList<String>();
-//                if(city.equalsIgnoreCase("Hyderabad"))
-//                {
-//                        list_of_Localities.add("HyderabadA");
-//                        list_of_Localities.add("HyderabadB");
-//                        list_of_Localities.add("HyderabadC");
-//                        list_of_Localities.add("HyderabadD");
-//                }else if(city.equalsIgnoreCase("Secunderabad"))
-//                {
-//                        list_of_Localities.add("SecunderabadA");
-//                        list_of_Localities.add("SecunderabadB");
-//                        list_of_Localities.add("SecunderabadC");
-//                        list_of_Localities.add("SecunderabadD");
-//                }else if(city.equalsIgnoreCase("Mohali"))
-//                {
-//                        list_of_Localities.add("MohaliA");
-//                        list_of_Localities.add("MohaliB");
-//                        list_of_Localities.add("MohaliC");
-//                        list_of_Localities.add("MohaliD");
-//
-//                }else if(city.equalsIgnoreCase("Bangalore"))
-//                {
-//                        list_of_Localities.add("BangaloreA");
-//                        list_of_Localities.add("BangaloreB");
-//                        list_of_Localities.add("BangaloreC");
-//                        list_of_Localities.add("BangaloreD");
-//                }else if(city.equalsIgnoreCase("Mumbai"))
-//                {
-//                        list_of_Localities.add("MumbaiA");
-//                        list_of_Localities.add("MumbaiB");
-//                        list_of_Localities.add("MumbaiC");
-//                        list_of_Localities.add("MumbaiD");
-//                }else if(city.equalsIgnoreCase("Bhubaneswar"))
-//                {
-//                        list_of_Localities.add("BhubaneswarA");
-//                        list_of_Localities.add("BhubaneswarB");
-//                        list_of_Localities.add("BhubaneswarC");
-//                        list_of_Localities.add("BhubaneswarD");
-//
-//                }else if(city.equalsIgnoreCase("Delhi"))
-//                {
-//                        list_of_Localities.add("DelhiA");
-//                        list_of_Localities.add("DelhiB");
-//                        list_of_Localities.add("DelhiC");
-//                        list_of_Localities.add("DelhiD");
-//                }
-//
-//                Collections.sort(list_of_Localities);
-
+        public static ArrayList<String> getListOfLocalities() {
                 return list_of_Localities;
 
         }

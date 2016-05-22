@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
 import common.barter.com.barterapp.globalhome.GlobalHome;
+import common.barter.com.barterapp.postad.PostAdA;
 
 public class PostDetailsFragment extends Fragment implements ViewPager.OnPageChangeListener {
 
