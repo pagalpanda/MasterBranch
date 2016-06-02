@@ -34,14 +34,14 @@ import java.util.ArrayList;
 import common.barter.com.barterapp.AbstractFragment;
 import common.barter.com.barterapp.CommonResources;
 import common.barter.com.barterapp.CommonUtil;
-import common.barter.com.barterapp.HomeFragment;
+import common.barter.com.barterapp.Home.HomeFragment;
 import common.barter.com.barterapp.JSONParser;
 import common.barter.com.barterapp.LocationsDialog;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.PhotosGridViewAdapter;
 import common.barter.com.barterapp.Post;
 import common.barter.com.barterapp.R;
-import common.barter.com.barterapp.SubCategoryFragment;
+import common.barter.com.barterapp.SubCategory.SubCategoryFragment;
 import common.barter.com.barterapp.globalhome.GlobalHome;
 
 
