@@ -1,15 +1,22 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.splash;
 
 
 
 import android.content.SharedPreferences;
 import android.view.WindowManager;
 
+import common.barter.com.barterapp.CommonResources;
+import common.barter.com.barterapp.globalhome.GlobalHome;
+import common.barter.com.barterapp.LocationAddress;
+import common.barter.com.barterapp.MessagesString;
+import common.barter.com.barterapp.OnAnimationFinishedListener;
+import common.barter.com.barterapp.R;
 
-public class SplashPresenter implements OnAnimationFinishedListener{
-    SplashView splashView;
-    SharedPreferences prefs;
-    SplashModel splashModel;
+
+public class SplashPresenter implements OnAnimationFinishedListener {
+    private SplashView splashView;
+    private SharedPreferences prefs;
+    private SplashModel splashModel;
 
 
     public SplashPresenter() {
@@ -17,30 +24,30 @@ public class SplashPresenter implements OnAnimationFinishedListener{
     }
 
 
-    public void onTakeView(SplashView view) {
+    void onTakeView(SplashView view) {
         this.splashView = view;
         publish();
     }
 
-    private void publish() {
+    void publish() {
         splashView.setLogoAnimation();
         positionActivityBelowStatusBar();
         prefs  = splashView.getDefaultSharedPreferences();
 
     }
 
-    public void onStartView() {
+    void onStartView() {
         overrideAnimation();
         splashModel.startThreadForLocationSetting(this, prefs);
         splashModel.setUserDateDetailsData(prefs);
     }
 
-    public void overrideAnimation() {
+    void overrideAnimation() {
         splashView.overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
     }
 
 
-    public void positionActivityBelowStatusBar() {
+    void positionActivityBelowStatusBar() {
         //Following lines set the activity to be aligned below the status bar
         splashView.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         splashView.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);

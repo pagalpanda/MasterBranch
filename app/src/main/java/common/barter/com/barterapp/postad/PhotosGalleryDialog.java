@@ -1,26 +1,20 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.postad;
 
 /**
  * Created by amitpa on 8/23/2015.
  */
 import android.app.Dialog;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Collections;
+
+import common.barter.com.barterapp.R;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 
 
 class PhotosGalleryDialog extends Dialog{

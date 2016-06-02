@@ -2,6 +2,7 @@ package common.barter.com.barterapp.forgotpassword;
 
 import java.util.HashMap;
 
+import common.barter.com.barterapp.AbstractFragment;
 import common.barter.com.barterapp.CommonResources;
 import common.barter.com.barterapp.CommonUtil;
 import common.barter.com.barterapp.MessagesString;
@@ -11,10 +12,11 @@ import common.barter.com.barterapp.NetworkCallListener;
  * Created by Panda on 17-05-2016.
  */
 public class ForgotPasswordPresenter implements NetworkCallListener{
-    ForgotPassword view;
-    ForgotPasswordModel model;
-    String emailId;
-    public void onLoadView(ForgotPassword view) {
+    private AbstractFragment view;
+    private ForgotPasswordModel model;
+    private String emailId;
+
+    void onLoadView(AbstractFragment view) {
         this.view = view;
         view.setHamburgerIndicator(false);
         view.setActionBarTitle(MessagesString.HEADER_FORGOT_PASSWORD);
@@ -50,7 +52,7 @@ public class ForgotPasswordPresenter implements NetworkCallListener{
         if (returnCode == 0) {
             CommonUtil.flash(view.getContext(),MessagesString.RESET_LINK_SENT_MESSAGE.concat(emailId));
 
-            view.navigateToLogin();
+            view.navigate();
         }
         else if (returnCode == 1) {
             CommonUtil.flash(view.getContext(),MessagesString.TRY_AGAIN_LATER_MESSAGE);

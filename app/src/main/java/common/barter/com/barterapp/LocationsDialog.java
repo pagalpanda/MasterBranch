@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-class LocationsDialog extends Dialog{
+public class LocationsDialog extends Dialog{
 
     SharedPreferences prefs;
 

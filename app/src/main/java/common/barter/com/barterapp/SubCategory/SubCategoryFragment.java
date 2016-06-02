@@ -16,11 +16,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import common.barter.com.barterapp.CommonResources;
-import common.barter.com.barterapp.GlobalHome;
 import common.barter.com.barterapp.Home.HomePresenter;
 import common.barter.com.barterapp.PostsFragment;
 import common.barter.com.barterapp.R;
 import android.support.design.widget.FloatingActionButton;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,7 +42,7 @@ public class SubCategoryFragment extends Fragment {
     Activity context;
     private OnFragmentInteractionListener mListener;
 
-    static String selectedCategory;
+    public static String selectedCategory;
     ListView lvSubCategoris;
     TextView tvTitleOfFragment;
     GlobalHome holdingActivity;

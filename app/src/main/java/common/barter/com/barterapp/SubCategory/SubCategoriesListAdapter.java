@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import common.barter.com.barterapp.GlobalHome;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 import common.barter.com.barterapp.R;
 
 public class SubCategoriesListAdapter extends BaseAdapter{

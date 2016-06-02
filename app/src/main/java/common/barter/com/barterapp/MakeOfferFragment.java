@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
+import common.barter.com.barterapp.globalhome.GlobalHome;
+
 /**
  * Created by amitpa on 8/18/2015.
  */

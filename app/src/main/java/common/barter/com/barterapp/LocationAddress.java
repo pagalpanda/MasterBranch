@@ -13,11 +13,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -25,14 +20,14 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.CountDownLatch;
+
+import common.barter.com.barterapp.globalhome.GlobalHome;
 
 public class LocationAddress extends AsyncTask<String, String, String> implements ConnectionCallbacks,
         OnConnectionFailedListener{

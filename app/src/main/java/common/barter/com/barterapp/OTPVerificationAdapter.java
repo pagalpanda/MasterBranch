@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import common.barter.com.barterapp.globalhome.GlobalHome;
+
 /**
  * Created by vikram on 17/10/15.
  */

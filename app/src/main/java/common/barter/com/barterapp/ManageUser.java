@@ -34,6 +34,9 @@ import java.util.Map;
 
 import common.barter.com.barterapp.Login.LoginParentFragment;
 
+import common.barter.com.barterapp.changepassword.ChangePassword;
+import common.barter.com.barterapp.globalhome.GlobalHome;
+
 public class ManageUser extends Fragment {
 
     Activity context;

@@ -9,7 +9,6 @@ import org.json.JSONTokener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -27,9 +26,7 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class JSONParser {
 
-    private InputStream is = null;
     private JSONObject jObj = null;
-    private String json;
 
     public JSONParser() {
 
@@ -62,6 +59,7 @@ public class JSONParser {
         try {
 
             String response = "";
+            StringBuilder responseBuilder = new StringBuilder();
             OutputStream os = conn.getOutputStream();
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(os, "UTF-8"));
@@ -76,12 +74,13 @@ public class JSONParser {
                 String line;
                 BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 while ((line=br.readLine()) != null) {
-                    response+=line;
+                    responseBuilder.append(line);
                 }
+                response = responseBuilder.toString();
             }
             else {
                 response="";
-                json = null;
+                jObj = null;
                 throw new HttpException(responseCode+"");
             }
             try {

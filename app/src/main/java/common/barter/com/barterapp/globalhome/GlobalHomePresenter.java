@@ -1,11 +1,15 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.globalhome;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
+
+import common.barter.com.barterapp.CommonResources;
+import common.barter.com.barterapp.CommonUtil;
+import common.barter.com.barterapp.LocationAddress;
+import common.barter.com.barterapp.MessagesString;
 
 /**
  * Created by Panda on 15-05-2016.
@@ -59,7 +63,8 @@ public class GlobalHomePresenter {
 
             }
         } else {
-            Toast.makeText(applicationContext, MessagesString.CONNECT_TO_INTERNET, Toast.LENGTH_LONG).show();
+            CommonUtil.flash(applicationContext, MessagesString.CONNECT_TO_INTERNET);
+
         }
     }
 

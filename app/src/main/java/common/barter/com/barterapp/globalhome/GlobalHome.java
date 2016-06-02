@@ -1,4 +1,4 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.globalhome;
 
 
 import android.app.AlertDialog;
@@ -33,13 +33,29 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import common.barter.com.barterapp.Login.GoogleplusListener;
 import common.barter.com.barterapp.SubCategory.SubCategoryFragment;
+import common.barter.com.barterapp.CommonResources;
+import common.barter.com.barterapp.CommonUtil;
+import common.barter.com.barterapp.DeviceStoreUtil;
+import common.barter.com.barterapp.LocationAddress;
+import common.barter.com.barterapp.LocationsDialog;
+import common.barter.com.barterapp.LoginDetails;
+import common.barter.com.barterapp.MakeOfferFragment;
+import common.barter.com.barterapp.MessagesString;
+import common.barter.com.barterapp.NavDrawerItem;
+import common.barter.com.barterapp.NavDrawerListAdapter;
+import common.barter.com.barterapp.OTPFragment;
+import common.barter.com.barterapp.postad.PostAdA;
+import common.barter.com.barterapp.PostDetailsFragment;
+import common.barter.com.barterapp.PostsFragment;
+import common.barter.com.barterapp.R;
+import common.barter.com.barterapp.RecyclerItemClickListener;
+import common.barter.com.barterapp.changepassword.ChangePassword;
 import common.barter.com.barterapp.forgotpassword.ForgotPassword;
 
 
@@ -55,8 +71,8 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
     TextView tvLocationDialogText;
     Button btnSetCurrentLocation;
     LocationsDialog dialog;
-    static String location;
-    private GlobalHome globalHome;
+    public static String location;
+    GlobalHome globalHome;
     SharedPreferences prefs;
     Toolbar toolbar;
     private CharSequence mDrawerTitle;
@@ -286,10 +302,8 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
         }
         switch (item.getItemId()) {
             case R.id.action_search:
-                Toast.makeText(getApplicationContext(),"Search",Toast.LENGTH_LONG).show();
-
+                CommonUtil.flash(getApplicationContext(), "Search");
                 return true;
-
             case R.id.action_edit_post:
                 return super.onOptionsItemSelected(item);
             case R.id.action_proceed_make_offer:
@@ -300,7 +314,6 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
                 return false;
             default:
                 if(mDrawerToggle.isDrawerIndicatorEnabled()) {
-                    Toast.makeText(getApplicationContext(), "In Global Home loading location2", Toast.LENGTH_LONG).show();
                     mRecyclerView.getAdapter().notifyDataSetChanged();
                     return super.onOptionsItemSelected(item);
                 }else{

@@ -2,22 +2,21 @@ package common.barter.com.barterapp.forgotpassword;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-import common.barter.com.barterapp.CommonResources;
-import common.barter.com.barterapp.GlobalHome;
+
+import common.barter.com.barterapp.AbstractFragment;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.R;
 
 /**
  * Created by vikram on 29/09/15.
  */
-public class ForgotPassword extends Fragment {
+public class ForgotPassword extends AbstractFragment {
 
     private Button btnSendPwd;
     private EditText etEmailOrMob;
@@ -42,12 +41,9 @@ public class ForgotPassword extends Fragment {
 
     }
 
-    protected void setActionBarTitle(String headerForgotPassword) {
-        holdingActivity.setActionBarTitle(headerForgotPassword);
-    }
 
-    protected void setHamburgerIndicator(boolean enable) {
-        holdingActivity.getmDrawerToggle().setDrawerIndicatorEnabled(enable);
+    public ForgotPassword(){
+        super();
     }
 
     private View getInflatedView(LayoutInflater inflater, ViewGroup container) {
@@ -62,9 +58,7 @@ public class ForgotPassword extends Fragment {
         }
     };
 
-    protected void hideKeybaord() {
-        CommonResources.hideKeyboard(getActivity());
-    }
+
 
     private void initializeWidgets(View view) {
         etEmailOrMob = (EditText) view.findViewById(R.id.etCurrentPwd);
@@ -82,7 +76,7 @@ public class ForgotPassword extends Fragment {
 
     }
 
-    protected void navigateToLogin() {
+    private void navigateToLogin() {
         holdingActivity.getSupportFragmentManager().popBackStack();
         setHamburgerIndicator(true);
         setActionBarTitle(MessagesString.HEADER_MY_ACCOUNT);
@@ -90,4 +84,8 @@ public class ForgotPassword extends Fragment {
     }
 
 
+    @Override
+    public void navigate() {
+        navigateToLogin();
+    }
 }
