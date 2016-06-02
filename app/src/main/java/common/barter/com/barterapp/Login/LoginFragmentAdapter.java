@@ -1,20 +1,15 @@
+package common.barter.com.barterapp.Login;
 
-
-package common.barter.com.barterapp;
-
-        import android.support.v4.app.Fragment;
-        import android.support.v4.app.FragmentManager;
-        import android.support.v4.app.FragmentPagerAdapter;
-        import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 
 
 public class LoginFragmentAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
 
-    public LoginFragmentAdapter(FragmentManager fm, int NumOfTabs) {
+    public LoginFragmentAdapter(FragmentManager fm) {
         super(fm);
-        this.mNumOfTabs = NumOfTabs;
     }
 
     @Override
@@ -22,10 +17,10 @@ public class LoginFragmentAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                LoginFragment fragment1 = new LoginFragment(1);
+                LoginFragment fragment1 = new LoginFragment(LoginFragment.tabs.LOGIN.name());
                 return fragment1;
             case 1:
-                LoginFragment fragment2 = new LoginFragment(2);
+                LoginFragment fragment2 = new LoginFragment(LoginFragment.tabs.SIGNUP.name());
                 return fragment2;
             default:
                 return null;
@@ -34,7 +29,7 @@ public class LoginFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return mNumOfTabs;
+        return 2;
     }
 
     @Override

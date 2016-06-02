@@ -49,14 +49,14 @@ public class MessagesString {
 
 
     //Following Strings are present on Login Fragment
-    public final static String  PASSWORD_ERROR1 = "Password Mismatch";
+    public final static String PASSWORD_MISMATCH = "Password Mismatch";
     public final static String CHECK_NETWORK_CONNECTIVITY = "Please check Connectivity";
-    public final static String  GPLUS_CONNECT = "Connecting to Google..";
-    public final static String  FB_CONNECT = "Connecting to Facebook..";
+    public final static String GPLUS_CONNECTING = "Connecting to Google..";
+    public final static String FB_CONNECTING = "Connecting to Facebook..";
     public final static String  GPLUS_ERROR2 = "No information received. Please try again";
-    public final static String  FB_EMAIL_PERM_ERROR1 = "Please grant email permission";
-    public final static String  FB_EMAIL_PERM_ERROR2 = "Email ID is mandatory";
-    public final static String  FB_ERROR1 = "Error occured. Please try again later";
+    public final static String FB_GRANT_EMAIL_PERMISSION = "Please grant email permission";
+    public final static String FB_EMAIL_IS_MANDATORY = "Email ID is mandatory";
+    public final static String ERROR_OCCURED_TRY_AGAIN = "Error occured. Please try again later";
     public final static String  LOGIN_NAME_BLANK = "Please enter your name!";
     public final static String  LOGIN_PWD_MISMATCH = "Password mismatch";
     public final static String  BT_LOGIN = "Login";
@@ -65,9 +65,9 @@ public class MessagesString {
     public final static String  BT_SIGNUP = "Sign Up";
     public final static String  BT_GPLUS_SIGNUP = "Sign up via Google+";
     public final static String  BT_FB_SIGNUP = "Sign up via Facebook";
-    public final static String  PWD_ERROR1 = "Password should be 8 characters long";
-    public final static String  PWD_ERROR2 = "Password should not be blank";
-    public final static String  PWD_ERROR3 = "Invalid Password";
+    public final static String PWD_TOO_SHORT = "Password should be 8 characters long";
+    public final static String PWD_IS_BLANK = "Password should not be blank";
+    public final static String INVALID_PASSWORD = "Invalid Password";
     public final static String  GPLUS_CONNECT1 = "Receiving Data";
     public final static String  PWD_CONCAT_STRING = "123";
 
@@ -78,7 +78,13 @@ public class MessagesString {
 
     //Following Strings are present on Login Async
     public final static String  LOGGING_IN = "Logging in..";
-
-
-
+    public final static String RECEIVING_DATA="Receiving Data ..";
+    public final static String EMAIL="email";
+    public final static String FB_CLEAR_DATA_ERROR="Error while Logging in.";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+    public static final String NAME = "name";
+    public static final String MOBILENUM = "mobilenum";
+    public static final String GENDER = "gender";
+    public static final String LOGINMODE = "loginmode";
 }

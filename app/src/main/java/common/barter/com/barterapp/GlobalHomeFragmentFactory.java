@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import common.barter.com.barterapp.Home.HomeFragment;
+import common.barter.com.barterapp.Login.LoginParentFragment;
+
 /**
  * Created by Panda on 15-05-2016.
  */

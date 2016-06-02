@@ -31,7 +31,6 @@ public class JSONParser {
     private JSONObject jObj = null;
     private String json;
 
-    // constructor
     public JSONParser() {
 
     }
@@ -48,22 +47,18 @@ public class JSONParser {
         return conn;
     }
 
-    public JSONObject makeHttpRequest(String url, String method,
+    public JSONObject makeHttpRequest(String url,
                                       HashMap<String, String> params) {
         try {
-            return makeHttpRequest(getHttpConnectionFromUrl(url,method),params);
+            return makeHttpRequest(getHttpConnectionFromUrl(url,"POST"),params);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    // function get json from url
-    // by making HTTP POST or GET method
     public JSONObject makeHttpRequest(HttpURLConnection conn,
                                       HashMap<String, String> params) {
-
-        // Making HTTP request
         try {
 
             String response = "";
@@ -104,8 +99,6 @@ public class JSONParser {
 
 
         return jObj;
-// read the response
-
     }
 
     private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException{

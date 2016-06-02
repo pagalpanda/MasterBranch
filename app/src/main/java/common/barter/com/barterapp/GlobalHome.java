@@ -38,6 +38,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.barter.com.barterapp.Login.GoogleplusListener;
+import common.barter.com.barterapp.SubCategory.SubCategoryFragment;
 import common.barter.com.barterapp.forgotpassword.ForgotPassword;
 
 
@@ -331,7 +333,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
             }else {
                 //coming back from all posts
                 this.getmDrawerToggle().setDrawerIndicatorEnabled(false);
-                this.setActionBarTitle(SubCategoryFragment.selectedCategory);
+                this.setActionBarTitle(SubCategoryFragment.getSelectedCategory());
             }
             getSupportFragmentManager().popBackStack();
         }else if(f instanceof PostDetailsFragment){
@@ -356,7 +358,7 @@ public class GlobalHome extends ActionBarActivity implements LocationAddress.Loc
 
             if("subcategories".equalsIgnoreCase(PostAdA.sMode)){
                 getmDrawerToggle().setDrawerIndicatorEnabled(false);
-                setActionBarTitle(SubCategoryFragment.selectedCategory);
+                setActionBarTitle(SubCategoryFragment.getSelectedCategory());
             }else if(navMenuTitles[0].equalsIgnoreCase(PostAdA.sMode)){
                 getmDrawerToggle().setDrawerIndicatorEnabled(true);
                 setActionBarTitle(navMenuTitles[0]);

@@ -1,7 +1,6 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.SubCategory;
 
 import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,19 +8,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.List;
-
+import common.barter.com.barterapp.CommonResources;
+import common.barter.com.barterapp.GlobalHome;
+import common.barter.com.barterapp.Home.HomePresenter;
+import common.barter.com.barterapp.PostsFragment;
+import common.barter.com.barterapp.R;
+import android.support.design.widget.FloatingActionButton;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,8 +45,10 @@ public class SubCategoryFragment extends Fragment {
     static String selectedCategory;
     ListView lvSubCategoris;
     TextView tvTitleOfFragment;
-    GlobalHome activity;
-    android.support.design.widget.FloatingActionButton floatingButton;
+    GlobalHome holdingActivity;
+    FloatingActionButton floatingButton;
+    SubCategoryPresenter subCategoryPresenter;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -96,48 +97,62 @@ public class SubCategoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        activity = (GlobalHome) getActivity();
-        activity.getmDrawerToggle().setDrawerIndicatorEnabled(false);
 
-
-        setHasOptionsMenu(true);
+        holdingActivity = (GlobalHome) getActivity();
         View rootView = inflater.inflate(R.layout.fragment_sub_category, container, false);
 
-        //Set the title bar text
-        activity.setActionBarTitle(selectedCategory);
-//        activity.setOnBackPressedListener(new OnBackPressedListener() {
-//            @Override
-//            public void doBack() {
-//                int x = 0;
-//            }
-//        });
-//
-        lvSubCategoris = (ListView)rootView.findViewById(R.id.listViewSubCategories);
-        lvSubCategoris.setAdapter(new SubCategoriesListAdapter((GlobalHome) getActivity(), CommonResources.getSubCategories(selectedCategory)));
-        lvSubCategoris.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tvSubCategory = (TextView)view.findViewById(R.id.tvSubCategoryName);
-                String subCategory = tvSubCategory.getText().toString();
+        initializeWidgets(rootView);
+        setPresenter();
+        setListeners();
 
-                navigateToViewPosts(subCategory);
-            }
-        });
-
-
-        floatingButton = (android.support.design.widget.FloatingActionButton)rootView.findViewById(R.id.fab);
-        floatingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                (new CommonResources(getContext())).navigateToPostAd(getFragmentManager(), "subcategories");
-            }
-        });
         return rootView;
     }
 
-    private void navigateToViewPosts(String subCategory) {
+    private void setListeners() {
+        lvSubCategoris.setOnItemClickListener(lvSubCategorisListener);
+        floatingButton.setOnClickListener(floatingButtonListener);
+    }
 
-         Fragment fragment = new PostsFragment("userview", subCategory);
+    private void setPresenter() {
+        if(subCategoryPresenter==null){
+            subCategoryPresenter = new SubCategoryPresenter();
+        }
+        subCategoryPresenter.setSubCategoryFragment(this);
+    }
+
+    private void initializeWidgets(View view) {
+        holdingActivity.setActionBarTitle(getSelectedCategory());
+        holdingActivity.getmDrawerToggle().setDrawerIndicatorEnabled(false);
+        setHasOptionsMenu(true);
+        lvSubCategoris = (ListView)view.findViewById(R.id.listViewSubCategories);
+        lvSubCategoris.setAdapter(new SubCategoriesListAdapter((GlobalHome) getActivity(), CommonResources.getSubCategories(getSelectedCategory())));
+        floatingButton = (FloatingActionButton)view.findViewById(R.id.fab);
+    }
+
+    AdapterView.OnItemClickListener lvSubCategorisListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            TextView tvSubCategory = (TextView) view.findViewById(R.id.tvSubCategoryName);
+            String subCategory = tvSubCategory.getText().toString();
+
+            subCategoryPresenter.navigateToViewPosts(subCategory);
+        }
+    };
+
+    View.OnClickListener floatingButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            subCategoryPresenter.navigateToPostAd();
+        }
+    };
+
+    void navigateToPostAd() {
+        (new CommonResources(getContext())).navigateToPostAd(getFragmentManager(), "floatingButtonListener");
+    }
+
+    void navigateToViewPosts(String subCategory) {
+
+        Fragment fragment = new PostsFragment("userview", subCategory);
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
@@ -171,8 +186,8 @@ public class SubCategoryFragment extends Fragment {
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
+     * to the holdingActivity and potentially other fragments contained in that
+     * holdingActivity.
      * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
@@ -182,5 +197,11 @@ public class SubCategoryFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
+    public static String getSelectedCategory() {
+        return selectedCategory;
+    }
 
+    public static void setSelectedCategory(String selectedCategory) {
+        SubCategoryFragment.selectedCategory = selectedCategory;
+    }
 }

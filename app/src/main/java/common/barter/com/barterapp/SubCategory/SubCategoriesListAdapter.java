@@ -1,4 +1,4 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.SubCategory;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import common.barter.com.barterapp.GlobalHome;
+import common.barter.com.barterapp.R;
 
 public class SubCategoriesListAdapter extends BaseAdapter{
     //String [] result;

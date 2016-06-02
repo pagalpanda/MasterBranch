@@ -3,7 +3,6 @@ package common.barter.com.barterapp;
 
 
         import android.app.ProgressDialog;
-        import android.content.Context;
         import android.database.Cursor;
         import android.graphics.BitmapFactory;
         import android.net.Uri;
@@ -11,7 +10,6 @@ package common.barter.com.barterapp;
         import android.os.Build;
         import android.provider.MediaStore;
         import android.support.v4.app.Fragment;
-        import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
         import android.util.Base64;
         import android.util.Log;
@@ -23,10 +21,8 @@ package common.barter.com.barterapp;
         import android.app.Activity;
         import android.content.Intent;
         import android.graphics.Bitmap;
-        import android.os.Bundle;
         import android.view.View;
         import android.view.ViewGroup;
-        import android.view.inputmethod.InputMethodManager;
         import android.widget.AdapterView;
         import android.widget.AutoCompleteTextView;
         import android.widget.Button;
@@ -40,8 +36,6 @@ package common.barter.com.barterapp;
 
         import com.squareup.picasso.Picasso;
 
-        import org.apache.http.NameValuePair;
-        import org.apache.http.message.BasicNameValuePair;
         import org.json.JSONArray;
         import org.json.JSONException;
         import org.json.JSONObject;
@@ -50,7 +44,9 @@ package common.barter.com.barterapp;
         import java.io.IOException;
         import java.util.ArrayList;
         import java.util.HashMap;
-        import java.util.List;
+
+        import common.barter.com.barterapp.Home.HomeFragment;
+        import common.barter.com.barterapp.SubCategory.SubCategoryFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -777,10 +773,10 @@ public class PostAdA extends Fragment {
 
                 params.put("postid",postId);
                 json = jsonParser.makeHttpRequest(CommonResources.getURL("edit_my_post"),
-                        "POST", params);
+                        params);
             } else{
                 json = jsonParser.makeHttpRequest(CommonResources.getURL("create_post"),
-                        "POST", params);
+                        params);
             }
             // check log cat fro response
             if (json == null)

@@ -58,8 +58,6 @@ public abstract class AsyncConnection extends AsyncTask<String, String, String> 
 
     @Override
     protected String doInBackground(String... params1) {
-        // getting JSON Object
-        // Note that create product url accepts POST method
         try{
             conn = jsonParser.getHttpConnectionFromUrl(url, method);
             json = jsonParser.makeHttpRequest(conn,

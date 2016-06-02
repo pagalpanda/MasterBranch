@@ -1,4 +1,4 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.Home;
 
 /**
  * Created by amitpa on 8/18/2015.
@@ -25,12 +25,21 @@ import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
+import common.barter.com.barterapp.CommonResources;
+import common.barter.com.barterapp.GlobalHome;
+import common.barter.com.barterapp.GridViewAdapter;
+import common.barter.com.barterapp.PostAdA;
+import common.barter.com.barterapp.R;
+import common.barter.com.barterapp.SubCategory.SubCategoryFragment;
+
 public class HomeFragment extends Fragment {
+
     GridView homeGrid;
     TextView textView;
     Activity context;
     android.support.design.widget.FloatingActionButton floatingButton;
 
+    HomePresenter homePresenter;
 
 
     public HomeFragment( ){
@@ -44,36 +53,54 @@ public class HomeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         ((GlobalHome)getActivity()).getmDrawerToggle().setDrawerIndicatorEnabled(true);
         new CommonResources(getContext()).clearBackStack(getFragmentManager());
-        homeGrid = (GridView)rootView.findViewById(R.id.gvHome);
-        textView = (TextView)rootView.findViewById(R.id.txtLabel);
-        textView.setText("Categories");
-        homeGrid.setAdapter(new GridViewAdapter(context, CommonResources.categories));
-        
+
+        initializeWidgets(rootView);
         setActionBarTitle();
-
-
-        homeGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-                TextView tvCategoryName = (TextView) view.findViewById(R.id.textViewCategoryName);
-                String selectedCategory = tvCategoryName.getText().toString();
-
-                displaySubCategories(selectedCategory);
-            }
-        });
-
-        floatingButton = (android.support.design.widget.FloatingActionButton)rootView.findViewById(R.id.fab);
-        floatingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                (new CommonResources(getContext())).navigateToPostAd(getFragmentManager(),"home");
-            }
-        });
+        setPresenter();
+        setListeners();
 
         return rootView;
     }
+
+    private void setListeners() {
+        homeGrid.setOnItemClickListener(homeGridListener);
+        floatingButton.setOnClickListener(floatingButtonListener);
+    }
+
+    private void setPresenter() {
+        if(homePresenter==null){
+            homePresenter = new HomePresenter();
+        }
+        homePresenter.setHomeFragment(this);
+    }
+
+    private void initializeWidgets(View view) {
+        homeGrid = (GridView) view.findViewById(R.id.gvHome);
+        textView = (TextView) view.findViewById(R.id.txtLabel);
+        textView.setText("Categories");
+        homeGrid.setAdapter(new GridViewAdapter(context, CommonResources.categories));
+        floatingButton = (android.support.design.widget.FloatingActionButton)view.findViewById(R.id.fab);
+    }
+
+    AdapterView.OnItemClickListener homeGridListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+            TextView tvCategoryName = (TextView) view.findViewById(R.id.textViewCategoryName);
+            String selectedCategory = tvCategoryName.getText().toString();
+
+            homePresenter.displaySubCategories(selectedCategory);
+
+        }
+    };
+
+    View.OnClickListener floatingButtonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+             homePresenter.navigateToPostAd();
+        }
+    };
 
     private void setActionBarTitle() {
 
@@ -101,7 +128,7 @@ public class HomeFragment extends Fragment {
 
 
 
-    private void displaySubCategories(String selectedCategory) {
+    void displaySubCategories(String selectedCategory) {
         // update the main content by replacing fragments
 
 
@@ -125,24 +152,9 @@ public class HomeFragment extends Fragment {
 
 
 
-    private void navigateToPostAd() {
+    void navigateToPostAd() {
         // update the main content by replacing fragments
-
-
-        Fragment fragment = null;
-        fragment = new PostAdA();
-
-
-        if (fragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_container, fragment).addToBackStack("post_ad").commit();
-
-
-        } else {
-            // error in creating fragment
-            Log.e("MainActivity", "Error in creating fragment");
-        }
+        (new CommonResources(getContext())).navigateToPostAd(getFragmentManager(), "home");
     }
 
 

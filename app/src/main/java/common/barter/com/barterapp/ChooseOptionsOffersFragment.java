@@ -7,38 +7,25 @@ import android.app.Activity;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 public class ChooseOptionsOffersFragment extends Fragment {
@@ -232,10 +219,7 @@ public class ChooseOptionsOffersFragment extends Fragment {
 
             params.put("myuniqueid", uniqueid);
             json = jsonParser.makeHttpRequest(CommonResources.getURL("get_all_my_offers"),
-                    "POST", params);
-
-
-
+                    params);
 
             // check log cat fro response
             if(json == null){

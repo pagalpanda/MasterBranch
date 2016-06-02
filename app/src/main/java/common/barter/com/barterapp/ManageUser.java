@@ -7,7 +7,6 @@ import android.app.Activity;
 
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -32,6 +31,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import common.barter.com.barterapp.Login.LoginParentFragment;
 
 public class ManageUser extends Fragment {
 

@@ -7,12 +7,10 @@ import android.app.Activity;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,32 +18,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
+
+import common.barter.com.barterapp.Home.HomeFragment;
 
 public class ReviewFragment extends Fragment {
 
@@ -542,19 +530,19 @@ public class ReviewFragment extends Fragment {
 
                 Log.d("Hello", postsHis);
                 json = jsonParser.makeHttpRequest(CommonResources.getURL("submit_offer"),
-                        "POST", params);
+                        params);
             }else if("delete".equalsIgnoreCase(args[0])){
                 params.put("offerid",currentOfferId );
                 json = jsonParser.makeHttpRequest(CommonResources.getURL("delete_offer"),
-                        "POST", params);
+                        params);
             }else if("accept".equalsIgnoreCase(args[0])){
                 params.put("offerid",currentOfferId );
                 json = jsonParser.makeHttpRequest(CommonResources.getURL("accept_offer"),
-                        "POST", params);
+                        params);
             }else if("reject".equalsIgnoreCase(args[0])){
                 params.put("offerid",currentOfferId );
                 json = jsonParser.makeHttpRequest(CommonResources.getURL("reject_offer"),
-                        "POST", params);
+                        params);
             }else if("counter".equalsIgnoreCase(args[0])) {
                 String uniqueid = (String) new CommonResources(getContext()).loadFromSharedPrefs("uniqueid");
 
@@ -595,7 +583,7 @@ public class ReviewFragment extends Fragment {
 
                 Log.d("Hello", postsHis);
                 json = jsonParser.makeHttpRequest(CommonResources.getURL("submit_counter_offer"),
-                        "POST", params);
+                        params);
             }
 
 

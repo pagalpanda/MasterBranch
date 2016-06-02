@@ -1,20 +1,12 @@
 package common.barter.com.barterapp;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -23,10 +15,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TestDb extends Activity {
 
@@ -106,7 +96,7 @@ public class TestDb extends Activity {
 
             // Building Parameters
             HashMap <String,String> params = new HashMap<String,String>();
-            JSONObject json = jsonParser.makeHttpRequest(url_all_products, "GET", params);
+            JSONObject json = jsonParser.makeHttpRequest(url_all_products, params);
             Log.d("All Products: ", json.toString());
             // getting JSON Object
             // Note that create product url accepts POST method
