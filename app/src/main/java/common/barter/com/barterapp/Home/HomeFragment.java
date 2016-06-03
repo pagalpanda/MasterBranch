@@ -22,9 +22,9 @@ import common.barter.com.barterapp.globalhome.GlobalHome;
 import common.barter.com.barterapp.postad.PostAdA;
 
 import common.barter.com.barterapp.CommonResources;
-import common.barter.com.barterapp.GlobalHome;
+import common.barter.com.barterapp.globalhome.GlobalHome;
 import common.barter.com.barterapp.GridViewAdapter;
-import common.barter.com.barterapp.PostAdA;
+import common.barter.com.barterapp.postad.PostAdA;
 import common.barter.com.barterapp.R;
 import common.barter.com.barterapp.SubCategory.SubCategoryFragment;
 
