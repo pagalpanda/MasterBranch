@@ -67,7 +67,6 @@ public class MessagesString {
     public final static String  BT_FB_SIGNUP = "Sign up via Facebook";
     public final static String PWD_TOO_SHORT = "Password should be 8 characters long";
     public final static String PWD_IS_BLANK = "Password should not be blank";
-    public final static String INVALID_PASSWORD = "Invalid Password";
     public final static String  GPLUS_CONNECT1 = "Receiving Data";
     public final static String  PWD_CONCAT_STRING = "123";
 
