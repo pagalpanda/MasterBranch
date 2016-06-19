@@ -10,8 +10,10 @@ import java.util.Map;
 
 import common.barter.com.barterapp.AsyncConnection;
 import common.barter.com.barterapp.CommonResources;
+import common.barter.com.barterapp.LoginUser;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.ModelCallBackListener;
+import common.barter.com.barterapp.SignUp;
 
 /**
  * Created by vikram on 28/05/16.
@@ -31,7 +33,7 @@ public class LoginModel {
         this.signUpUser(signUp, LoginMode.MANUALSIGNUP);
     }
 
-    public void manualLogin(Login login) {
+    public void manualLogin(LoginUser login) {
         this.loginUser(login, LoginMode.MANUALLOGIN);
     }
 
@@ -49,7 +51,7 @@ public class LoginModel {
         sendHttpRequest(params);
     }
 
-    public void loginUser(Login login, LoginMode loginMode) {
+    public void loginUser(LoginUser login, LoginMode loginMode) {
         HashMap<String, String> params = this.getRequestParam(login);
         params.put(MessagesString.LOGINMODE, loginMode.toString());
         sendHttpRequest(params);
@@ -71,7 +73,7 @@ public class LoginModel {
         return params;
     }
 
-    public HashMap<String, String> getRequestParam(Login login) {
+    public HashMap<String, String> getRequestParam(LoginUser login) {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put(MessagesString.USERNAME, login.getEmailId());
         params.put(MessagesString.PASSWORD, login.getPassword());
@@ -104,34 +106,6 @@ public class LoginModel {
 
             }
         };
-    }
-    public void setLoginDetailsData(JSONObject json) {
-        try {
-            CommonResources resources = new CommonResources(context);
-            resources.saveToSharedPrefs("isLoggedIn", "true");
-            Map<String, String> mapUserDetails = new HashMap<>();
-            String userId = json.getString("userid");
-            mapUserDetails.put(MessagesString.SHARED_PREFS_UNIQUE_ID, userId);
-            String personName = json.getString("name");
-            mapUserDetails.put(MessagesString.SHARED_PREFS_PERSON_NAME, personName);
-            String gender = json.getString("gender");
-            mapUserDetails.put(MessagesString.SHARED_PREFS_GENDER, gender);
-            String email = json.getString("username");
-            mapUserDetails.put(MessagesString.SHARED_PREFS_EMAIL, email);
-            String username = json.getString("username");
-            mapUserDetails.put(MessagesString.SHARED_PREFS_USERNAME, username);
-            String mobileNum = json.getString("mobilenum");
-            mapUserDetails.put(MessagesString.SHARED_PREFS_MOBILE, mobileNum);
-            String mobVerified = json.getString("mob_verified");
-            mapUserDetails.put(MessagesString.SHARED_PREFS_IS_MOBILE_VERIFIED, mobVerified);
-            String loginMethod = json.getString("loginmode");
-            mapUserDetails.put(MessagesString.SHARED_PREFS_LOGIN_MODE, loginMethod);
-            resources.setUserDetailsInSharedPref(mapUserDetails);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
     }
 }
 

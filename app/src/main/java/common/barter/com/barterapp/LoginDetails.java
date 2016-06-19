@@ -1,8 +1,15 @@
 package common.barter.com.barterapp;
 
+import android.content.Context;
+
 import com.google.android.gms.plus.model.people.Person;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vikram on 04/09/15.
@@ -11,19 +18,13 @@ public class LoginDetails {
 
     private static LoginDetails ld = null;
 
-    private String userid; // Genereated by System
-    private String personName; // Google & FB
-    private String personPhoto;// Google
-    private String email;// Google & FB
-    private String birthday;// Google & FB ; Can be NULL
-    private String id;// Google & FB
-    private String gender;// Google & FB; Google int, fb string
-    private List<Person.PlacesLived> placesLived; // Google
-    private String loginLocation; // Google
-    private String homeTown; // FB
-    private String gps_location; // Location read from device
+    private String userid;
+    private String name;
+    private String email;
+    private String gender;
+    private String gps_location;
     private String password;
-    private String mob_verified; // 0: false; 1: true
+    private String mob_verified;
     private String mobilenum;
 
     public String getLoginMethod() {
@@ -34,16 +35,18 @@ public class LoginDetails {
         this.loginMethod = loginMethod;
     }
 
-    private String loginMethod; //  values: 0:gmail 1:fb 2:manual
+    private String loginMethod;
 
-    // internal processes
+    public enum loggedInMode{
+        GPLUS,FACEBOOK,MANUAL
+    }
+
     private Boolean isverifying;
     private String otp_received_from_web;
     private String otp_received_from_device;
 
-    private LoginDetails ()
-    {
-// Singleton Blank constructor
+    private LoginDetails (){
+
     }
 
     public static LoginDetails getInstance() {
@@ -60,26 +63,13 @@ public class LoginDetails {
         this.userid = userid;
     }
 
-
-
-    public String getPersonName() {
-        return personName;
+    public String getName() {
+        return name;
     }
 
-    public void setPersonName(String personName) {
-        this.personName = personName;
+    public void setName(String name) {
+        this.name = name;
     }
-
-
-    public String getPersonPhoto() {
-        return personPhoto;
-    }
-
-    public void setPersonPhoto(String personPhoto) {
-        this.personPhoto = personPhoto;
-    }
-
-
 
     public String getEmail() {
         return email;
@@ -90,87 +80,19 @@ public class LoginDetails {
 
     }
 
-
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    private String currentLocation;
-
-    public String getCurrentLocation() {
-        return currentLocation;
-    }
-
-    public void setCurrentLocation(String currentLocation) {
-        this.currentLocation = currentLocation;
-    }
-
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-
-
     public String getGender() {
         return gender;
     }
+
     public void setGender(String gender) {
-        if (gender!=null)
-        {
+        if (gender!=null){
             if ((gender.equalsIgnoreCase("male"))|| (gender.equalsIgnoreCase("m"))) {
                 this.gender = "M";
-
             }
             else if ((gender.equalsIgnoreCase("female"))|| (gender.equalsIgnoreCase("f"))) {
                 this.gender = "F";
-
             }
-
         }
-    }
-
-
-    public List<Person.PlacesLived> getPlacesLived() {
-        return placesLived;
-    }
-
-    public void setPlacesLived(List<Person.PlacesLived> placesLived) {
-        this.placesLived = placesLived;
-    }
-
-    public String getLoginLocation() {
-        return loginLocation;
-    }
-
-    public void setLoginLocation(String loginLocation) {
-        this.loginLocation = loginLocation;
-    }
-
-    public String getHomeTown() {
-        return homeTown;
-    }
-
-    public void setHomeTown(String homeTown) {
-        this.homeTown = homeTown;
-    }
-
-    public String getGps_location() {
-        return gps_location;
-    }
-
-    public void setGps_location(String gps_location) {
-        this.gps_location = gps_location;
     }
 
     public String getPassword() {
@@ -181,7 +103,6 @@ public class LoginDetails {
         this.password = password;
     }
 
-
     public String getMob_verified() {
         return mob_verified;
     }
@@ -189,6 +110,7 @@ public class LoginDetails {
     public void setMob_verified(String mob_verified) {
         this.mob_verified = mob_verified;
     }
+
     public String getMobilenum() {
         return mobilenum;
     }
@@ -196,7 +118,6 @@ public class LoginDetails {
     public void setMobilenum(String mobilenum) {
         this.mobilenum = mobilenum;
     }
-
 
     public Boolean getIsverifying() {
         return isverifying;
@@ -221,27 +142,71 @@ public class LoginDetails {
         this.otp_received_from_device = otp_received_from_device;
     }
 
-
-
     public void resetDetails()
     {
-        // To reset values
         userid=null;
-        personName = null;
-        personPhoto = null;
+        name = null;
         email = null;
-        birthday = null;
-        id = null;
         gender = null;
-        placesLived = null;
-        loginLocation = null;
-        homeTown = null;
         mobilenum=null;
         isverifying = false;
         otp_received_from_device = null;
         otp_received_from_web = null;
-        //gps_location = null;
+    }
 
+    public void saveLoginDetailsToDevice(Context context, JSONObject json)
+    {
+        try {
+            CommonResources resources = new CommonResources(context);
+            resources.saveToSharedPrefs("isLoggedIn", "true");
+            Map<String, String> mapUserDetails = new HashMap<>();
+            String userId = json.getString("userid");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_UNIQUE_ID, userId);
+            String personName = json.getString("name");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_PERSON_NAME, personName);
+            String gender = json.getString("gender");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_GENDER, gender);
+            String email = json.getString("username");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_EMAIL, email);
+            String username = json.getString("username");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_USERNAME, username);
+            String mobileNum = json.getString("mobilenum");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_MOBILE, mobileNum);
+            String mobVerified = json.getString("mob_verified");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_IS_MOBILE_VERIFIED, mobVerified);
+            String loginMethod = json.getString("loginmode");
+            mapUserDetails.put(MessagesString.SHARED_PREFS_LOGIN_MODE, loginMethod);
+            resources.setUserDetailsInSharedPref(mapUserDetails);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void setTestUserDetails()
+    {
+        this.setEmail("bhativ1303@gmail.com");
+        this.setPassword("bhativ1303@gmail.com123");
+        this.setName("Vikram Singh Bhati");
+        this.setGender("M");
+        this.setLoginMethod("GPLUS");
+        this.setMob_verified("1");
+        this.setMobilenum("7032910032");
+        this.setUserid("1");
+
+    }
+    public void setUpForNewOtpRequest() {
+        LoginDetails.getInstance().setIsverifying(true);
+        LoginDetails.getInstance().setMob_verified(MessagesString.MOB_VERIFIED_IS_FALSE);
+        LoginDetails.getInstance().setOtpReceivedFromDevice(null);
+        LoginDetails.getInstance().setOtpReceivedFromWeb(null);
+    }
+
+    public void setUpAfterOtpVerified() {
+        LoginDetails.getInstance().setIsverifying(false);
+        LoginDetails.getInstance().setOtpReceivedFromDevice(null);
+        LoginDetails.getInstance().setOtpReceivedFromWeb(null);
     }
 
 }

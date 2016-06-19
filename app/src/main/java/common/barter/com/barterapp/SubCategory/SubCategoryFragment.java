@@ -16,8 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import common.barter.com.barterapp.CommonResources;
-import common.barter.com.barterapp.Home.HomePresenter;
-import common.barter.com.barterapp.PostsFragment;
+import common.barter.com.barterapp.posts.PostsFragment;
 import common.barter.com.barterapp.R;
 import android.support.design.widget.FloatingActionButton;
 import common.barter.com.barterapp.globalhome.GlobalHome;

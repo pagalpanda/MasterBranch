@@ -31,14 +31,14 @@ import java.util.regex.Pattern;
 
 import common.barter.com.barterapp.globalhome.GlobalHome;
 import common.barter.com.barterapp.postad.PostAdA;
+import common.barter.com.barterapp.posts.PostDetailsFragment;
 
 /**
  * Created by amitpa on 8/20/2015.
  */
 public class CommonResources {
 
-
-        static String flowForOffers;
+        public static String flowForOffers;
         Context context;
         public CommonResources(Context context){
                 this.context = context;
@@ -54,6 +54,13 @@ public class CommonResources {
 
         }
 
+        public static String getFlowForOffers() {
+                return flowForOffers;
+        }
+
+        public static void setFlowForOffers(String flowForOffers) {
+                CommonResources.flowForOffers = flowForOffers;
+        }
 
         public static String getMonthName(int month){
                 if(month == 1)
@@ -248,7 +255,7 @@ public class CommonResources {
                         if(MessagesString.SHARED_PREFS_UNIQUE_ID.equalsIgnoreCase(key)){
                                 LoginDetails.getInstance().setUserid(value);
                         }else if(MessagesString.SHARED_PREFS_PERSON_NAME.equalsIgnoreCase(key)){
-                                LoginDetails.getInstance().setPersonName("null".equalsIgnoreCase(value) ? null : value);
+                                LoginDetails.getInstance().setName("null".equalsIgnoreCase(value) ? null : value);
                         }else if(MessagesString.SHARED_PREFS_GENDER.equalsIgnoreCase(key)){
                                 LoginDetails.getInstance().setGender(value);
                         }else if(MessagesString.SHARED_PREFS_EMAIL.equalsIgnoreCase(key)){
@@ -348,7 +355,7 @@ public class CommonResources {
         }
         public static String getStaticURL()
         {
-                String staticURL = "http://192.168.0.100:80/" ; //URL
+                String staticURL = "http://192.168.0.102:80/" ; //URL
                 //String staticURL = "http://49.205.72.242:80/" ;
 
                 return staticURL;

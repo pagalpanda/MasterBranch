@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import common.barter.com.barterapp.ChooseOptionsOffersFragment;
-import common.barter.com.barterapp.ManageUser;
-import common.barter.com.barterapp.PostsFragment;
+import common.barter.com.barterapp.showOffer.ChooseOptionsOffersFragment;
+import common.barter.com.barterapp.manageuser.ManageUserFragment;
+import common.barter.com.barterapp.posts.PostsFragment;
 import common.barter.com.barterapp.R;
 import common.barter.com.barterapp.WishList;
 
@@ -46,7 +46,7 @@ public class GlobalHomeFragmentFactory {
                 ft.setCustomAnimations(R.anim.enter_from_left, R.anim.abc_fade_out, R.anim.enter_from_left, R.anim.abc_fade_out);
                 break;
             case 41:
-                fragment = new ManageUser();
+                fragment = new ManageUserFragment();
                 ft.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_fade_out, R.anim.abc_slide_in_bottom, R.anim.abc_fade_out);
                 break;
             case 42:

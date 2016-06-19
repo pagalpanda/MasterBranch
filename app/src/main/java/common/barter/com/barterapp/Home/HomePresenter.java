@@ -1,8 +1,6 @@
 package common.barter.com.barterapp.Home;
 
 import common.barter.com.barterapp.ModelCallBackListener;
-import common.barter.com.barterapp.splash.SplashModel;
-import common.barter.com.barterapp.splash.SplashView;
 
 /**
  * Created by vikram on 25/05/16.

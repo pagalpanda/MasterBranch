@@ -87,7 +87,7 @@ public class OTPPresenter implements ModelCallBackListener<JSONObject>{
     {
         if (LoginDetails.getInstance().getIsverifying()){
             String otpManual = LoginDetails.getInstance().getOtpReceivedFromDevice();
-            if(otpManual!=null && otpManual.length() == 5) {
+            if(otpManual!=null && otpManual.length() == MessagesString.OTP_LENGTH) {
                 this.getOtpVerificationDialog().show();
                 LoginDetails.getInstance().setOtpReceivedFromDevice(otpManual);
                 this.getOtpModel().doOTPVerification();

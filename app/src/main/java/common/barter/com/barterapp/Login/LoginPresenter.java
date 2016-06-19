@@ -13,8 +13,10 @@ import org.json.JSONObject;
 import common.barter.com.barterapp.CommonResources;
 import common.barter.com.barterapp.CommonUtil;
 import common.barter.com.barterapp.LoginDetails;
+import common.barter.com.barterapp.LoginUser;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.ModelCallBackListener;
+import common.barter.com.barterapp.SignUp;
 
 
 /**
@@ -82,7 +84,7 @@ public class LoginPresenter implements ModelCallBackListener <JSONObject> {
         CommonResources.hideKeyboard(loginFragment.getActivity());
     }
 
-    private void doManualLogin(Login login) {
+    private void doManualLogin(LoginUser login) {
         this.getLoginModel().manualLogin(login);
     }
 
@@ -94,8 +96,8 @@ public class LoginPresenter implements ModelCallBackListener <JSONObject> {
         this.getLoginModel().doFacebookLogin(signUp);
     }
 
-    public Login getLoginObject() {
-        Login login = new Login();
+    public LoginUser getLoginObject() {
+        LoginUser login = new LoginUser();
         login.setEmailId(loginFragment.getEmailId());
         login.setPassword(loginFragment.getPassword());
         return login;
@@ -212,7 +214,7 @@ public class LoginPresenter implements ModelCallBackListener <JSONObject> {
 
     @Override
     public void onSuccess(JSONObject json) {
-        this.getLoginModel().setLoginDetailsData(json);
+        LoginDetails.getInstance().saveLoginDetailsToDevice(this.getContext(),json);
         this.getpDialog().dismissProcessDialog();
         loginFragment.navigateToManageUser();
     }

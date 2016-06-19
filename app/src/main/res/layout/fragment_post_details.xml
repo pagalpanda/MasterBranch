@@ -8,7 +8,7 @@
     android:background="@android:color/white">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
-    android:layout_height="fill_parent" tools:context="common.barter.com.barterapp.PostDetailsFragment"
+    android:layout_height="fill_parent" tools:context="common.barter.com.barterapp.posts.PostDetailsFragment"
     android:background="@color/primary_text_default_material_dark"
     android:clickable="true">
 

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import common.barter.com.barterapp.globalhome.GlobalHome;
+import common.barter.com.barterapp.posts.PostsListAdapter;
 
 public class WishList extends Fragment{
 

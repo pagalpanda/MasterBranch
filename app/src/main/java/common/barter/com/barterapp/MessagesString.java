@@ -48,7 +48,7 @@ public class MessagesString {
     public final static String  INVALID_EMAIL = "Please enter a valid email address";
 
 
-    //Following Strings are present on Login Fragment
+    //Following Strings are present on LoginUser Fragment
     public final static String PASSWORD_MISMATCH = "Password Mismatch";
     public final static String CHECK_NETWORK_CONNECTIVITY = "Please check Connectivity";
     public final static String GPLUS_CONNECTING = "Connecting to Google..";
@@ -59,7 +59,7 @@ public class MessagesString {
     public final static String ERROR_OCCURED_TRY_AGAIN = "Error occured. Please try again later";
     public final static String  LOGIN_NAME_BLANK = "Please enter your name!";
     public final static String  LOGIN_PWD_MISMATCH = "Password mismatch";
-    public final static String  BT_LOGIN = "Login";
+    public final static String  BT_LOGIN = "LoginUser";
     public final static String  BT_GPLUS_LOGIN = "Log in via Google+";
     public final static String  BT_FB_LOGIN = "Log in via Facebook";
     public final static String  BT_SIGNUP = "Sign Up";
@@ -69,16 +69,9 @@ public class MessagesString {
     public final static String PWD_IS_BLANK = "Password should not be blank";
     public final static String  GPLUS_CONNECT1 = "Receiving Data";
     public final static String  PWD_CONCAT_STRING = "123";
-
-    //Following Strings are present on Forgot Pwd
     public final static String RESET_LINK_SENT_MESSAGE = "A link to reset password has been sent to: ";
     public final static String TRY_AGAIN_LATER_MESSAGE = "We are facing some issues. Please try again later.";
     public final static String EMAIL_ID_NOT_REGISTERED_MESSAGE = "Email id not resgistered.";
-
-    //Following Strings are present on Login Async
-    public final static String  LOGGING_IN = "Logging in..";
-
-
     public static final String PLEASE_ENTER_CORRECT_PASSWORD = "Please enter correct password";
     public static final String PASSWORD_UPDATED = "Password updated";
     public static final String NEW_PASSWORDS_DONT_MATCH = "New Passwords don't match";
@@ -87,7 +80,6 @@ public class MessagesString {
     public static final String PASSWORD_SHOULD_BE_8_CHARACTERS_LONG = "Password should be 8 characters long";
     public static final String NEW_PASSWORD_CAN_T_BE_SAME_AS_THE_OLD_ONE = "New Password can't be same as the old one!";
     public static final String MAXIMUM_LIMIT_OF_IMAGE_UPLOAD = "You Can Only upload 6 images.";
-
     public final static String RECEIVING_DATA="Receiving Data ..";
     public final static String EMAIL="email";
     public final static String FB_CLEAR_DATA_ERROR="Error while Logging in.";
@@ -97,4 +89,28 @@ public class MessagesString {
     public static final String MOBILENUM = "mobilenum";
     public static final String GENDER = "gender";
     public static final String LOGINMODE = "loginmode";
+    public static final String USER_ID = "userid";
+    public static final String WRONG_DATA_ENTERED = "Wrong data Entered";
+    public static final String NO_CHANGES_MADE = "No Changes Made";
+    public static final Object ENTER_VALID_NAME = "Please enter valid name";
+    public static final Object ENTER_VALID_MOBILENUM = "Please enter correct mobile num";
+
+
+    public static final String INSTRUCTION = "instruction";
+    public static final String PHP_USERHANDLER = "UserHandler";
+    public static final String POST = "POST";
+    public static final String ERROR_IN_UPDATING_USER_DETAILS = "Error in Updating User details";
+    public static final String DATA_SAVED = "Data Saved";
+    public static final String INCORRECT_ENTRY = "Incorrect Entry";
+    public static final String SEND_AGAIN_IN = "SEND AGAIN IN ";
+    public static final String REGISTER_BROADCAST_RECEIVER = "Registered broadcast receiver";
+    public static final String UNREGISTER_BROADCAST_RECEIVER = "unregistered broadcst receiver";
+    public static final String OTP_NOT_VERIFIED = "OTP not verified. Please try again";
+    public static final String IS_VERIFIED = "is_verified";
+    public static final String OTP = "otp";
+    public static final String OTP_NOT_GENERATED = "OTP not generated. Please try again";
+    public static final String ANDROID_TELEPHONY_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
+    public static final String MOB_VERIFIED_IS_FALSE = "0";
+    public static final String MOB_VERIFIED_IS_TRUE = "1";
+    public static final int OTP_LENGTH = 5;
 }

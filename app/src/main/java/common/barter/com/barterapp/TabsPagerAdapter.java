@@ -6,6 +6,8 @@ package common.barter.com.barterapp;
         import android.support.v4.app.FragmentManager;
         import android.support.v4.app.FragmentPagerAdapter;
 
+import common.barter.com.barterapp.posts.PostsFragment;
+
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 
     public TabsPagerAdapter(FragmentManager fm) {

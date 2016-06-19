@@ -34,6 +34,9 @@ import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
 import common.barter.com.barterapp.Home.HomeFragment;
+import common.barter.com.barterapp.posts.PostDetailsFragment;
+import common.barter.com.barterapp.posts.PostListOfferAdapter;
+import common.barter.com.barterapp.showOffer.ChooseOptionsOffersFragment;
 
 public class ReviewFragment extends Fragment {
 
@@ -48,7 +51,7 @@ public class ReviewFragment extends Fragment {
     JSONArray posts = null;
     PostListOfferAdapter adapter;
     String calledFor;
-    static String cameFrom;
+    public static String cameFrom;
     int status;
     String dateUpdated;
     String currentOfferId;

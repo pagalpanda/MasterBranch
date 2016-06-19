@@ -2,11 +2,9 @@ package common.barter.com.barterapp;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.widget.Toast;
 
-import common.barter.com.barterapp.PostsOfferFragment;
+import common.barter.com.barterapp.posts.PostsOfferFragment;
 
 public class MakeOfferAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;

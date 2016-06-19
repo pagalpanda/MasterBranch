@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
 import common.barter.com.barterapp.globalhome.GlobalHome;
+import common.barter.com.barterapp.posts.PostsOfferFragment;
 
 /**
  * Created by amitpa on 8/18/2015.

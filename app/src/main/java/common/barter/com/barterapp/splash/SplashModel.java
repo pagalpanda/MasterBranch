@@ -23,25 +23,20 @@ public class SplashModel {
             String userId = (String) DeviceStoreUtil.loadFromSharedPrefs(prefs, MessagesString.SHARED_PREFS_UNIQUE_ID);
 
             if(null == userId || "null".equalsIgnoreCase(userId) || "".equalsIgnoreCase(userId)){
-                //User not logged in
                 return;
             }
             LoginDetails.getInstance().setUserid(userId);
             String loadedString = (String)DeviceStoreUtil.loadFromSharedPrefs(prefs, MessagesString.SHARED_PREFS_PERSON_NAME);
-            LoginDetails.getInstance().setPersonName("null".equalsIgnoreCase(loadedString) ? null : loadedString);
+            LoginDetails.getInstance().setName("null".equalsIgnoreCase(loadedString) ? null : loadedString);
             loadedString = (String)DeviceStoreUtil.loadFromSharedPrefs(prefs, MessagesString.SHARED_PREFS_GENDER);
             LoginDetails.getInstance().setGender(loadedString);
             loadedString = (String)DeviceStoreUtil.loadFromSharedPrefs(prefs, MessagesString.SHARED_PREFS_EMAIL);
             LoginDetails.getInstance().setEmail(loadedString);
             loadedString = (String)DeviceStoreUtil.loadFromSharedPrefs(prefs, MessagesString.SHARED_PREFS_MOBILE);
             LoginDetails.getInstance().setMobilenum("null".equalsIgnoreCase(loadedString) ? null : loadedString);
-            loadedString = (String)DeviceStoreUtil.loadFromSharedPrefs(prefs,MessagesString.SHARED_PREFS_IS_MOBILE_VERIFIED);
             LoginDetails.getInstance().setMob_verified(loadedString);
             loadedString = (String)DeviceStoreUtil.loadFromSharedPrefs(prefs, MessagesString.SHARED_PREFS_LOGIN_MODE);
             LoginDetails.getInstance().setLoginMethod(loadedString);
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }

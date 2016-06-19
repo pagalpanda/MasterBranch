@@ -5,9 +5,7 @@ package common.barter.com.barterapp.Login;
  */
 import android.app.Activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -24,23 +22,15 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
-
 
 import java.util.Arrays;
 
 import common.barter.com.barterapp.CommonResources;
-import common.barter.com.barterapp.ManageUser;
+import common.barter.com.barterapp.manageuser.ManageUserFragment;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.R;
 import common.barter.com.barterapp.forgotpassword.ForgotPassword;
@@ -235,7 +225,7 @@ public class LoginFragment extends Fragment implements GoogleplusListener{
     }
     public void navigateToManageUser() {
         Fragment fragment = null;
-        fragment = new ManageUser();
+        fragment = new ManageUserFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         if (fragment != null) {
             ft.setCustomAnimations(R.anim.abc_slide_in_bottom, R.anim.abc_fade_out, R.anim.abc_slide_in_bottom, R.anim.abc_fade_out);
