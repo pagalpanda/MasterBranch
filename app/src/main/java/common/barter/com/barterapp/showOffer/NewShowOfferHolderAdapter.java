@@ -1,8 +1,6 @@
 package common.barter.com.barterapp.showOffer;
 
 import android.content.Context;
-import android.content.Loader;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +16,11 @@ import common.barter.com.barterapp.data.domain.NewOffer;
  */
 public class NewShowOfferHolderAdapter extends RecyclerViewLoaderAdapter<ShowOfferView> {
     private NewShowOfferHolderUtil showOfferHolderUtil;
-    private ShowOfferListener showOfferListener;
+    private common.barter.com.barterapp.showOffer.showOfferListener showOfferListener;
     private ShowOfferView viewHolder;
     private Context context;
 
-    public NewShowOfferHolderAdapter(Context context, ShowOfferListener showOfferListener) {
+    public NewShowOfferHolderAdapter(Context context, common.barter.com.barterapp.showOffer.showOfferListener showOfferListener) {
         super(null);
         this.context=context;
         this.showOfferListener=showOfferListener;
@@ -32,7 +30,7 @@ public class NewShowOfferHolderAdapter extends RecyclerViewLoaderAdapter<ShowOff
         return context;
     }
 
-    public ShowOfferListener getShowOfferListener() {
+    public common.barter.com.barterapp.showOffer.showOfferListener getShowOfferListener() {
         return showOfferListener;
     }
 

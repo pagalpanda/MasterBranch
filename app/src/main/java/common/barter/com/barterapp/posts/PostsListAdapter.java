@@ -95,7 +95,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Hold
     }
 
 
-    //Holder holder;
+    //holder holder;
 
 //    @Override
 //    public View getView(final int position, View convertView, ViewGroup parent) {
@@ -106,7 +106,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Hold
 //
 //        if(convertView == null) {
 //            rowView = inflater.inflate(R.layout.list_posts_item, null);
-//            final Holder holder=new Holder();
+//            final holder holder=new holder();
 //            holder.tvTitle=(TextView) rowView.findViewById(R.id.tvTitleNamePost);
 //            holder.ivPrimaryImage=(ImageView) rowView.findViewById(R.id.ivPrimaryImage);
 //            holder.tvLocality=(TextView) rowView.findViewById(R.id.tvLocalityPosts);
@@ -116,7 +116,7 @@ public class PostsListAdapter extends RecyclerView.Adapter<PostsListAdapter.Hold
 //            rowView=convertView;
 //        }
 //
-//            Holder holder = (Holder) rowView.getTag();
+//            holder holder = (holder) rowView.getTag();
 //        holder.ivPrimaryImage.setId(position);
 //        holder.ivPrimaryImage.setTag(listOfPosts.get(position).getPostId());
 //        holder.ivPrimaryImage.setImageBitmap(null); // Added for flickering issue

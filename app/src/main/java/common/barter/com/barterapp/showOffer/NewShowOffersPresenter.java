@@ -13,7 +13,7 @@ import common.barter.com.barterapp.ModelCallBackListener;
 public class NewShowOffersPresenter implements ModelCallBackListener<JSONObject> {
     private NewShowOfferFragment showOffersFragment;
     private ShowOffersModel showOffersModel;
-    private ShowOfferListener showOfferListener;
+    private common.barter.com.barterapp.showOffer.showOfferListener showOfferListener;
     private NewShowOfferHolderAdapter showOfferAdapter;
 
     private Context getContext() {
@@ -26,9 +26,9 @@ public class NewShowOffersPresenter implements ModelCallBackListener<JSONObject>
         return showOfferAdapter;
     }
 
-    public ShowOfferListener getShowOfferListener() {
+    public common.barter.com.barterapp.showOffer.showOfferListener getShowOfferListener() {
         if (showOfferListener==null){
-            showOfferListener = new ShowOfferListener(this);
+            showOfferListener = new showOfferListener(this);
         }
         return showOfferListener;
     }

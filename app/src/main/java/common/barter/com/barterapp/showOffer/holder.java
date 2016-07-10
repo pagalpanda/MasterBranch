@@ -12,9 +12,9 @@ import common.barter.com.barterapp.R;
 /**
  * Created by vikram on 04/06/16.
  */
-public class Holder extends RecyclerView.ViewHolder
+public class holder extends RecyclerView.ViewHolder
 {
-    private  int TYPE_ITEMS; // Added on 07/06/2016
+    private static final int TYPE_ITEMS = 1;
     TextView tvOfferTitle;
     TextView tvOfferDateOffered;
     ImageView ivPrimaryImageOffer1;
@@ -39,14 +39,12 @@ public class Holder extends RecyclerView.ViewHolder
     ImageButton ivPrimaryImageOfferFew4;
     ImageButton ivPrimaryImageOfferFew5;
     ImageButton ivPrimaryImageOfferFew6;
-
-
     TextView tvStatusOfOfferFew;
-
     int position;
     CardView cardView;
 
-    public Holder(View rowView, int i) {
+
+    public holder(View rowView, int i) {
         super(rowView);
 
 

@@ -19,10 +19,10 @@ import common.barter.com.barterapp.Offer;
 import common.barter.com.barterapp.data.constants.OfferStatus;
 import common.barter.com.barterapp.R;
 
-public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
+public class ShowOffersHolderAdapter extends RecyclerView.Adapter<common.barter.com.barterapp.showOffer.holder>{
     private Context context;
     private String mode;
-    private Holder holder;
+    private common.barter.com.barterapp.showOffer.holder holder;
     private ArrayList<Offer> listOfOffers;
     private static final int TYPE_FEW_ITEMS = 0;
     private static final int TYPE_ITEMS = 1;
@@ -47,7 +47,7 @@ public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
     }
 
     @Override
-    public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public common.barter.com.barterapp.showOffer.holder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = null;
         if(viewType == TYPE_ITEMS){
             v = LayoutInflater.from(parent.getContext())
@@ -56,7 +56,7 @@ public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
             v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.list__item_offers_few_items, parent, false);
         }
-        Holder viewHolder = new Holder(v,viewType);
+        common.barter.com.barterapp.showOffer.holder viewHolder = new holder(v,viewType);
 
         return viewHolder;
 
@@ -71,7 +71,7 @@ public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
     }
 
     @Override
-    public void onBindViewHolder(Holder holder,final int position) {
+    public void onBindViewHolder(common.barter.com.barterapp.showOffer.holder holder,final int position) {
         this.holder = holder;
         int numOfMyPosts = (listOfOffers.get(position)).getMySelectedPosts().size();
         int numOfHisPosts = (listOfOffers.get(position)).getHisSelectedPosts().size();
@@ -84,7 +84,7 @@ public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
         }
     }
 
-    private void setLayoutForNumOfPostsLessThanFour(Holder holder, int position, int numOfMyPosts, int numOfHisPosts) {
+    private void setLayoutForNumOfPostsLessThanFour(common.barter.com.barterapp.showOffer.holder holder, int position, int numOfMyPosts, int numOfHisPosts) {
         this.setOfferTitleFew(holder, position);
         this.setOfferDateFew(holder, position);
         this.setOfferStatusFew(holder, position);
@@ -115,7 +115,7 @@ public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
         }
     }
 
-    private void setMyPrimaryImageFew(Holder holder, int position) {
+    private void setMyPrimaryImageFew(common.barter.com.barterapp.showOffer.holder holder, int position) {
         final String postId6 = (listOfOffers.get(position)).getMySelectedPosts().get(0);
         String urlMine = CommonResources.getStaticURL() + "uploadedimages/" + postId6 + "_1";
 
@@ -123,7 +123,7 @@ public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
         holder.ivPrimaryImageOfferFew4.setOnClickListener(this.getListener().getPrimaryOfferImageOnClickListener(postId6));
     }
 
-    private void setHisPrimaryImageFew(Holder holder, int position) {
+    private void setHisPrimaryImageFew(common.barter.com.barterapp.showOffer.holder holder, int position) {
         final String postId1 = (listOfOffers.get(position)).getHisSelectedPosts().get(0);
         String url = CommonResources.getStaticURL() + "uploadedimages/" + postId1 + "_1";
 
@@ -131,11 +131,11 @@ public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
         holder.ivPrimaryImageOfferFew1.setOnClickListener(this.getListener().getPrimaryOfferImageOnClickListener(postId1));
     }
 
-    private void setOfferDateFew(Holder holder, int position) {
+    private void setOfferDateFew(common.barter.com.barterapp.showOffer.holder holder, int position) {
         holder.tvOfferDateOfferedFew.setText(CommonResources.convertDate(listOfOffers.get(position).getDateOffered()));
     }
 
-    private void setOfferTitleFew(Holder holder, int position) {
+    private void setOfferTitleFew(common.barter.com.barterapp.showOffer.holder holder, int position) {
         if(MessagesString.MY_OFFERS.equalsIgnoreCase(mode)) {
             holder.tvOfferTitleFew.setText(MessagesString.OFFER_TO + " "+ listOfOffers.get(position).getUserNameHis());
         }else{
@@ -143,14 +143,14 @@ public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
         }
     }
 
-    private void setRedundantImagesInvisibleFew(Holder holder) {
+    private void setRedundantImagesInvisibleFew(common.barter.com.barterapp.showOffer.holder holder) {
         holder.ivPrimaryImageOfferFew2.setVisibility(View.INVISIBLE);
         holder.ivPrimaryImageOfferFew3.setVisibility(View.INVISIBLE);
         holder.ivPrimaryImageOfferFew5.setVisibility(View.INVISIBLE);
         holder.ivPrimaryImageOfferFew6.setVisibility(View.INVISIBLE);
     }
 
-    private void setOfferStatusFew(Holder holder, int position) {
+    private void setOfferStatusFew(common.barter.com.barterapp.showOffer.holder holder, int position) {
         OfferStatus offerStatus = OfferStatus.getEnum(listOfOffers.get(position).getStatus());
         holder.tvStatusOfOfferFew.setText(offerStatus.getName());
         holder.tvStatusOfOfferFew.setTextColor(offerStatus.getColor());
@@ -173,12 +173,12 @@ public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
         ivPrimaryImageOffer.setOnClickListener(this.getListener().getPrimaryOfferImageOnClickListener(postId));
     }
 
-    private void setOfferStatus(Holder holder, int position) {
+    private void setOfferStatus(common.barter.com.barterapp.showOffer.holder holder, int position) {
         OfferStatus offerStatus = OfferStatus.getEnum(listOfOffers.get(position).getStatus());
         holder.tvStatus.setText(offerStatus.getName());
         holder.tvStatus.setTextColor(offerStatus.getColor());
     }
-    private void setMyPrimaryImage(Holder holder, int position) {
+    private void setMyPrimaryImage(common.barter.com.barterapp.showOffer.holder holder, int position) {
         final String postId6 = (listOfOffers.get(position)).getMySelectedPosts().get(0);
         String urlMine = CommonResources.getStaticURL() + "uploadedimages/" + postId6 + "_1";
 
@@ -186,14 +186,14 @@ public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
         holder.ivPrimaryImageOffer6.setOnClickListener(this.getListener().getPrimaryOfferImageOnClickListener(postId6));
     }
 
-    private void setHisPrimaryImage(Holder holder, int position) {
+    private void setHisPrimaryImage(common.barter.com.barterapp.showOffer.holder holder, int position) {
         final String postId1 = (listOfOffers.get(position)).getHisSelectedPosts().get(0);
         String url = CommonResources.getStaticURL() + "uploadedimages/" + postId1 + "_1";
 
         Picasso.with(context).load(url).fit().into(holder.ivPrimaryImageOffer1);
         holder.ivPrimaryImageOffer1.setOnClickListener(this.getListener().getPrimaryOfferImageOnClickListener(postId1));
     }
-    private void setOfferDate(Holder holder, int position) {
+    private void setOfferDate(common.barter.com.barterapp.showOffer.holder holder, int position) {
         holder.tvOfferDateOffered.setText(CommonResources.convertDate(listOfOffers.get(position).getDateOffered()));
     }
 
@@ -214,7 +214,7 @@ public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
         ivPrimaryImageOffer.setOnClickListener(this.getListener().getPrimaryOfferImageOnClickListener(postId));
     }
 
-    private void setLayoutForNumOfPostsGreaterThanFour(Holder holder, int position, int numOfMyPosts, int numOfHisPosts) {
+    private void setLayoutForNumOfPostsGreaterThanFour(common.barter.com.barterapp.showOffer.holder holder, int position, int numOfMyPosts, int numOfHisPosts) {
         this.setOfferDate(holder, position);
         this.setOfferTitle(holder, position);
         this.setOfferDate(holder, position);
@@ -305,7 +305,7 @@ public class ShowOffersHolderAdapter extends RecyclerView.Adapter<Holder>{
         }
     }
 
-    private void setOfferTitle(Holder holder, int position) {
+    private void setOfferTitle(common.barter.com.barterapp.showOffer.holder holder, int position) {
         if(MessagesString.MY_OFFERS.equalsIgnoreCase(mode)) {
             holder.tvOfferTitle.setText("Offer to "+listOfOffers.get(position).getUserNameHis());
         }else{
