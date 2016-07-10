@@ -6,14 +6,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import common.barter.com.barterapp.AsyncConnection;
 import common.barter.com.barterapp.CommonResources;
-import common.barter.com.barterapp.LoginUser;
+import common.barter.com.barterapp.data.constants.LoginMode;
+import common.barter.com.barterapp.data.domain.LoginUser;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.ModelCallBackListener;
-import common.barter.com.barterapp.SignUp;
+import common.barter.com.barterapp.data.domain.SignUp;
 
 /**
  * Created by vikram on 28/05/16.

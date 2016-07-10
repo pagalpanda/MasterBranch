@@ -1,4 +1,4 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.makeOffer;
 
 /**
  * Created by amitpa on 8/18/2015.
@@ -33,7 +33,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
+import common.barter.com.barterapp.CommonResources;
 import common.barter.com.barterapp.Home.HomeFragment;
+import common.barter.com.barterapp.JSONParser;
+import common.barter.com.barterapp.LoginDetails;
+import common.barter.com.barterapp.Post;
+import common.barter.com.barterapp.R;
+import common.barter.com.barterapp.RecyclerItemClickListener;
+import common.barter.com.barterapp.ReviewOfferGridAdapter;
+import common.barter.com.barterapp.makeOffer.MakeOfferFragment;
 import common.barter.com.barterapp.posts.PostDetailsFragment;
 import common.barter.com.barterapp.posts.PostListOfferAdapter;
 import common.barter.com.barterapp.showOffer.ChooseOptionsOffersFragment;

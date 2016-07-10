@@ -1,4 +1,6 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.data.domain;
+
+import android.support.annotation.NonNull;
 
 /**
  * Created by vikram on 28/05/16.
@@ -6,8 +8,11 @@ package common.barter.com.barterapp;
 
 public class LoginUser {
 
+    @NonNull
     private int loginMode;
+    @NonNull
     private String emailId;
+    @NonNull
     private String password;
 
     public int getLoginMode() {
@@ -33,8 +38,5 @@ public class LoginUser {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
-
 
 }

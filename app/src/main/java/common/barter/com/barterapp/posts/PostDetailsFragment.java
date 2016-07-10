@@ -45,12 +45,12 @@ import common.barter.com.barterapp.AsyncConnection;
 import common.barter.com.barterapp.CommonResources;
 import common.barter.com.barterapp.JSONParser;
 import common.barter.com.barterapp.LoginDetails;
-import common.barter.com.barterapp.MakeOfferFragment;
+import common.barter.com.barterapp.makeOffer.MakeOfferFragment;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.PhotosGridViewAdapter;
 import common.barter.com.barterapp.Post;
 import common.barter.com.barterapp.R;
-import common.barter.com.barterapp.ReviewFragment;
+import common.barter.com.barterapp.makeOffer.ReviewFragment;
 import common.barter.com.barterapp.globalhome.GlobalHome;
 import common.barter.com.barterapp.postad.PostAdA;
 

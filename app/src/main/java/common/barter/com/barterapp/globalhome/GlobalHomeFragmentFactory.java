@@ -4,14 +4,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import common.barter.com.barterapp.showOffer.ChooseOptionsOffersFragment;
 import common.barter.com.barterapp.manageuser.ManageUserFragment;
 import common.barter.com.barterapp.posts.PostsFragment;
 import common.barter.com.barterapp.R;
-import common.barter.com.barterapp.WishList;
+import common.barter.com.barterapp.wishlist.WishList;
 
 import common.barter.com.barterapp.Home.HomeFragment;
 import common.barter.com.barterapp.Login.LoginParentFragment;
+import common.barter.com.barterapp.showOffer.NewShowOfferFragment;
 
 /**
  * Created by Panda on 15-05-2016.
@@ -38,7 +38,7 @@ public class GlobalHomeFragmentFactory {
                 ft.setCustomAnimations(R.anim.enter_from_left, R.anim.abc_fade_out, R.anim.enter_from_left, R.anim.abc_fade_out);
                 break;
             case 2:
-                fragment = new ChooseOptionsOffersFragment();
+                fragment = new NewShowOfferFragment();
                 ft.setCustomAnimations(R.anim.enter_from_left, R.anim.abc_fade_out, R.anim.enter_from_left, R.anim.abc_fade_out);
                 break;
             case 3:

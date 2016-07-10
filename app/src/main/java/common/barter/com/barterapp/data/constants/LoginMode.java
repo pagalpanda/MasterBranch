@@ -1,4 +1,4 @@
-package common.barter.com.barterapp.Login;
+package common.barter.com.barterapp.data.constants;
 
 /**
  * Created by vikram on 28/05/16.

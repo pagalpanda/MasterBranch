@@ -45,7 +45,7 @@ import common.barter.com.barterapp.DeviceStoreUtil;
 import common.barter.com.barterapp.LocationAddress;
 import common.barter.com.barterapp.LocationsDialog;
 import common.barter.com.barterapp.LoginDetails;
-import common.barter.com.barterapp.MakeOfferFragment;
+import common.barter.com.barterapp.makeOffer.MakeOfferFragment;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.NavDrawerItem;
 import common.barter.com.barterapp.NavDrawerListAdapter;

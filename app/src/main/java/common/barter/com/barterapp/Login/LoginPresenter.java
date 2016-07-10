@@ -13,10 +13,10 @@ import org.json.JSONObject;
 import common.barter.com.barterapp.CommonResources;
 import common.barter.com.barterapp.CommonUtil;
 import common.barter.com.barterapp.LoginDetails;
-import common.barter.com.barterapp.LoginUser;
+import common.barter.com.barterapp.data.domain.LoginUser;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.ModelCallBackListener;
-import common.barter.com.barterapp.SignUp;
+import common.barter.com.barterapp.data.domain.SignUp;
 
 
 /**

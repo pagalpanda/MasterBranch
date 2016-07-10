@@ -6,6 +6,7 @@ package common.barter.com.barterapp.Login;
 
         import android.content.Intent;
         import android.os.Bundle;
+        import android.support.design.widget.FloatingActionButton;
         import android.support.design.widget.TabLayout;
         import android.support.v4.app.Fragment;
 
@@ -60,8 +61,6 @@ public class LoginParentFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_proceed_make_offer) {
-
-            //navigateToReview();
             return true;
         }
         return false;
@@ -81,50 +80,17 @@ public class LoginParentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-
         View rootView = inflater.inflate(R.layout.fragment_make_offer, container, false);
-
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout);
-        //((GlobalHome)getActivity()).getSupportActionBar().setHideOnContentScrollEnabled(true);
-//        tabLayout.addTab(tabLayout.newTab().setText(tabs[0]));
-//        tabLayout.addTab(tabLayout.newTab().setText(tabs[1]));
-
-
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
+        setHasOptionsMenu(true);
         viewPager = (ViewPager) rootView.findViewById(R.id.pager);
         viewPager.destroyDrawingCache();
         adapter = new LoginFragmentAdapter(getFragmentManager());
-        android.support.design.widget.FloatingActionButton  btnProceedToReview = (android.support.design.widget.FloatingActionButton)rootView.findViewById(R.id.fab2);
+        FloatingActionButton  btnProceedToReview = (FloatingActionButton)rootView.findViewById(R.id.fab2);
         btnProceedToReview.setVisibility(View.GONE);
-
         viewPager.setAdapter(adapter);
-        //adapter.notifyDataSetChanged();
-        //viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setupWithViewPager(viewPager);
-//        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                CommonResources.hideKeyboard(getActivity());
-//                viewPager.setCurrentItem(tab.getPosition());
-//
-//
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
-
-
-
         return rootView;
     }
 

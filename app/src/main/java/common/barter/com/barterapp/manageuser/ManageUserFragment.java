@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import common.barter.com.barterapp.Login.LoginMode;
+import common.barter.com.barterapp.data.constants.LoginMode;
 import common.barter.com.barterapp.Login.LoginParentFragment;
 import common.barter.com.barterapp.LoginDetails;
 import common.barter.com.barterapp.R;

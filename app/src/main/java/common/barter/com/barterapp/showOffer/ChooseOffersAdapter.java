@@ -51,7 +51,6 @@ public class ChooseOffersAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-
         return position == 0? "By Me":"To Me";
     }
 

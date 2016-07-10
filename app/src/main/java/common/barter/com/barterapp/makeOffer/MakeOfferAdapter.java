@@ -1,4 +1,4 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.makeOffer;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

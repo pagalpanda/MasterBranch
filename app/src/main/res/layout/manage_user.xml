@@ -36,7 +36,6 @@
         android:layout_marginTop="20dp"
         android:layout_height="wrap_content"
         android:id="@+id/etEmailIdlogin"
-
         android:hint="Email"
         android:editable="false"
         android:inputType="none"
@@ -112,10 +111,6 @@
 
 </RelativeLayout>
 
-
-
-
-
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -124,9 +119,5 @@
 
         android:background="?attr/colorPrimary"
         android:layout_alignParentBottom="true"/>
-
-
-
-
 
 </RelativeLayout>

@@ -6,35 +6,22 @@ package common.barter.com.barterapp.showOffer;
 import android.app.Activity;
 
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
-import common.barter.com.barterapp.AdapterOnClickListener;
-import common.barter.com.barterapp.CommonResources;
-import common.barter.com.barterapp.JSONParser;
 import common.barter.com.barterapp.Offer;
-import common.barter.com.barterapp.Post;
 import common.barter.com.barterapp.R;
-import common.barter.com.barterapp.ReviewFragment;
+import common.barter.com.barterapp.makeOffer.ReviewFragment;
 import common.barter.com.barterapp.globalhome.GlobalHome;
 
 public class ShowOffersFragment extends Fragment{
@@ -44,7 +31,7 @@ public class ShowOffersFragment extends Fragment{
     private ArrayList<Offer> listOfOffers = new ArrayList<Offer>();;
     private RecyclerView lvOffers;
     private CountDownLatch latch;
-    private ShowOffersAdapter adapter;
+    private ShowOffersHolderAdapter adapter;
     private String calledFor;
     private String dateUpdated;
     private int status;
@@ -106,9 +93,9 @@ public class ShowOffersFragment extends Fragment{
     }
 
     private void createAndSetAdapter() {
-        adapter = new ShowOffersAdapter(getContext(), listOfOffers, calledFor, showOffersPresenter.getAdapterOnClickListener());
-        lvOffers.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+//        adapter = new ShowOffersHolderAdapter(getContext(), listOfOffers, calledFor, showOffersPresenter);
+//        lvOffers.setAdapter(adapter);
+//        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -155,12 +142,12 @@ public class ShowOffersFragment extends Fragment{
     }
 
     void getUserPosts(int position) {
-        String hisId = listOfOffers.get(position).getUserIdHis();
-        selectedPosition = position;
-        status = listOfOffers.get(position).getStatus();
-        dateUpdated = listOfOffers.get(position).getLastUpdateDate();
-        currentOfferId = listOfOffers.get(position).getOfferId();
-        new GetUserPosts().execute(hisId);
+//        String hisId = listOfOffers.get(position).getUserIdHis();
+//        selectedPosition = position;
+//        status = listOfOffers.get(position).getStatus();
+//        dateUpdated = listOfOffers.get(position).getLastUpdateDate();
+//        currentOfferId = listOfOffers.get(position).getOfferId();
+//        new GetUserPosts().execute(hisId);
     }
 
 }
