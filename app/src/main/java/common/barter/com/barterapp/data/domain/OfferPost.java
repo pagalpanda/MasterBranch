@@ -43,4 +43,5 @@ public class OfferPost extends BaseEntity {
         this.originatingFromSender = originatingFromSender;
     }
 
+
 }

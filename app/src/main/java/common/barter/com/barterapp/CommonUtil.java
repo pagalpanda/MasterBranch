@@ -47,4 +47,12 @@ public class CommonUtil {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dps * scale + 0.5f);
     }
+
+    public static boolean isUserLoggedIn() {
+        String userid = LoginDetails.getInstance().getUserid();
+        if (null == userid || "null".equalsIgnoreCase(userid) || "".equalsIgnoreCase(userid)) {
+            return false;
+        }
+        return true;
+    }
 }

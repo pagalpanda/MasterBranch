@@ -24,6 +24,7 @@ import common.barter.com.barterapp.data.domain.NewOffer;
 import common.barter.com.barterapp.data.domain.NewPost;
 import common.barter.com.barterapp.globalhome.GlobalHome;
 import common.barter.com.barterapp.posts.PostsOfferFragment;
+import common.barter.com.barterapp.reviewOffer.ReviewOfferFragment;
 
 /**
  * Created by amitpa on 8/18/2015.
@@ -73,29 +74,13 @@ public class MakeOfferFragment extends Fragment{
         }else{
             Fragment fragment = null;
             NewOffer offer = makeOfferPresenter.createOffer(senderSelectedPosts,receiverSelectedPosts,currentOfferid);
-            fragment = new ReviewFragment(offer,"review");
+            fragment = new ReviewOfferFragment(offer,"review");
             if (fragment != null) {
                 getFragmentManager().beginTransaction().add(R.id.frame_container, fragment).addToBackStack("make_offer").commit();
             } else {
                 Log.e("MainActivity", "Error in creating fragment");
             }
         }
-    }
-
-    public MakeOfferFragment( ){}
-
-    public MakeOfferFragment(String uniqueidHis ){
-        this();
-        this.uniqueidHis=uniqueidHis;
-    }
-
-    public MakeOfferFragment(ArrayList<NewPost> senderPosts, ArrayList<NewPost> receiverPosts, String viewMode, boolean isCounterOffer, String currentOfferid){
-        this();
-        this.senderPosts = senderPosts;
-        this.receiverPosts = receiverPosts;
-        this.viewMode = viewMode;
-        this.isCounterOffer=isCounterOffer;
-        this.currentOfferid = currentOfferid;
     }
 
     @Override

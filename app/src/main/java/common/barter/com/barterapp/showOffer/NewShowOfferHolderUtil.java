@@ -95,7 +95,7 @@ public class NewShowOfferHolderUtil {
         ImageButton[] imageButtons = holder.getIbPrimaryImageOffer();
         int i=0;
         for (OfferPost offerPost:offerPosts){
-            String url = CommonResources.getImageURL(offerPost.getPostId());
+            String url = CommonResources.getPrimaryImageURL(offerPost.getPostId());
             Image.loadAndFitImageOnImageButton(getContext(), url, imageButtons[i]);
             imageButtons[i].setVisibility(View.VISIBLE);
             imageButtons[i].setOnClickListener(this.getListener(String.valueOf(offerPost.getPostId())));

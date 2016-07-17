@@ -1,4 +1,4 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.asyncConnections;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -10,6 +10,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
+
+import common.barter.com.barterapp.CommonUtil;
+import common.barter.com.barterapp.JSONParser;
+import common.barter.com.barterapp.MessagesString;
 
 /**
  * Created by vikram on 23/09/15.

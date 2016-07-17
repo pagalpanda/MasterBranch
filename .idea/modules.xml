@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BarterApp.iml" filepath="$PROJECT_DIR$/BarterApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MasterBranch.iml" filepath="$PROJECT_DIR$/MasterBranch.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

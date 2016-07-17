@@ -18,7 +18,7 @@ public enum OfferStatus{
     private final String statusName;
     private final int color;
 
-    OfferStatus(int statusId,String statusName, @ColorRes int color){
+    OfferStatus(int statusId,String statusName, int color){
         this.statusId=statusId;
         this.statusName=statusName;
         this.color=color;

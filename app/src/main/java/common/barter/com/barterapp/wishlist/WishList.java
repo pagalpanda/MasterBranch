@@ -17,19 +17,15 @@ import java.util.ArrayList;
 import common.barter.com.barterapp.CommonResources;
 import common.barter.com.barterapp.R;
 import common.barter.com.barterapp.data.domain.NewPost;
+import common.barter.com.barterapp.posts.NavigationMode;
 
 public class WishList extends Fragment{
 
     private RecyclerView lvPosts;
     private WishListPresenter wishListPresenter;
     private ArrayList<NewPost> posts;
-    // TODO Remove calledFor.Use proper mechanism
-    private String calledFor;
+    private String navigationMode= NavigationMode.WISHLIST.name();
 
-    public WishList(){
-        this.calledFor = "wishlist";
-
-    }
     public NewPost getPost(int position) {
         return posts.get(position);
     }
@@ -51,8 +47,7 @@ public class WishList extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_wishlist, container, false);
         setHasOptionsMenu(true);
         initializeWidgets(rootView);
@@ -94,8 +89,8 @@ public class WishList extends Fragment{
     }
 
     void navigateToPostDetails(int position){
-//        (new CommonResources(getContext())).navigateToPostDetails(getFragmentManager(), posts.get(position), calledFor);
-        (new CommonResources(getContext())).navigateToPostDetails(getFragmentManager(), null, calledFor);
+//        (new CommonResources(getContext())).navigateToPostDetails(getFragmentManager(), posts.get(position), navigationMode);
+        (new CommonResources(getContext())).navigateToPostDetails(getFragmentManager(), null, navigationMode);
     }
     private void createAndSetLayoutManager() {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());

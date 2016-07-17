@@ -7,12 +7,11 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import common.barter.com.barterapp.AsyncConnection;
+import common.barter.com.barterapp.asyncConnections.AsyncConnection;
 import common.barter.com.barterapp.CommonResources;
 import common.barter.com.barterapp.LoginDetails;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.ModelCallBackListener;
-import common.barter.com.barterapp.data.domain.NewPost;
 
 /**
  * Created by vikram on 05/07/16.
@@ -65,8 +64,8 @@ public class WishListModel {
         };
     }
 
-    public void removePostFromMyWishlist(NewPost post) {
-        this.sendHttpRequestToRemovePostFromMyWishlist(this.getParamsForRemovePostFromMyWishlist(post));
+    public void addOrRemovePostFromMyWishlist(long postId) {
+        this.sendHttpRequestToRemovePostFromMyWishlist(this.getParamsForRemovePostFromMyWishlist(postId));
     }
 
     public void sendHttpRequestToRemovePostFromMyWishlist(HashMap<String, String> params) {
@@ -74,11 +73,11 @@ public class WishListModel {
         asyncConnection.execute();
     }
 
-    public HashMap<String, String> getParamsForRemovePostFromMyWishlist(NewPost post) {
+    public HashMap<String, String> getParamsForRemovePostFromMyWishlist(long postId) {
         HashMap<String, String> params = new HashMap<>();
         params.put(MessagesString.USER_ID, LoginDetails.getInstance().getUserid());
-        params.put(MessagesString.POST_ID, String.valueOf(post.getId()));
-        params.put(MessagesString.INSTRUCTION, MessagesString.REMOVE);
+        params.put(MessagesString.POST_ID, String.valueOf(postId));
+//        params.put(MessagesString.INSTRUCTION, MessagesString.REMOVE);
         return params;
     }
 

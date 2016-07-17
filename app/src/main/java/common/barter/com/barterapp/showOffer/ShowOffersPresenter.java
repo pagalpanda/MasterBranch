@@ -190,7 +190,7 @@ public class ShowOffersPresenter implements ModelCallBackListener<JSONObject>{
 //
 //
 //        Fragment fragment = null;
-//        fragment = new ReviewFragment(listSelectedMine,listSelectedHis,"view",myListOfPostsInOffer,hisListOfPostsInOffer, status, dateUpdated, currentOfferId);
+//        fragment = new ReviewOfferFragment(listSelectedMine,listSelectedHis,"view",myListOfPostsInOffer,hisListOfPostsInOffer, status, dateUpdated, currentOfferId);
 //
 //
 //        if (fragment != null) {

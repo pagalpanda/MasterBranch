@@ -111,7 +111,7 @@ public class WishListPresenter implements ModelCallBackListener<JSONObject>{
             CommonUtil.flash(this.getContext(), MessagesString.CHECK_NETWORK_CONNECTIVITY);
             return;
         }
-        this.getWishListModel().removePostFromMyWishlist(post);
+        this.getWishListModel().addOrRemovePostFromMyWishlist(post.getId());
         this.getFragment().removePostFromPosts(post.getId());
     }
 

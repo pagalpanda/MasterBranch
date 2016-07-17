@@ -35,7 +35,7 @@ public class PostDetailsPagerAdapter extends PagerAdapter {
     LayoutInflater inflater;
     ArrayList<Bitmap> photos;
 
-    public PostDetailsPagerAdapter(Context context, String postId, int numOfImages) {
+    public PostDetailsPagerAdapter(Context context, long postId, int numOfImages) {
         this.context = context;
         this.postId = postId;
         this.numOfImages=numOfImages;

@@ -1,4 +1,4 @@
-package common.barter.com.barterapp;
+package common.barter.com.barterapp.postad;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import common.barter.com.barterapp.R;
 
 /**
  * Created by amitpa on 8/20/2015.
@@ -51,7 +53,6 @@ public class PhotosGridViewAdapter extends BaseAdapter{
 
     public class Holder
     {
-
         ImageView img;
     }
     @Override

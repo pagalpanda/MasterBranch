@@ -21,7 +21,7 @@ import java.util.concurrent.CountDownLatch;
 
 import common.barter.com.barterapp.Offer;
 import common.barter.com.barterapp.R;
-import common.barter.com.barterapp.makeOffer.ReviewFragment;
+import common.barter.com.barterapp.reviewOffer.ReviewOfferFragment;
 import common.barter.com.barterapp.globalhome.GlobalHome;
 
 public class ShowOffersFragment extends Fragment{
@@ -62,7 +62,7 @@ public class ShowOffersFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_show_offers, container, false);
         setHasOptionsMenu(true);
         // TODO: Add Enum or any other mechanism
-        ReviewFragment.cameFrom="offers";
+        ReviewOfferFragment.cameFrom="offers";
         initializeWidgets(rootView);
         setActionBarTitle();
         setPresenter();

@@ -167,4 +167,26 @@ public class MessagesString {
     public static final String GET_MAKE_OFFER_POSTS = "get_make_offer_post";
     public static final String NO_POSTS_AVAILABLE = "No Posts Available";
     public static final String PLEASE_SELECT_SOME_ITEMS = "Please select some items";
+    public static final String OFFER = "offer";
+    public static final String GET_ALL_POSTS = "get_all_posts";
+    public static final String GET_MY_POSTS = "get_my_posts";
+    public static final String NAV_MODE = "navigationMode";
+    public static final String IS_ADDED_TO_WISHLIST = "isAddedtoWishList";
+    public static final String POSTDTO = "postDTO";
+    public static final String MAKE_AN_OFFER = "Make an Offer";
+    public static final String WISHLIST = "Wish List";
+    public static final String ACTION = "action";
+    public static final String ADDED = "added";
+    public static final String IMAGES = "IMAGES";
+    public static final String LOCALITY = "locality";
+    public static final String POST_AD = "Post Ad";
+    public static final String EDIT_POST = "Edit Post";
+    public static final String SAVE = "Save";
+    public static final int CAMERA_REQUEST = 0;
+    public static final int GALLERY_REQUEST = 1;
+    public static final String LOCATION = "location";
+    public static final String ALL_FIELDS_ARE_MANDATORY = "All fields are mandatory";
+    public static final String PLEASE_LOGIN_TO_CONTINUE = "Please Log in to Continue";
+    public static final String CATEGORY = "category";
+    public static final String CAME_FROM="camefrom";
 }

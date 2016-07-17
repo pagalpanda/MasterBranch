@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.R;
-import common.barter.com.barterapp.makeOffer.ReviewFragment;
+import common.barter.com.barterapp.reviewOffer.ReviewOfferFragment;
 import common.barter.com.barterapp.globalhome.GlobalHome;
 
 /**
@@ -41,7 +41,7 @@ public class NewShowOfferFragment  extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_show_offers, container, false);
         setHasOptionsMenu(true);
         // TODO: Add Enum or any other mechanism
-        ReviewFragment.cameFrom=MessagesString.OFFERS;
+        ReviewOfferFragment.cameFrom=MessagesString.OFFERS;
         setActionBarTitle();
         initializeWidgets(rootView);
         createAndSetLinearLayoutManager();

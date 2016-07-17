@@ -34,16 +34,21 @@ import java.util.Collections;
 
 public class LocationsDialog extends Dialog{
 
-    SharedPreferences prefs;
-
+    private SharedPreferences prefs;
     private Context context;
     private Button search, cancel;
     private EditText text;
     private LocationsDialog thisDialog;
     private ArrayAdapter<String> adapter;
-    ArrayList list_of_items;
-    RecyclerView mRecyclerView;
-    CustomAutoCompleteTextView autoCompleteTextView;
+    private ArrayList list_of_items;
+    private RecyclerView mRecyclerView;
+    private CustomAutoCompleteTextView autoCompleteTextView;
+    private TextView tvLocationDialogText;
+    private Button btnSetCurrentLocation;
+    private Boolean isClickedFromLocality;
+    private String localityName;
+    private Activity activity;
+    private Object obj;
 
     public TextView getTvLocationDialogText() {
         return tvLocationDialogText;
@@ -52,13 +57,6 @@ public class LocationsDialog extends Dialog{
     public Button getBtnSetCurrentLocation() {
         return btnSetCurrentLocation;
     }
-
-    TextView tvLocationDialogText;
-    Button btnSetCurrentLocation;
-    Boolean isClickedFromLocality;
-    private String localityName;
-    Activity activity;
-
 
     public LocationsDialog(Activity activity,Context context, RecyclerView mRecyclerView, ArrayList<String> list_of_Cities, Boolean isClickedFromLocality) {
         super(context);
@@ -77,130 +75,48 @@ public class LocationsDialog extends Dialog{
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        thisDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);// Hides the are for title bar
+        thisDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_locations);
         prefs  = PreferenceManager.getDefaultSharedPreferences(context);
-
-        getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-
-
-
+        getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.MATCH_PARENT);
         initalize();
     }
 
     private void initalize() {
-        // TODO Auto-generated method stub
-
-
-        //setListOfCities();
         autoCompleteTextView = (CustomAutoCompleteTextView)findViewById(R.id.actvLocatioNames);
         tvLocationDialogText = (TextView)findViewById(R.id.tvTitleOfLocationsDialog);
         btnSetCurrentLocation = (Button)findViewById(R.id.btn_set_current_location);
         if(list_of_items != null) {
             adapter = new ArrayAdapter<String>(getContext(), R.layout.item_list_locations, list_of_items);
-//            adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, list_of_Cities) {
-//                @Override
-//                public View getView(int position, View convertView, ViewGroup parent) {
-//
-//                    View v = super.getView(position, convertView, parent);
-//
-//                    v.setOnTouchListener(new View.OnTouchListener() {
-//
-//                        @Override
-//                        public boolean onTouch(View v, MotionEvent event) {
-//                            View view = activity.getCurrentFocus();
-//                            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//                                InputMethodManager imm = (InputMethodManager) activity
-//                                        .getSystemService(
-//                                                Context.INPUT_METHOD_SERVICE);
-//                                imm.hideSoftInputFromWindow(
-//                                        view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-//                            }
-//
-//                            return true;
-//                        }
-//                    });
-//                    return v;
-//
-//                }
-//            };
         }
             autoCompleteTextView.setThreshold(0);
 
-        //Set adapter to AutoCompleteTextView
         autoCompleteTextView.setAdapter(adapter);
         autoCompleteTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus)
                     autoCompleteTextView.showDropDown();
-
-
             }
-
-
         });
-
-
-
-
-
 
         autoCompleteTextView.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 autoCompleteTextView.showDropDown();
                 return false;
             }
         });
-
-
-
-//        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                if (!isClickedFromLocality) {
-//                    String cityName = (String) list_of_items.get(position);
-//                    saveToSharedPrefs("location", cityName);
-//                    GlobalHome.location = cityName;
-//                    if (mRecyclerView != null)
-//                        mRecyclerView.getAdapter().notifyDataSetChanged();
-//
-//                }
-//                thisDialog.cancel();
-//            }
-//        });
-
-
     }
 
     public AutoCompleteTextView getAutoCompleteTextView(){
-        //autoCompleteTextView.setDropDownHeight(LinearLayout.LayoutParams.MATCH_PARENT);
-        //autoCompleteTextView.setPivotY(0);
-
         autoCompleteTextView.setMinLines(1);
         return autoCompleteTextView;
     }
 
-//    private void setListOfCities() {
-//        list_of_Cities = new ArrayList<String>();
-//        list_of_Cities.add("Hyderabad");
-//        list_of_Cities.add("Secunderabad");
-//        list_of_Cities.add("Mohali");
-//        list_of_Cities.add("Bangalore");
-//        list_of_Cities.add("Mumbai");
-//        list_of_Cities.add("Delhi");
-//        list_of_Cities.add("Bhubaneswar");
-//
-//        Collections.sort(list_of_Cities);
-//
-//    }
 
-    Object obj;
+
     public  Object loadFromSharedPrefs(String key){
         Gson gson = new Gson();
         obj = null;

@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import common.barter.com.barterapp.AsyncConnection;
+import common.barter.com.barterapp.asyncConnections.AsyncConnection;
 import common.barter.com.barterapp.CommonResources;
 import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.NetworkCallListener;

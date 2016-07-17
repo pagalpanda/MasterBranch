@@ -1,94 +1,86 @@
 package common.barter.com.barterapp.postad;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
-import android.util.Base64;
-import com.squareup.picasso.Picasso;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import android.widget.AdapterView;
 
-import common.barter.com.barterapp.AbstractFragment;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import common.barter.com.barterapp.Categories;
 import common.barter.com.barterapp.CommonResources;
 import common.barter.com.barterapp.CommonUtil;
 import common.barter.com.barterapp.DeviceStoreUtil;
+import common.barter.com.barterapp.Image;
 import common.barter.com.barterapp.MessagesString;
+import common.barter.com.barterapp.ModelCallBackListener;
+import common.barter.com.barterapp.data.domain.NewPost;
 import common.barter.com.barterapp.globalhome.GlobalHome;
+import common.barter.com.barterapp.posts.NavigationMode;
 
 /**
  * Created by Panda on 21-05-2016.
  */
-public class PostAdAPresenter implements PostAdNetworkCallsListener {
-    private AbstractFragment view;
+public class PostAdAPresenter implements ModelCallBackListener<JSONObject> {
     private PostAdAModel model;
-    private String postIdForEditedPhoto;
-    private int numOfPhotos;
+    private PhotosGridViewAdapter photosGridViewAdapter;
+    private PostAdA postAdA;
+    private PostAdListener listener;
 
-
-    public void onLoadView(AbstractFragment view) {
-        this.view = view;
-        model = new PostAdAModel(this);
+    public PostAdListener getListener() {
+        if (listener==null){
+            listener=new PostAdListener(this);
+        }
+        return listener;
     }
 
+    public PhotosGridViewAdapter getPhotosGridViewAdapter() {
+        if(photosGridViewAdapter==null){
+            photosGridViewAdapter = new PhotosGridViewAdapter(getContext(),this.getFragment().getPhotos());
+        }
+        return photosGridViewAdapter;
+    }
 
-    public void fillDetailsBasedOnMode(String mode) {
+    public PostAdAModel getModel() {
+        if (model==null){
+            model = new PostAdAModel(getContext(),this);
+        }
+        return model;
+    }
+
+    private Context getContext() {
+        return this.getFragment().getContext();
+    }
+
+    public PostAdA getFragment() {
+        return postAdA;
+    }
+
+    public void setFragment(PostAdA postAdA) {
+        this.postAdA = postAdA;
+    }
+
+    public void setDetailsBasedOnMode(String mode) {
         if(isInEditMode(mode)){
-            ((PostAdA)view).setDetailsForEditMode();
+            this.getFragment().setDetailsForEditMode();
         }else {
-            ((PostAdA)view).setDetailsForPostMode();
+            this.getFragment().setDetailsForPostMode();
         }
     }
 
     private boolean isInEditMode(String mode) {
-        return "edit".equalsIgnoreCase(mode);
+        return NavigationMode.EDIT.name().equalsIgnoreCase(mode);
     }
-
 
     private boolean isLocationSet(String textOnSelectLocButton) {
         return !MessagesString.LOCATION_SET_MANUALLY.equalsIgnoreCase(textOnSelectLocButton);
     }
 
-
-    @Override
-    public void onLocalitiesFetchSuccess(Object listOfLocalities) {
-        CommonResources.setListOfLocalities((ArrayList<String>) listOfLocalities);
-    }
-
-    @Override
-    public void onAdPostSuccess(int success) {
-        if (success == 0) {
-            PostAdA.isEdited = true;
-
-            for(int i=0; i<numOfPhotos; i++){
-                String url = CommonResources.getStaticURL()+"uploadedimages/"+postIdForEditedPhoto+"_"+(i+1);
-                Picasso.with(view.getContext()).invalidate(url);
-            }
-
-            CommonUtil.flash(view.getContext(), "Ad was successfully posted.");
-            //getFragmentManager().popBackStackImmediate();
-            ((PostAdA)view).navigate();
-            // successfully created product
-//                    Toast.makeText(getApplicationContext(),"Created",Toast.LENGTH_LONG).show();
-            //finish();
-        } else if (success == 1) {
-            CommonUtil.flash(view.getContext(), "Please try again");
-            // failed to create product
-        } else if (success == 2) {
-            //Invalid input
-            CommonUtil.flash(view.getContext(), "Please try again later");
-        }
-    }
-
-    @Override
-    public void onNetworkCallFailure() {
-
-    }
-
     public void getLocalitiesBasedOnLocation(String location) {
         if(!isLocationSet(location)){
-            ((PostAdA)view).hideLocalityButton();
+            this.getFragment().hideLocalityButton();
 
         }else {
             getLocalitiesForLocation(location);
@@ -96,38 +88,23 @@ public class PostAdAPresenter implements PostAdNetworkCallsListener {
     }
 
     private void getLocalitiesForLocation(String location) {
-        getListOfLocalitiesForLocation(location);
-        ((PostAdA)view).showLocalityButton();
-
-
-    }
-
-    private void getListOfLocalitiesForLocation(final String location) {
-        HashMap param = new HashMap();
-        param.put("", "");
-        model.getListOfLocalitiesForLocation(view.getContext(), location, param);
+        this.getModel().getLocalitiesForLocation(location);
+        this.getFragment().showLocalityButton();
     }
 
     public void onCameraIconClick() {
-        ((PostAdA)view).showPhotoSelectionOptions();
+        this.getFragment().showPhotoSelectionOptions();
     }
 
-    public void onRemovePhotoClick(int position, int numOfPhotos ) {
-        ((PostAdA)view).removePhoto(position);
-        if(--numOfPhotos == 0){
-            ((PostAdA)view).setVisibilityOfRemovePhotosText(false);
-        }
+    public void onRemovePhotoClick(int position) {
+        this.getFragment().removePhoto(position);
     }
 
     public void onLocationSelect(String cityName) {
-        DeviceStoreUtil.saveToSharedPrefs(PreferenceManager.getDefaultSharedPreferences(view.getContext()), "location", cityName);
+        DeviceStoreUtil.saveToSharedPrefs(PreferenceManager.getDefaultSharedPreferences(getContext()),MessagesString.LOCATION, cityName);
         GlobalHome.location = cityName;
-        ((PostAdA)view).setTextToLocationButton(cityName);
-        ((PostAdA)view).showLocalityButton();
-
-        getListOfLocalitiesForLocation(cityName);
-
-
+        this.getFragment().onLocationSelect(cityName);
+        this.getLocalitiesBasedOnLocation(cityName);
     }
 
     public ArrayList getListOfCategories() {
@@ -144,22 +121,20 @@ public class PostAdAPresenter implements PostAdNetworkCallsListener {
     }
 
     public void onPostAdClick(String title, String description, String category, String subCategory, String city, String locality, ArrayList<Bitmap> photos, String postId, String mode) {
-        this.postIdForEditedPhoto = postId;
-        this.numOfPhotos = photos.size();
         if(isUserLoggedIn()) {
             if (validateInput(title, description,category, subCategory, city,locality)) {
-                createPost(title, description, category, subCategory, city, locality, photos, postId, mode);
+                NewPost post=this.getModel().createPostObject(title, description, category, subCategory, city, locality, photos, postId);
+                this.getModel().createOrEditPost(post,mode);
             } else {
-                CommonUtil.flash(view.getContext(),"All fields are mandatory");
+                CommonUtil.flash(getContext(),MessagesString.ALL_FIELDS_ARE_MANDATORY);
             }
 
         }else {
-            CommonUtil.flash(view.getContext(),"Please Log in to Continue");
+            CommonUtil.flash(getContext(),MessagesString.PLEASE_LOGIN_TO_CONTINUE);
         }
     }
 
     private boolean validateInput(String title, String description, String category, String subCategory, String city, String locality) {
-
         if( "".equals(title) || "".equals(description) || MessagesString.HINT_SUBCATEGORY.equalsIgnoreCase(subCategory)
                 || MessagesString.HINT_SUBCATEGORY.equalsIgnoreCase(subCategory) || MessagesString.HINT_CITY.equalsIgnoreCase(city)
                 || MessagesString.HINT_LOCALITY.equalsIgnoreCase(locality)){
@@ -169,53 +144,66 @@ public class PostAdAPresenter implements PostAdNetworkCallsListener {
     }
 
     private boolean isUserLoggedIn() {
-        return "true".equals (DeviceStoreUtil.loadFromSharedPrefs(PreferenceManager.getDefaultSharedPreferences(view.getContext()), "isLoggedIn") );
+        return "true".equals (DeviceStoreUtil.loadFromSharedPrefs(PreferenceManager.getDefaultSharedPreferences(getContext()), "isLoggedIn") );
     }
 
-    private void createPost(String title, String description, String category, String subCategory, String city, String locality, final ArrayList<Bitmap> photos, final String postId, String mode) {
-        HashMap <String,String> params = new HashMap <String,String>();
-
-        params.put("title", title);
-        params.put("description", description);
-        params.put("category", category);
-        params.put("subcategory", subCategory);
-        params.put("city", city);
-        params.put("locality", locality);
-        params.put("uniqueid", (String)(DeviceStoreUtil.loadFromSharedPrefs(PreferenceManager.getDefaultSharedPreferences(view.getContext()), "uniqueid")));
-
-
-        params.put("numofimages", photos.size() + "");
-
-
-        ByteArrayOutputStream byteArrayBitmapStream;
-        int i = 0;
-        for (Bitmap image : photos) {
-            byteArrayBitmapStream = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayBitmapStream);
-            byte[] b = byteArrayBitmapStream.toByteArray();
-            String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-            params.put("image_" + i, encodedImage);
-            i++;
-            try {
-                byteArrayBitmapStream.close();
-                byteArrayBitmapStream = null;
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-
-
-            }
-        }
-        String phpName = null;
-        if (isInEditMode(mode)) {
-            params.put("postid",postId);
-            phpName = CommonResources.getURL("edit_my_post");
-        } else{
-            phpName = CommonResources.getURL("create_post");
-        }
-        model.createPost(view.getContext(), params, phpName);
+    @Override
+    public void onSuccess(JSONObject jsonObject) {
+        Image.invalidateUrl(getContext(),this.getFragment().getPhotos().size(),this.getFragment().getPostId());
+        CommonUtil.flash(getContext(), "Ad was successfully posted.");
+        this.getFragment().navigate();
     }
 
+    @Override
+    public void onFailure(String errorMessage) {
+        CommonUtil.flash(getContext(),errorMessage);
+    }
 
+    public void onSelectCityClicked() {
+        this.getFragment().createAndShowLocationDialogForCity();
+    }
 
+    public void onLoctionSelected(AdapterView<?> parent, int position) {
+        String cityName = (String) parent.getItemAtPosition(position);
+        this.onLocationSelect(cityName);
+    }
+
+    public void selectOrClickPhoto(int request) {
+        this.getFragment().selectOrClickPhoto(request);
+    }
+
+    public void onLocalitySelectClicked() {
+        this.getFragment().createAndShowLocationDialogForLocality();
+    }
+
+    public void onLocalitySelection(AdapterView<?> parent, int position) {
+        String localityName = (String) parent.getItemAtPosition(position);
+        this.getFragment().onLocalitySelect(localityName);
+    }
+
+    public void onPostAdClicked() {
+        this.getFragment().onPostAdClicked();
+    }
+
+    public void onSubCategorySelected() {
+        this.getFragment().createAndShowLocationDialogForSubCategory();
+    }
+
+    public void onSubCategoryItemSelected(AdapterView<?> parent, int position) {
+        String subCategory = (String) parent.getItemAtPosition(position);
+        this.getFragment().onSubCategorySelect(subCategory);
+    }
+
+    public void onCategorySelected() {
+        this.getFragment().createAndShowLocationDialogForCategory();
+    }
+
+    public void onCategoryItemSelected(AdapterView<?> parent, int position) {
+        String category =(String) parent.getItemAtPosition(position);
+        this.getFragment().onCategorySelect(category);
+    }
+
+    public void notifyDataSetChanged() {
+        this.getPhotosGridViewAdapter().notifyDataSetChanged();
+    }
 }

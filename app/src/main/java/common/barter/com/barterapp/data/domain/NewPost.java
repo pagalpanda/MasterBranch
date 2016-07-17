@@ -1,13 +1,21 @@
 package common.barter.com.barterapp.data.domain;
 
+import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.util.Base64;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import common.barter.com.barterapp.DeviceStoreUtil;
+import common.barter.com.barterapp.Image;
 import common.barter.com.barterapp.MessagesString;
 
 /**
@@ -22,10 +30,13 @@ public class NewPost extends BaseEntity {
     @NonNull
     private String description;
     @NonNull
-    private int subCategory;
+    private String subCategory;
+
     private String gpsLocation;
     @NonNull
     private String city;
+    @NonNull
+    private String category;
     @NonNull
     private String locality;
     @NonNull
@@ -35,7 +46,7 @@ public class NewPost extends BaseEntity {
     @NonNull
     private String lastUpdateDate;
     private String primaryImage;
-    private String[] images;
+    private ArrayList<Bitmap> images;
 
     public int getNumOfImages() {
         return numOfImages;
@@ -62,11 +73,11 @@ public class NewPost extends BaseEntity {
         this.primaryImage = primaryImage;
     }
 
-    public String[] getImages() {
+    public ArrayList<Bitmap> getImages() {
         return images;
     }
 
-    public void setImages(String[] images) {
+    public void setImages(ArrayList<Bitmap> images) {
         this.images = images;
     }
 
@@ -94,11 +105,11 @@ public class NewPost extends BaseEntity {
         this.description = description;
     }
 
-    public int getSubCategory() {
+    public String getSubCategory() {
         return subCategory;
     }
 
-    public void setSubCategory(int subCategory) {
+    public void setSubCategory(String subCategory) {
         this.subCategory = subCategory;
     }
 
@@ -126,6 +137,15 @@ public class NewPost extends BaseEntity {
         this.locality = locality;
     }
 
+    @NonNull
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(@NonNull String category) {
+        this.category = category;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -134,13 +154,13 @@ public class NewPost extends BaseEntity {
         this.status = status;
     }
 
-    public static NewPost getOfferFromJson(JSONObject json) throws JSONException {
+    public static NewPost getPostFromJson(JSONObject json) throws JSONException {
         NewPost post = new NewPost();
         post.setId(json.getLong(MessagesString.POST_ID));
         post.setUserId(json.getLong(MessagesString.USER_ID));
         post.setTitle(json.getString(MessagesString.TITLE));
         post.setDescription(json.getString(MessagesString.DESCRIPTION));
-        post.setSubCategory(json.getInt(MessagesString.SUBCATEGORY));
+        post.setSubCategory(json.getString(MessagesString.SUBCATEGORY));
         post.setCity(json.getString(MessagesString.CITY));
         post.setStatus(json.getString(MessagesString.STATUS));
         post.setNumOfImages(json.getInt(MessagesString.NUM_OF_IMAGES));
@@ -152,9 +172,31 @@ public class NewPost extends BaseEntity {
         ArrayList<NewPost> posts = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject json = jsonArray.getJSONObject(i);
-            posts.add(NewPost.getOfferFromJson(json));
+            posts.add(NewPost.getPostFromJson(json));
         }
         return posts;
     }
 
+    public static HashMap<String, String> getMapFromPostObject(NewPost post) {
+        HashMap <String,String> params = new HashMap <String,String>();
+        params.put(MessagesString.TITLE, post.getTitle());
+        params.put(MessagesString.DESCRIPTION, post.getDescription());
+        params.put(MessagesString.CATEGORY, post.getCategory());
+        params.put(MessagesString.SUBCATEGORY, post.getSubCategory());
+        params.put(MessagesString.CITY, post.getCity());
+        params.put(MessagesString.LOCALITY, post.getLocality());
+        params.put(MessagesString.USER_ID, String.valueOf(post.getUserId()));
+        params.put(MessagesString.NUM_OF_IMAGES, String.valueOf(post.getNumOfImages()));
+        int i = 0;
+        for (Bitmap bitmap : post.getImages()) {
+            try {
+                params.put("image_" + i, Image.getBase64EncodedImage(bitmap));
+                i++;
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return params;
+    }
 }

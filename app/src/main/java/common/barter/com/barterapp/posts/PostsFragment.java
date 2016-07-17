@@ -6,7 +6,6 @@ package common.barter.com.barterapp.posts;
 import android.app.Activity;
 
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,114 +15,121 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.CountDownLatch;
 
-import common.barter.com.barterapp.AsyncConnection;
 import common.barter.com.barterapp.CommonResources;
-import common.barter.com.barterapp.JSONParser;
-import common.barter.com.barterapp.Post;
+import common.barter.com.barterapp.MessagesString;
 import common.barter.com.barterapp.R;
-import common.barter.com.barterapp.RecyclerItemClickListener;
+import common.barter.com.barterapp.data.domain.NewPost;
 import common.barter.com.barterapp.globalhome.GlobalHome;
 
 public class PostsFragment extends Fragment{
+    private ArrayList<NewPost> listOfPosts;
+    private RecyclerView lvPosts;
+    private String navigationMode;
+    private String subCategory;
+    private PostsPresenter postsPresenter;
 
-    Activity context;
-    Button btnGetPosts;
-    ArrayList<Post> listOfPosts;
-    private ProgressDialog pDialog;
-    JSONParser jsonParser = new JSONParser();
-    RecyclerView lvPosts;
-    CountDownLatch latch;
-    JSONArray posts = null;
-    PostsListAdapter adapter;
-    String calledFor;
+    public String getNavigationMode() {
+        return navigationMode;
+    }
 
+    public String getSubCategory() {
+        return subCategory;
+    }
+    public NewPost getPost(int position) {
+        return listOfPosts.get(position);
+    }
+
+    public ArrayList<NewPost> getPosts() {
+        return listOfPosts;
+    }
+
+    public void setPosts(ArrayList<NewPost> listOfPosts) {
+        this.listOfPosts = listOfPosts;
+    }
+
+    public void removePostFromPosts(long postId) {
+        this.listOfPosts.remove(postId);
+    }
+
+    public void addPostToPosts(NewPost post) {
+        this.listOfPosts.add(post);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-
         if (menu.findItem(R.id.action_search) != null) {
-            if("userview".equalsIgnoreCase(calledFor))
+            if(NavigationMode.USERVIEW.name().equalsIgnoreCase(navigationMode))
                 menu.findItem(R.id.action_search).setVisible(true);
             else
                 menu.findItem(R.id.action_search).setVisible(false);
         }
     }
 
-    public PostsFragment( ){
-
-
-    }
-
-    GlobalHome activity;
-
-    String subCategory;
-    public PostsFragment( String calledFor, String subCategory){
-        this();
-        this.calledFor = calledFor;
-        this.subCategory=subCategory;
-    }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_posts, container, false);
-        activity = (GlobalHome) getActivity();
-        lvPosts = (RecyclerView)rootView.findViewById(R.id.listViewPosts);
-//        MenuItem item = menu.findItem(R.id.my_item);
-//        item.setVisible(false);
-
         setHasOptionsMenu(true);
-        if(!"userview".equalsIgnoreCase(calledFor)) {
-            activity.setActionBarTitle("My Posts");
+        setActionBarTitle();
+        initializeWidgets(rootView);
+        setInputArguments();
+        setPresenter();
+        return rootView;
+    }
 
+    private void setPresenter() {
+        if (postsPresenter==null){
+            postsPresenter = new PostsPresenter();
+        }
+        postsPresenter.setFragment(this);
+    }
+
+    public void setActionBarTitle() {
+        GlobalHome activity = (GlobalHome) getActivity();
+        if(!NavigationMode.USERVIEW.name().equalsIgnoreCase(navigationMode)) {
+            activity.setActionBarTitle(MessagesString.MY_POSTS);
         }
         else {
             activity.setActionBarTitle(subCategory);
-
         }
-        lvPosts.setAdapter(null);
+    }
 
-        return rootView;
+    public void initializeWidgets(View rootView) {
+        lvPosts = (RecyclerView)rootView.findViewById(R.id.listViewPosts);
+        lvPosts.setAdapter(null);
+    }
+
+    private void setInputArguments() {
+        Bundle bundle = getArguments();
+        this.navigationMode = bundle.getString(MessagesString.NAV_MODE);
+        this.subCategory=bundle.getString(MessagesString.SUBCATEGORY);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //setListOfPosts();
-        listOfPosts = new ArrayList<Post>();
-        adapter = new PostsListAdapter(getContext(), listOfPosts);
-
-        lvPosts.setAdapter(adapter);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());                 // Creating a layout Manager
-
-        lvPosts.setLayoutManager(mLayoutManager);
-        lvPosts.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                TextView tvTitle = (TextView) view.findViewById(R.id.tvTitleNamePost);
-
-                (new CommonResources(getContext())).navigateToPostDetails(getFragmentManager(), listOfPosts.get(position), calledFor);
-            }
-        }));
-
-
-
-
+        listOfPosts = new ArrayList();
+        setAdapter();
+        createAndSetLayoutManager();
+        setListeners();
         doInBackground();
+    }
+
+    public void setListeners() {
+        lvPosts.addOnItemTouchListener(postsPresenter.getOnItemTouchListener());
+    }
+
+    public void createAndSetLayoutManager() {
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        lvPosts.setLayoutManager(mLayoutManager);
+    }
+
+    public void setAdapter() {
+        lvPosts.setAdapter(postsPresenter.getPostsListAdapter());
     }
 
     @Override
@@ -140,8 +146,6 @@ public class PostsFragment extends Fragment{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        context=activity;
-
     }
 
 
@@ -155,99 +159,25 @@ public class PostsFragment extends Fragment{
     @Override
     public void onPause() {
         super.onPause();
-        if(as != null){
-            as.cancel(true);
-        }
+        postsPresenter.cancelAsyncCall();
     }
 
     public boolean validateInput() {
-
         return true;
     }
+    protected void doInBackground() {
+        postsPresenter.loadData(this.getNavigationMode());
+    }
 
-
-
-
-        /**
-         * Creating product
-         * */
-        protected void doInBackground() {
-
-            // Building Parameters
-            HashMap<String, String> params = new HashMap<String, String>();
-            String uniqueid = (String) new CommonResources(getContext()).loadFromSharedPrefs("uniqueid");
-            JSONObject json = new JSONObject();
-            String urlToForCall = "";
-            if ("userview".equalsIgnoreCase(calledFor)) {
-                params.put("subcategory", subCategory);
-                String city = new CommonResources(getContext()).readLocation();
-                if ("Select Location".equalsIgnoreCase(city) || "".equalsIgnoreCase(city)) {
-                    city = "";
-                }
-                params.put("city", city);
-
-                if (uniqueid == null || "".equalsIgnoreCase(uniqueid)) {//user not logged in
-                    params.put("uniqueid", "0");
-                } else { // user logged in
-                    params.put("uniqueid", uniqueid);
-                }
-
-                urlToForCall = CommonResources.getURL("get_all_posts");
-
-            } else {
-                if (null == uniqueid || "null".equalsIgnoreCase(uniqueid) || "".equalsIgnoreCase(uniqueid)) { // user is not logged in
-                    return;
-                }
-                params.put("uniqueid", uniqueid);
-                urlToForCall = CommonResources.getURL("get_my_posts");
-
-            }
-            as = new AsyncConnection(context, urlToForCall, "POST", params, false, null) {
-                @Override
-                public void receiveData(JSONObject json) {
-                    if (json == null) {
-                        //latch.countDown();
-                        return;
-                    }
-
-                    String TAG_SUCCESS = "success";
-                    try {
-                        int success = json.getInt(TAG_SUCCESS);
-
-                        if (success == 0) {
-
-                            posts = json.getJSONArray("posts");
-                            if (posts.length() == 0) {
-                                Toast.makeText(getContext(), "There are not posts in your city in this sub-category", Toast.LENGTH_LONG).show();
-                                return;
-                            }
-                            for (int i = 0; i < posts.length(); i++) {
-                                JSONObject c = posts.getJSONObject(i);
-                                listOfPosts.add(new Post(c.getString("uniqueid"), c.getString("title"), c.getString("createddate"), c.getString("locality"), c.getString("hasimage"), c.getString("postid"), c.getString("numofimages"), c.getString("description"), c.getString("subcategory"), c.getString("category"), c.getString("city"), "null".equalsIgnoreCase(c.getString("isaddedtowishlist"))?false:true));
-                            }
-                            adapter.notifyDataSetChanged();
-                        } else if (success == 1) {
-                            // failed to create product
-                        } else {
-                            //Invalid input
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-            };
-            as.execute();
-        }
-    AsyncConnection as;
     @Override
     public void onDetach() {
         super.onDetach();
-        if(as != null){
-            as.cancel(true);
-        }
+        postsPresenter.cancelAsyncCall();
     }
 
-
+    public void navigateToPostDetails(View view, int position) {
+        TextView tvTitle = (TextView) view.findViewById(R.id.tvTitleNamePost);
+        (new CommonResources(getContext())).navigateToPostDetails(getFragmentManager(),
+                listOfPosts.get(position), navigationMode);
+    }
 }
